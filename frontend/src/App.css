@@ -4,6 +4,31 @@
 }
 
 .main {
-    width: calc(100% - 210px);
+    width: calc(100% - 420px);
     height: 100vh;
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+
+.comments-sidebar {
+    width: 210px;
+    height: 100vh;
+}
+
+.content-markdown {
+    max-height: 50vh;
+    min-height: 50vh;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+}
+
+.content-editor {
+    height: 100vh;
+    max-height: 50vh;
+    min-height: 50vh;
+}
+
+.content-editor>section {
+    padding-left: 0rem;
+    padding-right: 0rem;
 }

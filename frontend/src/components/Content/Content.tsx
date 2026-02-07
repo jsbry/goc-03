@@ -8,7 +8,7 @@ function Content() {
     }
   };
 
-  return <main className="main">{renderPage("main")}</main>;
+  return <main className="main h-100">{renderPage("main")}</main>;
 }
 
 export default Content;
