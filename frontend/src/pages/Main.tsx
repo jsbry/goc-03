@@ -33,9 +33,6 @@ function Main() {
           theme="vs-dark"
           onChange={(value) => setContent(value || "")}
           className="flex-fill"
-          options={{
-            automaticLayout: true,
-          }}
         />
       </div>
     </div>

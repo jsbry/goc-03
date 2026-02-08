@@ -2,7 +2,7 @@ import { Fa0, Fa1 } from "react-icons/fa6";
 
 function Sidebar() {
   return (
-    <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light">
+    <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
           <a href="#" className="nav-link link-dark" onClick={() => {}}>
