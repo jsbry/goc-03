@@ -1,6 +1,10 @@
-function CommentList() {
+function CommentList(props: { isViewComment: boolean }) {
+  const { isViewComment } = props;
+
   return (
-    <aside className="comments-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">
+    <aside
+      className={`comments-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto ${isViewComment ? "" : "d-none"}`}
+    >
       <hr />
       <div className="card mb-3">
         <div className="card-header">Header</div>
