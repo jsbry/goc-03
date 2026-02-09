@@ -16,6 +16,7 @@ import (
 var assets embed.FS
 
 var (
+	pageName      = "markdown"
 	isViewComment = true
 )
 
@@ -37,6 +38,15 @@ func main() {
 
 	// View
 	ViewMenu := AppMenu.AddSubmenu("View")
+	ViewMenu.AddRadio("Flow", pageName == "flow", nil, func(_ *menu.CallbackData) {
+		pageName = "flow"
+		runtime.EventsEmit(app.ctx, "pageName", "flow")
+	})
+	ViewMenu.AddRadio("Markdown", pageName == "markdown", nil, func(_ *menu.CallbackData) {
+		pageName = "markdown"
+		runtime.EventsEmit(app.ctx, "pageName", "markdown")
+	})
+	ViewMenu.AddSeparator()
 	ViewMenu.AddCheckbox("Comment", isViewComment, nil, func(_ *menu.CallbackData) {
 		isViewComment = !isViewComment
 		runtime.EventsEmit(app.ctx, "isViewComment", isViewComment)

@@ -17,5 +17,6 @@
 - `frontend> npm install rehype-highlight`
 - `frontend> npm install remark-gfm`
 - `frontend> npm install remark-breaks`
+- `frontend> npm install @xyflow/react`
     - about_Execution_Policies
     - `frontend> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
