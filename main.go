@@ -38,11 +38,11 @@ func main() {
 
 	// View
 	ViewMenu := AppMenu.AddSubmenu("View")
-	ViewMenu.AddRadio("Flow", pageName == "flow", nil, func(_ *menu.CallbackData) {
+	ViewMenu.AddRadio("Flow", pageName == "flow", keys.CmdOrCtrl("n"), func(_ *menu.CallbackData) {
 		pageName = "flow"
 		runtime.EventsEmit(app.ctx, "pageName", "flow")
 	})
-	ViewMenu.AddRadio("Markdown", pageName == "markdown", nil, func(_ *menu.CallbackData) {
+	ViewMenu.AddRadio("Markdown", pageName == "markdown", keys.CmdOrCtrl("m"), func(_ *menu.CallbackData) {
 		pageName = "markdown"
 		runtime.EventsEmit(app.ctx, "pageName", "markdown")
 	})
