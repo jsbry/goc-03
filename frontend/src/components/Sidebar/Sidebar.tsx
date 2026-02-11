@@ -1,21 +1,54 @@
-import { Fa0, Fa1 } from "react-icons/fa6";
+import { useState, useEffect } from "react";
+import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
+import { FaFolderOpen } from "react-icons/fa6";
 
-function Sidebar() {
+import { Node } from "@xyflow/react";
+type ImageNodeData = {
+  label: string;
+  imageUrl: string;
+};
+type MyNode = Node<ImageNodeData>;
+
+function Sidebar(props: { workspace: string }) {
+  const { workspace } = props;
+
+  const [nodes, setNodes] = useState<MyNode[]>([]);
+
+  useEffect(() => {
+    EventsOn("nodes", (jsonData: string) => {
+      const parsedNodes: MyNode[] = JSON.parse(jsonData);
+      console.log(parsedNodes);
+
+      setNodes(parsedNodes);
+    });
+
+    return () => {
+      // EventsOff("nodes");
+    };
+  });
+
   return (
     <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">
+      {workspace && (
+        <div className="d-flex align-items-center p-2 mb-2 border-bottom">
+          <FaFolderOpen className="me-2" />
+          <span className="fw-semibold">{workspace}</span>
+        </div>
+      )}
       <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item">
-          <a href="#" className="nav-link link-dark" onClick={() => {}}>
-            <Fa0 className="me-2"></Fa0>
-            Test 0
-          </a>
-        </li>
-        <li>
-          <a href="#" className="nav-link link-dark" onClick={() => {}}>
-            <Fa1 className="me-2"></Fa1>
-            Test 1
-          </a>
-        </li>
+        {nodes.map((node: MyNode) => (
+          <li key={node.id} className="nav-item">
+            <a
+              href="#"
+              className="nav-link link-dark"
+              onClick={() => {
+                console.log("Clicked node:", node);
+              }}
+            >
+              {node.data.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   );

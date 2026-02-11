@@ -1,4 +1,6 @@
-import { useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef } from "react";
+import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+import { SaveNodes } from "../../wailsjs/go/main/App";
 
 import {
   ReactFlow,
@@ -24,18 +26,7 @@ const nodeTypes = {
   imageNode: ImageNode,
 };
 
-const initialNodes: Node[] = [
-  {
-    id: "0",
-    type: "imageNode",
-    data: {
-      label: "Image Node",
-      imageUrl: "https://picsum.photos/200/300",
-    },
-    position: { x: 0, y: 50 },
-  },
-];
-
+const initialNodes: Node[] = [];
 const initialEdges: Edge[] = [];
 
 let id = 1;
@@ -48,6 +39,36 @@ const AddNodeOnEdgeDrop = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { screenToFlowPosition } = useReactFlow();
+
+  useEffect(() => {
+    EventsOn("nodes", (jsonData: string) => {
+      const parsedNodes = JSON.parse(jsonData);
+      setNodes(parsedNodes);
+    });
+
+    return () => {
+      // EventsOff("nodes");
+    };
+  });
+
+  useEffect(() => {
+    let tmpNodes = "";
+    const intervalId = setInterval(() => {
+      if (nodes.length === 0) {
+        return;
+      }
+      if (JSON.stringify(nodes) === tmpNodes) {
+        return;
+      }
+      tmpNodes = JSON.stringify(nodes);
+
+      SaveNodes(JSON.stringify(nodes));
+    }, 3000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [nodes]);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),

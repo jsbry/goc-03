@@ -13,6 +13,7 @@ type App struct {
 type AppConstants struct {
 	PageName      string
 	IsViewComment bool
+	Workspace     string
 }
 
 // NewApp creates a new App application struct
@@ -35,5 +36,6 @@ func (a *App) GetConstants() AppConstants {
 	return AppConstants{
 		PageName:      pageName,
 		IsViewComment: isViewComment,
+		Workspace:     workspace,
 	}
 }

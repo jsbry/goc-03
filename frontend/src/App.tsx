@@ -9,12 +9,14 @@ import "./App.css";
 function App() {
   const [isViewComment, setIsViewComment] = useState(true);
   const [pageName, setPageName] = useState("markdown");
+  const [workspace, setWorkspace] = useState("");
 
   useEffect(() => {
     async function fetchConstants() {
       const constants = await GetConstants();
       setPageName(constants.PageName);
       setIsViewComment(constants.IsViewComment);
+      setWorkspace(constants.Workspace);
     }
     fetchConstants();
   }, []);
@@ -26,10 +28,14 @@ function App() {
     EventsOn("pageName", (page: string) => {
       setPageName(page);
     });
+    EventsOn("workspace", (workspaceName: string) => {
+      setWorkspace(workspaceName);
+    });
 
     return () => {
       EventsOff("isViewComment");
       EventsOff("pageName");
+      EventsOff("workspace");
     };
   });
 
@@ -37,7 +43,7 @@ function App() {
     <div id="app" className="h-100">
       <div className="container-fluid h-100">
         <div className="row h-100">
-          <Sidebar></Sidebar>
+          <Sidebar workspace={workspace}></Sidebar>
           <Content pageName={pageName} isViewComment={isViewComment}></Content>
           <CommentList isViewComment={isViewComment}></CommentList>
         </div>

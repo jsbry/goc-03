@@ -7,10 +7,6 @@ import App from "./App";
 const container = document.getElementById("root");
 
 const root = createRoot(container!);
-if (true) {
-  console.log("Development mode");
-}
-
 root.render(
   <React.StrictMode>
     <App />

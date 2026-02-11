@@ -3,6 +3,7 @@ export namespace main {
 	export class AppConstants {
 	    PageName: string;
 	    IsViewComment: boolean;
+	    Workspace: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new AppConstants(source);
@@ -12,6 +13,7 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.PageName = source["PageName"];
 	        this.IsViewComment = source["IsViewComment"];
+	        this.Workspace = source["Workspace"];
 	    }
 	}
 

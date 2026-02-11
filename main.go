@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"time"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -18,6 +19,8 @@ var assets embed.FS
 var (
 	pageName      = "markdown"
 	isViewComment = true
+	workspace     = ""
+	nodes         = "[]"
 )
 
 func main() {
@@ -29,7 +32,14 @@ func main() {
 	// File
 	FileMenu := AppMenu.AddSubmenu("File")
 	FileMenu.AddText("Open", keys.CmdOrCtrl("o"), func(_ *menu.CallbackData) {
-		// do something
+		dirPath, err := runtime.OpenDirectoryDialog(app.ctx, rt.OpenDialogOptions{
+			Title: "Select a folder",
+		})
+		if err != nil {
+			println("Error:", err.Error())
+		} else {
+			app.OpenWorkspace(dirPath)
+		}
 	})
 	FileMenu.AddSeparator()
 	FileMenu.AddText("Quit", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
@@ -41,6 +51,13 @@ func main() {
 	ViewMenu.AddRadio("Flow", pageName == "flow", keys.CmdOrCtrl("n"), func(_ *menu.CallbackData) {
 		pageName = "flow"
 		runtime.EventsEmit(app.ctx, "pageName", "flow")
+
+		if workspace != "" {
+			go func() {
+				time.Sleep(1000 * time.Millisecond)
+				runtime.EventsEmit(app.ctx, "nodes", nodes)
+			}()
+		}
 	})
 	ViewMenu.AddRadio("Markdown", pageName == "markdown", keys.CmdOrCtrl("m"), func(_ *menu.CallbackData) {
 		pageName = "markdown"
