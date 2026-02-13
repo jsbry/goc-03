@@ -1,6 +1,8 @@
 import { useEffect, useCallback, useRef } from "react";
 import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
-import { SaveNodes } from "../../wailsjs/go/main/App";
+import { SaveNodes, SaveEdges } from "../../wailsjs/go/main/App";
+import { MyNode, useDataContext } from "../context";
+import isEqual from "lodash/isEqual";
 
 import {
   ReactFlow,
@@ -18,6 +20,10 @@ import {
   getConnectedEdges,
   Node,
   Edge,
+  NodeChange,
+  applyNodeChanges,
+  EdgeChange,
+  applyEdgeChanges,
 } from "@xyflow/react";
 import ImageNode from "../components/ImageNode/ImageNode";
 import "@xyflow/react/dist/style.css";
@@ -26,49 +32,65 @@ const nodeTypes = {
   imageNode: ImageNode,
 };
 
-const initialNodes: Node[] = [];
-const initialEdges: Edge[] = [];
-
-let id = 1;
+let id: number = 1;
 const getId = () => `${id++}`;
 const nodeOrigin: [number, number] = [0.5, 0];
 
 const AddNodeOnEdgeDrop = () => {
   const reactFlowWrapper = useRef(null);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const { nodes, setNodes, edges, setEdges } = useDataContext();
+  const prevNodesRef = useRef(nodes);
+  const prevEdgesRef = useRef(edges);
   const { screenToFlowPosition } = useReactFlow();
 
   useEffect(() => {
-    EventsOn("nodes", (jsonData: string) => {
-      const parsedNodes = JSON.parse(jsonData);
-      setNodes(parsedNodes);
-    });
-
-    return () => {
-      // EventsOff("nodes");
-    };
-  });
-
-  useEffect(() => {
-    let tmpNodes = "";
     const intervalId = setInterval(() => {
       if (nodes.length === 0) {
         return;
       }
-      if (JSON.stringify(nodes) === tmpNodes) {
-        return;
-      }
-      tmpNodes = JSON.stringify(nodes);
 
-      SaveNodes(JSON.stringify(nodes));
+      if (!isEqual(prevNodesRef.current, nodes)) {
+        SaveNodes(JSON.stringify(nodes));
+        prevNodesRef.current = nodes;
+      }
     }, 3000);
 
     return () => {
       clearInterval(intervalId);
     };
   }, [nodes]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (edges.length === 0) {
+        return;
+      }
+
+      if (!isEqual(prevEdgesRef.current, edges)) {
+        SaveEdges(JSON.stringify(edges));
+        prevEdgesRef.current = edges;
+      }
+    }, 3000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [edges]);
+
+  const onNodesChange = useCallback(
+    (changes: NodeChange<MyNode>[]) => {
+      setNodes((nds) => applyNodeChanges(changes, nds));
+    },
+    [setNodes],
+  );
+
+  const onEdgesChange = useCallback(
+    (changes: EdgeChange[]) => {
+      setEdges((nds) => applyEdgeChanges(changes, nds));
+    },
+    [setEdges],
+  );
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -81,8 +103,9 @@ const AddNodeOnEdgeDrop = () => {
         const id = getId();
         const { clientX, clientY } =
           "changedTouches" in event ? event.changedTouches[0] : event;
-        const newNode: Node = {
+        const newNode: MyNode = {
           id,
+          type: "imageNode",
           position: screenToFlowPosition({
             x: clientX,
             y: clientY,

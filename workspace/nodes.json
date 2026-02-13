@@ -1,1 +1,42 @@
-[{"id":"0","type":"imageNode","data":{"label":"Image Node","imageUrl":"https://picsum.photos/200/300"},"position":{"x":0,"y":50},"measured":{"width":180,"height":291}}]
+[
+  {
+    "id": "0",
+    "type": "imageNode",
+    "data": {
+      "label": "Image Node",
+      "imageUrl": "https://picsum.photos/200/300"
+    },
+    "position": {
+      "x": -167.4802936578942,
+      "y": -309.3178450142923
+    },
+    "measured": {
+      "width": 180,
+      "height": 291
+    },
+    "selected": false,
+    "dragging": false
+  },
+  {
+    "id": "1",
+    "type": "imageNode",
+    "position": {
+      "x": -23.03878198795273,
+      "y": 24.314102257238787
+    },
+    "data": {
+      "label": "Node 1",
+      "imageUrl": "https://picsum.photos/200/300"
+    },
+    "origin": [
+      0.5,
+      0
+    ],
+    "measured": {
+      "width": 180,
+      "height": 291
+    },
+    "selected": true,
+    "dragging": false
+  }
+]

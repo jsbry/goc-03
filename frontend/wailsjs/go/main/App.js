@@ -14,6 +14,10 @@ export function OpenWorkspace(arg1) {
   return window['go']['main']['App']['OpenWorkspace'](arg1);
 }
 
+export function SaveEdges(arg1) {
+  return window['go']['main']['App']['SaveEdges'](arg1);
+}
+
 export function SaveNodes(arg1) {
   return window['go']['main']['App']['SaveNodes'](arg1);
 }

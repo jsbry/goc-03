@@ -1,31 +1,11 @@
 import { useState, useEffect } from "react";
 import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import { FaFolderOpen } from "react-icons/fa6";
-
-import { Node } from "@xyflow/react";
-type ImageNodeData = {
-  label: string;
-  imageUrl: string;
-};
-type MyNode = Node<ImageNodeData>;
+import { useDataContext, MyNode } from "../../context";
 
 function Sidebar(props: { workspace: string }) {
   const { workspace } = props;
-
-  const [nodes, setNodes] = useState<MyNode[]>([]);
-
-  useEffect(() => {
-    EventsOn("nodes", (jsonData: string) => {
-      const parsedNodes: MyNode[] = JSON.parse(jsonData);
-      console.log(parsedNodes);
-
-      setNodes(parsedNodes);
-    });
-
-    return () => {
-      // EventsOff("nodes");
-    };
-  });
+  const { nodes, setNodes, edges, setEdges } = useDataContext();
 
   return (
     <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">

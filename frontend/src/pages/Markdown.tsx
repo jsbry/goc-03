@@ -10,7 +10,7 @@ import Editor from "@monaco-editor/react";
 // import "monaco-editor/esm/vs/basic-languages/markdown/markdown";
 
 function Markdown() {
-  const [content, setContent] = useState(
+  const [content, setContent] = useState<string>(
     "# H1\n## H2\n### H3\n\nThis is a sample markdown content.",
   );
 

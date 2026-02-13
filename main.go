@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"time"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -16,11 +15,12 @@ import (
 //go:embed frontend/dist
 var assets embed.FS
 
+const isDebug = true
+
 var (
 	pageName      = "markdown"
 	isViewComment = true
-	workspace     = ""
-	nodes         = "[]"
+	workspace     = "./workspace"
 )
 
 func main() {
@@ -51,13 +51,6 @@ func main() {
 	ViewMenu.AddRadio("Flow", pageName == "flow", keys.CmdOrCtrl("n"), func(_ *menu.CallbackData) {
 		pageName = "flow"
 		runtime.EventsEmit(app.ctx, "pageName", "flow")
-
-		if workspace != "" {
-			go func() {
-				time.Sleep(1000 * time.Millisecond)
-				runtime.EventsEmit(app.ctx, "nodes", nodes)
-			}()
-		}
 	})
 	ViewMenu.AddRadio("Markdown", pageName == "markdown", keys.CmdOrCtrl("m"), func(_ *menu.CallbackData) {
 		pageName = "markdown"
@@ -67,6 +60,11 @@ func main() {
 	ViewMenu.AddCheckbox("Comment", isViewComment, nil, func(_ *menu.CallbackData) {
 		isViewComment = !isViewComment
 		runtime.EventsEmit(app.ctx, "isViewComment", isViewComment)
+	})
+
+	HelpMenu := AppMenu.AddSubmenu("Help")
+	HelpMenu.AddText("Help", keys.Key("f1"), func(d *menu.CallbackData) {
+		runtime.EventsEmit(app.ctx, "help", true)
 	})
 
 	// Create application with options

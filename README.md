@@ -18,5 +18,6 @@
 - `frontend> npm install remark-gfm`
 - `frontend> npm install remark-breaks`
 - `frontend> npm install @xyflow/react`
+- `frontend> npm install @types/lodash`
     - about_Execution_Policies
     - `frontend> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`

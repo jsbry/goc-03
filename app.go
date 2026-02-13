@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 )
 
 // App struct
@@ -14,6 +15,8 @@ type AppConstants struct {
 	PageName      string
 	IsViewComment bool
 	Workspace     string
+	Nodes         string
+	Edges         string
 }
 
 // NewApp creates a new App application struct
@@ -33,9 +36,20 @@ func (a *App) Greet(name string) string {
 }
 
 func (a *App) GetConstants() AppConstants {
+	absPath, err := filepath.Abs(workspace)
+	if err != nil {
+		absPath = ""
+	}
+	workspace = filepath.Base(absPath)
+
+	nodes := getJsonFileContent("nodes.json")
+	edges := getJsonFileContent("edges.json")
+
 	return AppConstants{
 		PageName:      pageName,
 		IsViewComment: isViewComment,
 		Workspace:     workspace,
+		Nodes:         nodes,
+		Edges:         edges,
 	}
 }
