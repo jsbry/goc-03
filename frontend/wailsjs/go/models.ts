@@ -3,6 +3,7 @@ export namespace main {
 	export class AppConstants {
 	    PageName: string;
 	    IsViewComment: boolean;
+	    IsViewEditNode: boolean;
 	    Workspace: string;
 	    Nodes: string;
 	    Edges: string;
@@ -15,6 +16,7 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.PageName = source["PageName"];
 	        this.IsViewComment = source["IsViewComment"];
+	        this.IsViewEditNode = source["IsViewEditNode"];
 	        this.Workspace = source["Workspace"];
 	        this.Nodes = source["Nodes"];
 	        this.Edges = source["Edges"];

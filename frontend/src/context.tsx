@@ -12,6 +12,8 @@ export type DataContextType = {
   setNodes: React.Dispatch<React.SetStateAction<MyNode[]>>;
   edges: Edge[];
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
+  focusNode: MyNode;
+  setFocusNode: React.Dispatch<React.SetStateAction<MyNode>>;
 };
 
 export const DataContext = createContext<DataContextType | null>(null);

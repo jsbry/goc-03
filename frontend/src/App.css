@@ -4,13 +4,20 @@
 }
 
 .main {
-    width: calc(100% - 420px);
+    /* width: calc(100% - 420px); */
+    flex: 1;
+    min-width: 0; /* ← 重要 */
     height: 100vh;
     padding-left: 0rem;
     padding-right: 0rem;
 }
 
 .comments-sidebar {
+    width: 210px;
+    height: 100vh;
+}
+
+.edit-node-sidebar {
     width: 210px;
     height: 100vh;
 }

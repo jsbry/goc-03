@@ -12,11 +12,12 @@ type App struct {
 }
 
 type AppConstants struct {
-	PageName      string
-	IsViewComment bool
-	Workspace     string
-	Nodes         string
-	Edges         string
+	PageName       string
+	IsViewComment  bool
+	IsViewEditNode bool
+	Workspace      string
+	Nodes          string
+	Edges          string
 }
 
 // NewApp creates a new App application struct
@@ -46,10 +47,11 @@ func (a *App) GetConstants() AppConstants {
 	edges := getJsonFileContent("edges.json")
 
 	return AppConstants{
-		PageName:      pageName,
-		IsViewComment: isViewComment,
-		Workspace:     workspace,
-		Nodes:         nodes,
-		Edges:         edges,
+		PageName:       pageName,
+		IsViewComment:  isViewComment,
+		IsViewEditNode: isViewEditNode,
+		Workspace:      workspace,
+		Nodes:          nodes,
+		Edges:          edges,
 	}
 }

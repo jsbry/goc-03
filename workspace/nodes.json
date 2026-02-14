@@ -14,15 +14,15 @@
       "width": 180,
       "height": 291
     },
-    "selected": false,
+    "selected": true,
     "dragging": false
   },
   {
     "id": "1",
     "type": "imageNode",
     "position": {
-      "x": -23.03878198795273,
-      "y": 24.314102257238787
+      "x": -148.2723300921837,
+      "y": 95.76638340623884
     },
     "data": {
       "label": "Node 1",
@@ -36,7 +36,7 @@
       "width": 180,
       "height": 291
     },
-    "selected": true,
+    "selected": false,
     "dragging": false
   }
 ]

@@ -5,7 +5,9 @@ function CommentList(props: { isViewComment: boolean }) {
     <aside
       className={`comments-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto ${isViewComment ? "" : "d-none"}`}
     >
-      <hr />
+      <div className="d-flex align-items-center p-2 mb-2 border-bottom">
+        <span className="fw-semibold">Comments</span>
+      </div>
       <div className="card mb-3">
         <div className="card-header">Header</div>
         <div className="card-body">comment</div>

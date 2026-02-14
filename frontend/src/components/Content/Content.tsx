@@ -4,8 +4,12 @@ import Modal from "react-bootstrap/Modal";
 import Markdown from "../../pages/Markdown";
 import Flow from "../../pages/Flow";
 
-function Content(props: { pageName: string; isViewComment: boolean }) {
-  const { pageName, isViewComment } = props;
+function Content(props: {
+  pageName: string;
+  isViewComment: boolean;
+  isViewEditNode: boolean;
+}) {
+  const { pageName, isViewComment, isViewEditNode } = props;
 
   const [helpShow, setHelpShow] = useState<boolean>(false);
   const handleHelpClose = () => {
@@ -36,7 +40,9 @@ function Content(props: { pageName: string; isViewComment: boolean }) {
   return (
     <main
       className="main h-100"
-      style={!isViewComment ? { width: `calc(100% - 210px)` } : {}}
+      style={
+        !isViewComment && !isViewEditNode ? { width: `calc(100% - 210px)` } : {}
+      }
     >
       {renderPage(pageName)}
 

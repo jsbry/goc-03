@@ -18,9 +18,10 @@ var assets embed.FS
 const isDebug = true
 
 var (
-	pageName      = "markdown"
-	isViewComment = true
-	workspace     = "./workspace"
+	pageName       = "flow"
+	isViewComment  = false
+	isViewEditNode = true
+	workspace      = "./workspace"
 )
 
 func main() {
@@ -60,6 +61,10 @@ func main() {
 	ViewMenu.AddCheckbox("Comment", isViewComment, nil, func(_ *menu.CallbackData) {
 		isViewComment = !isViewComment
 		runtime.EventsEmit(app.ctx, "isViewComment", isViewComment)
+	})
+	ViewMenu.AddCheckbox("Edit Node", isViewEditNode, nil, func(_ *menu.CallbackData) {
+		isViewEditNode = !isViewEditNode
+		runtime.EventsEmit(app.ctx, "isViewEditNode", isViewEditNode)
 	})
 
 	HelpMenu := AppMenu.AddSubmenu("Help")

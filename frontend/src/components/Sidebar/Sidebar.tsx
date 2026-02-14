@@ -5,7 +5,8 @@ import { useDataContext, MyNode } from "../../context";
 
 function Sidebar(props: { workspace: string }) {
   const { workspace } = props;
-  const { nodes, setNodes, edges, setEdges } = useDataContext();
+  const { nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
+    useDataContext();
 
   return (
     <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">
