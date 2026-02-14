@@ -13,37 +13,39 @@ import (
 
 func (a *App) SaveNodes(jsonData string) {
 	fmt.Println("SaveNodes called", jsonData)
-	nodesFilePath := filepath.Join(workspace, "nodes.json")
-	jsonByte := []byte(jsonData)
-	if isDebug {
-		var buf bytes.Buffer
-		err := json.Indent(&buf, []byte(jsonData), "", "  ")
-		if err != nil {
-			panic(err)
-		}
-		jsonByte = buf.Bytes()
+	err := saveJsonFileContent("nodes.json", jsonData)
+	if err != nil {
+		fmt.Println("Error saving nodes:", err)
+		return
 	}
-
-	os.WriteFile(nodesFilePath, jsonByte, 0644)
 	runtime.EventsEmit(a.ctx, "nodes", jsonData)
 }
 
 func (a *App) SaveEdges(jsonData string) {
 	fmt.Println("SaveEdges called", jsonData)
-	edgesFilePath := filepath.Join(workspace, "edges.json")
+	err := saveJsonFileContent("edges.json", jsonData)
+	if err != nil {
+		fmt.Println("Error saving edges:", err)
+		return
+	}
+	runtime.EventsEmit(a.ctx, "edges", jsonData)
+}
 
+func saveJsonFileContent(filename string, jsonData string) error {
+	path := filepath.Join(workspace, filename)
 	jsonByte := []byte(jsonData)
 	if isDebug {
 		var buf bytes.Buffer
 		err := json.Indent(&buf, []byte(jsonData), "", "  ")
 		if err != nil {
-			panic(err)
+			fmt.Println("Failed to indent JSON:", err)
+			return err
 		}
 		jsonByte = buf.Bytes()
 	}
 
-	os.WriteFile(edgesFilePath, jsonByte, 0644)
-	runtime.EventsEmit(a.ctx, "edges", jsonData)
+	os.WriteFile(path, jsonByte, 0644)
+	return nil
 }
 
 func getJsonFileContent(filePath string) string {

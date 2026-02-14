@@ -1,5 +1,4 @@
 import { useEffect, useCallback, useRef } from "react";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
 import { SaveNodes, SaveEdges } from "../../wailsjs/go/main/App";
 import { MyNode, useDataContext } from "../context";
 import isEqual from "lodash/isEqual";
@@ -8,8 +7,6 @@ import {
   ReactFlow,
   Controls,
   Background,
-  useNodesState,
-  useEdgesState,
   addEdge,
   useReactFlow,
   ReactFlowProvider,
