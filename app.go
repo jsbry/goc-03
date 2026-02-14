@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
+
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -43,8 +45,16 @@ func (a *App) GetConstants() AppConstants {
 	if err != nil {
 		absPath = ""
 	}
+
+	workspaceFullPath = absPath
 	workspace = filepath.Base(absPath)
-	a.publicAssets()
+	err = a.publicAssets()
+	if err != nil {
+		fmt.Println("Error setting up public assets:", err)
+		workspace = ""
+		workspaceFullPath = ""
+		runtime.EventsEmit(a.ctx, "workspace", workspace)
+	}
 
 	nodes := getJsonFileContent("nodes.json")
 	edges := getJsonFileContent("edges.json")

@@ -33,3 +33,18 @@ export function isURL(str: string): boolean {
     return false;
   }
 }
+
+let nodeId: number = 1;
+
+export function getNodeId(): string {
+  return `${nodeId++}`;
+}
+
+export function setNodeId(nodes: MyNode[]) {
+  if (nodes.length > 0) {
+    const maxId = Math.max(...nodes.map((n) => parseInt(n.id)));
+    nodeId = maxId + 1;
+  } else {
+    nodeId = 1;
+  }
+}

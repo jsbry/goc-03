@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useRef } from "react";
 import { SaveNodes, SaveEdges } from "../../wailsjs/go/main/App";
-import { MyNode, useDataContext } from "../context";
+import { MyNode, useDataContext, setNodeId, getNodeId } from "../context";
 import isEqual from "lodash/isEqual";
 
 import {
@@ -29,8 +29,6 @@ const nodeTypes = {
   imageNode: ImageNode,
 };
 
-let id: number = 1;
-const getId = () => `${id++}`;
 const nodeOrigin: [number, number] = [0.5, 0];
 
 const AddNodeOnEdgeDrop = () => {
@@ -43,9 +41,7 @@ const AddNodeOnEdgeDrop = () => {
   const { screenToFlowPosition } = useReactFlow();
 
   useEffect(() => {
-    nodes.forEach((node) => {
-      id = Math.max(id, parseInt(node.id) + 1);
-    });
+    setNodeId(nodes);
   }, [nodes]);
 
   useEffect(() => {
@@ -107,7 +103,7 @@ const AddNodeOnEdgeDrop = () => {
   const onConnectEnd = useCallback(
     (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState) => {
       if (!connectionState.isValid) {
-        const id = getId();
+        const id = getNodeId();
         const { clientX, clientY } =
           "changedTouches" in event ? event.changedTouches[0] : event;
         const newNode: MyNode = {

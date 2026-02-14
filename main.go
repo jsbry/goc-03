@@ -18,10 +18,11 @@ var assets embed.FS
 const isDebug = true
 
 var (
-	pageName       = "flow"
-	isViewComment  = false
-	isViewEditNode = true
-	workspace      = "./workspace"
+	pageName          = "flow"
+	isViewComment     = false
+	isViewEditNode    = true
+	workspace         = "./workspace"
+	workspaceFullPath = ""
 )
 
 func main() {
@@ -33,13 +34,13 @@ func main() {
 	// File
 	FileMenu := AppMenu.AddSubmenu("File")
 	FileMenu.AddText("Open", keys.CmdOrCtrl("o"), func(_ *menu.CallbackData) {
-		dirPath, err := runtime.OpenDirectoryDialog(app.ctx, rt.OpenDialogOptions{
+		absPath, err := runtime.OpenDirectoryDialog(app.ctx, rt.OpenDialogOptions{
 			Title: "Select a folder",
 		})
 		if err != nil {
 			println("Error:", err.Error())
 		} else {
-			app.OpenWorkspace(dirPath)
+			app.OpenWorkspace(absPath)
 		}
 	})
 	FileMenu.AddSeparator()

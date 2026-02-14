@@ -12,12 +12,16 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-func (a *App) OpenWorkspace(dirPath string) {
-	dir := filepath.Base(dirPath)
+func (a *App) OpenWorkspace(absPath string) {
+	dir := filepath.Base(absPath)
 	workspace = dir
+	workspaceFullPath = absPath
 	runtime.EventsEmit(a.ctx, "workspace", workspace)
 
-	a.publicAssets()
+	err := a.publicAssets()
+	if err != nil {
+		fmt.Println("Error setting up public assets:", err)
+	}
 
 	nodes := getJsonFileContent("nodes.json")
 	runtime.EventsEmit(a.ctx, "nodes", nodes)
@@ -31,18 +35,18 @@ func (a *App) publicAssets() error {
 		a.server.Shutdown(context.Background())
 	}
 
-	info, err := os.Stat(workspace)
+	info, err := os.Stat(workspaceFullPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return fmt.Errorf("workspace directory does not exist: %s", workspace)
+			return fmt.Errorf("workspace directory does not exist: %s", workspaceFullPath)
 		}
 		return fmt.Errorf("error accessing workspace directory: %w", err)
 	}
 	if !info.IsDir() {
-		return fmt.Errorf("workspace is not a directory: %s", workspace)
+		return fmt.Errorf("workspace is not a directory: %s", workspaceFullPath)
 	}
 
-	filesDir := filepath.Join(workspace, "assets")
+	filesDir := filepath.Join(workspaceFullPath, "assets")
 
 	info, err = os.Stat(filesDir)
 	if err != nil {
@@ -80,7 +84,7 @@ func (a *App) publicAssets() error {
 
 func (a *App) SaveToAssets(src string) (string, error) {
 	filename := filepath.Base(src)
-	dest := filepath.Join(workspace, "assets", filename)
+	dest := filepath.Join(workspaceFullPath, "assets", filename)
 
 	input, err := os.ReadFile(src)
 	if err != nil {

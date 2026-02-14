@@ -46,7 +46,9 @@ function App() {
       setWorkspace(workspaceName);
     });
     EventsOn("baseURL", (url: string) => {
+      console.log(url);
       setBaseURL(url);
+      setFocusNode({} as MyNode);
     });
     EventsOn("nodes", (jsonData: string) => {
       const parsedNodes: MyNode[] = JSON.parse(jsonData);

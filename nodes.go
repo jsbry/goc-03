@@ -32,7 +32,7 @@ func (a *App) SaveEdges(jsonData string) {
 }
 
 func saveJsonFileContent(filename string, jsonData string) error {
-	path := filepath.Join(workspace, filename)
+	path := filepath.Join(workspaceFullPath, filename)
 	jsonByte := []byte(jsonData)
 	if isDebug {
 		var buf bytes.Buffer
@@ -44,12 +44,17 @@ func saveJsonFileContent(filename string, jsonData string) error {
 		jsonByte = buf.Bytes()
 	}
 
-	os.WriteFile(path, jsonByte, 0644)
+	fmt.Println("Saving JSON to:", path)
+	err := os.WriteFile(path, jsonByte, 0644)
+	if err != nil {
+		fmt.Println("Error writing JSON file:", err)
+		return err
+	}
 	return nil
 }
 
 func getJsonFileContent(filePath string) string {
-	path := filepath.Join(workspace, filePath)
+	path := filepath.Join(workspaceFullPath, filePath)
 	jsonFile, err := os.Open(path)
 	if err != nil {
 		fmt.Println("Error opening JSON file:", err)
