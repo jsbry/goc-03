@@ -3,12 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"path/filepath"
 )
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx    context.Context
+	server *http.Server
 }
 
 type AppConstants struct {
@@ -42,6 +44,7 @@ func (a *App) GetConstants() AppConstants {
 		absPath = ""
 	}
 	workspace = filepath.Base(absPath)
+	a.publicAssets()
 
 	nodes := getJsonFileContent("nodes.json")
 	edges := getJsonFileContent("edges.json")

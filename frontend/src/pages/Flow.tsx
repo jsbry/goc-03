@@ -36,18 +36,20 @@ const nodeOrigin: [number, number] = [0.5, 0];
 const AddNodeOnEdgeDrop = () => {
   const reactFlowWrapper = useRef(null);
 
-  const { nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
+  const { baseURL, nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
     useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);
   const { screenToFlowPosition } = useReactFlow();
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (nodes.length === 0) {
-        return;
-      }
+    nodes.forEach((node) => {
+      id = Math.max(id, parseInt(node.id) + 1);
+    });
+  }, [nodes]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
       if (!isEqual(prevNodesRef.current, nodes)) {
         SaveNodes(JSON.stringify(nodes));
         prevNodesRef.current = nodes;
@@ -61,10 +63,6 @@ const AddNodeOnEdgeDrop = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (edges.length === 0) {
-        return;
-      }
-
       if (!isEqual(prevEdgesRef.current, edges)) {
         SaveEdges(JSON.stringify(edges));
         prevEdgesRef.current = edges;
@@ -78,7 +76,6 @@ const AddNodeOnEdgeDrop = () => {
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: MyNode) => {
-      console.log("Clicked node:", node);
       setFocusNode(node);
     },
     [setFocusNode],

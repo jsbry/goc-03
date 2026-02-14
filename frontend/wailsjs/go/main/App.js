@@ -10,6 +10,10 @@ export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
+export function OpenFileDialog() {
+  return window['go']['main']['App']['OpenFileDialog']();
+}
+
 export function OpenWorkspace(arg1) {
   return window['go']['main']['App']['OpenWorkspace'](arg1);
 }
@@ -20,4 +24,8 @@ export function SaveEdges(arg1) {
 
 export function SaveNodes(arg1) {
   return window['go']['main']['App']['SaveNodes'](arg1);
+}
+
+export function SaveToAssets(arg1) {
+  return window['go']['main']['App']['SaveToAssets'](arg1);
 }

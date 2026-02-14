@@ -7,31 +7,9 @@
       "imageUrl": "https://picsum.photos/200/300"
     },
     "position": {
-      "x": -167.4802936578942,
-      "y": -309.3178450142923
+      "x": 0,
+      "y": 0
     },
-    "measured": {
-      "width": 180,
-      "height": 291
-    },
-    "selected": true,
-    "dragging": false
-  },
-  {
-    "id": "1",
-    "type": "imageNode",
-    "position": {
-      "x": -148.2723300921837,
-      "y": 95.76638340623884
-    },
-    "data": {
-      "label": "Node 1",
-      "imageUrl": "https://picsum.photos/200/300"
-    },
-    "origin": [
-      0.5,
-      0
-    ],
     "measured": {
       "width": 180,
       "height": 291

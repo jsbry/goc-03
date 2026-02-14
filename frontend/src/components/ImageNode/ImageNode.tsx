@@ -1,4 +1,5 @@
 import { Handle, Position } from "@xyflow/react";
+import { useDataContext, isURL } from "../../context";
 
 type ImageNodeData = {
   label: string;
@@ -6,19 +7,21 @@ type ImageNodeData = {
 };
 
 export default function ImageNode({ data }: { data: ImageNodeData }) {
+  const { baseURL, nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
+    useDataContext();
+
+  let src = "";
+  if (isURL(data.imageUrl)) {
+    src = data.imageUrl;
+  } else {
+    src = baseURL + data.imageUrl;
+  }
+
   return (
-    <div
-      style={{
-        padding: 10,
-        background: "#fff",
-        border: "1px solid #ddd",
-        borderRadius: 8,
-        width: 180,
-      }}
-    >
+    <div className="node-image">
       <Handle type="target" position={Position.Top} />
 
-      <img src={data.imageUrl} alt={data.label} style={{ width: "100%" }} />
+      <img src={src} alt={data.label} style={{ width: "100%" }} />
 
       <div style={{ marginTop: 8, textAlign: "center" }}>{data.label}</div>
 

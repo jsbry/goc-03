@@ -14,6 +14,7 @@ function App() {
   const [isViewEditNode, setIsViewEditNode] = useState<boolean>(true);
   const [pageName, setPageName] = useState<string>("markdown");
   const [workspace, setWorkspace] = useState<string>("");
+  const [baseURL, setBaseURL] = useState<string>("");
   const [nodes, setNodes] = useState<MyNode[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [focusNode, setFocusNode] = useState<MyNode>({} as MyNode);
@@ -44,6 +45,9 @@ function App() {
     EventsOn("workspace", (workspaceName: string) => {
       setWorkspace(workspaceName);
     });
+    EventsOn("baseURL", (url: string) => {
+      setBaseURL(url);
+    });
     EventsOn("nodes", (jsonData: string) => {
       const parsedNodes: MyNode[] = JSON.parse(jsonData);
       setNodes(parsedNodes);
@@ -58,14 +62,23 @@ function App() {
       EventsOff("isViewEditNode");
       EventsOff("pageName");
       EventsOff("workspace");
+      EventsOff("baseURL");
       EventsOff("nodes");
       EventsOff("edges");
     };
   });
 
   const value = useMemo(
-    () => ({ nodes, setNodes, edges, setEdges, focusNode, setFocusNode }),
-    [nodes, edges, focusNode],
+    () => ({
+      baseURL,
+      nodes,
+      setNodes,
+      edges,
+      setEdges,
+      focusNode,
+      setFocusNode,
+    }),
+    [baseURL, nodes, edges, focusNode],
   );
 
   return (

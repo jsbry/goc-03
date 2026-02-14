@@ -5,7 +5,7 @@ import { useDataContext, MyNode } from "../../context";
 
 function Sidebar(props: { workspace: string }) {
   const { workspace } = props;
-  const { nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
+  const { baseURL, nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
     useDataContext();
 
   return (

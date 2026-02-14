@@ -6,7 +6,7 @@
 .main {
     /* width: calc(100% - 420px); */
     flex: 1;
-    min-width: 0; /* ← 重要 */
+    min-width: 0;
     height: 100vh;
     padding-left: 0rem;
     padding-right: 0rem;
@@ -38,4 +38,12 @@
 .content-editor>section {
     padding-left: 0rem;
     padding-right: 0rem;
+}
+
+.node-image {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 180px;
 }

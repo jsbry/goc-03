@@ -8,6 +8,7 @@ export type ImageNodeData = {
 export type MyNode = Node<ImageNodeData>;
 
 export type DataContextType = {
+  baseURL: string;
   nodes: MyNode[];
   setNodes: React.Dispatch<React.SetStateAction<MyNode[]>>;
   edges: Edge[];
@@ -23,3 +24,12 @@ export const useDataContext = (): DataContextType => {
   if (!ctx) throw new Error("DataContext not found");
   return ctx;
 };
+
+export function isURL(str: string): boolean {
+  try {
+    const url = new URL(str);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (_) {
+    return false;
+  }
+}

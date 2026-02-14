@@ -6,8 +6,12 @@ export function GetConstants():Promise<main.AppConstants>;
 
 export function Greet(arg1:string):Promise<string>;
 
+export function OpenFileDialog():Promise<string>;
+
 export function OpenWorkspace(arg1:string):Promise<void>;
 
 export function SaveEdges(arg1:string):Promise<void>;
 
 export function SaveNodes(arg1:string):Promise<void>;
+
+export function SaveToAssets(arg1:string):Promise<string>;

@@ -65,3 +65,18 @@ func getJsonFileContent(filePath string) string {
 	fmt.Println("jsonData:", string(jsonData))
 	return string(jsonData)
 }
+
+func (a *App) OpenFileDialog() string {
+	path, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+		Title: "Select an image",
+		Filters: []runtime.FileFilter{
+			{DisplayName: "Images", Pattern: "*.png;*.jpg;*.jpeg"},
+		},
+	})
+	if err != nil {
+		fmt.Println("Error selecting image:", err)
+		return ""
+	}
+	fmt.Println("Selected image path:", path)
+	return path
+}
