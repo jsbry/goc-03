@@ -21,7 +21,15 @@ export default function ImageNode({ data }: { data: ImageNodeData }) {
     <div className="node-image">
       <Handle type="target" position={Position.Top} />
 
-      <img src={src} alt={data.label} style={{ width: "100%" }} />
+      <img
+        src={src}
+        key={src}
+        alt={data.label}
+        style={{ width: "100%" }}
+        onError={(e) => {
+          e.currentTarget.style.display = "none";
+        }}
+      />
 
       <div style={{ marginTop: 8, textAlign: "center" }}>{data.label}</div>
 

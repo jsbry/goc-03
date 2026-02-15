@@ -88,10 +88,18 @@ function EditNode(props: { isViewEditNode: boolean }) {
     <aside
       className={`edit-node-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto ${isViewEditNode ? "" : "d-none"}`}
     >
-      <div className="d-flex align-items-center p-2 mb-2 border-bottom">
+      <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">
           {isEmpty(focusNode) ? "Add Node" : "Edit Node"}
         </span>
+        {!isEmpty(focusNode) && (
+          <button
+            type="button"
+            className="btn-close"
+            aria-label="Close"
+            onClick={() => setFocusNode({} as MyNode)}
+          />
+        )}
       </div>
       {isEmpty(focusNode) ? (
         <div>
@@ -141,6 +149,11 @@ function EditNode(props: { isViewEditNode: boolean }) {
             </label>
             <div className="node-image">
               <img
+                key={
+                  isURL(focusNode.data?.imageUrl || "")
+                    ? focusNode.data?.imageUrl
+                    : baseURL + focusNode.data?.imageUrl
+                }
                 src={
                   isURL(focusNode.data?.imageUrl || "")
                     ? focusNode.data?.imageUrl
@@ -148,6 +161,9 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 }
                 alt={focusNode.data?.label || "Node Image"}
                 style={{ width: "100%" }}
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
               />
             </div>
             <button

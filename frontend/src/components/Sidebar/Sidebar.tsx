@@ -22,9 +22,7 @@ function Sidebar(props: { workspace: string }) {
             <a
               href="#"
               className="nav-link link-dark"
-              onClick={() => {
-                console.log("Clicked node:", node);
-              }}
+              onClick={() => setFocusNode(node)}
             >
               {node.data.label}
             </a>
