@@ -34,8 +34,15 @@ const nodeOrigin: [number, number] = [0.5, 0];
 const AddNodeOnEdgeDrop = () => {
   const reactFlowWrapper = useRef(null);
 
-  const { baseURL, nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
-    useDataContext();
+  const {
+    baseURL,
+    nodes,
+    setNodes,
+    edges,
+    setEdges,
+    focusNode,
+    setEditContent,
+  } = useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);
   const { screenToFlowPosition } = useReactFlow();
@@ -72,14 +79,14 @@ const AddNodeOnEdgeDrop = () => {
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: MyNode) => {
-      setFocusNode(node);
+      setEditContent(node);
     },
-    [setFocusNode],
+    [setEditContent],
   );
 
   const onPaneClick = useCallback(() => {
-    setFocusNode({} as MyNode);
-  }, [setFocusNode]);
+    setEditContent({} as MyNode);
+  }, [setEditContent]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<MyNode>[]) => {

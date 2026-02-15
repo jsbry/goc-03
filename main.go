@@ -40,7 +40,9 @@ func main() {
 		if err != nil {
 			println("Error:", err.Error())
 		} else {
-			app.OpenWorkspace(absPath)
+			if absPath != "" {
+				app.OpenWorkspace(absPath)
+			}
 		}
 	})
 	FileMenu.AddSeparator()

@@ -7,8 +7,15 @@ type ImageNodeData = {
 };
 
 export default function ImageNode({ data }: { data: ImageNodeData }) {
-  const { baseURL, nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
-    useDataContext();
+  const {
+    baseURL,
+    nodes,
+    setNodes,
+    edges,
+    setEdges,
+    focusNode,
+    setEditContent,
+  } = useDataContext();
 
   let src = "";
   if (isURL(data.imageUrl)) {

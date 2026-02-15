@@ -14,7 +14,7 @@ export type DataContextType = {
   edges: Edge[];
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   focusNode: MyNode;
-  setFocusNode: React.Dispatch<React.SetStateAction<MyNode>>;
+  setEditContent: (node: MyNode | ((prev: MyNode) => MyNode)) => void;
 };
 
 export const DataContext = createContext<DataContextType | null>(null);

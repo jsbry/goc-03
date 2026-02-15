@@ -6,8 +6,15 @@ import { MyNode, useDataContext, isURL, getNodeId } from "../../context";
 function EditNode(props: { isViewEditNode: boolean }) {
   const { isViewEditNode } = props;
 
-  const { baseURL, nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
-    useDataContext();
+  const {
+    baseURL,
+    nodes,
+    setNodes,
+    edges,
+    setEdges,
+    focusNode,
+    setEditContent,
+  } = useDataContext();
 
   const [addLabel, setAddLabel] = useState("");
 
@@ -35,7 +42,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
     if (newLabel === "") {
       newLabel = "Node " + focusNode.id;
     }
-    setFocusNode((prev) => ({
+    setEditContent((prev) => ({
       ...prev,
       data: {
         ...prev.data,
@@ -61,7 +68,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
     const path = await OpenFileDialog();
 
     await SaveToAssets(path).then((imageUrl) => {
-      setFocusNode((prev) => ({
+      setEditContent((prev) => ({
         ...prev,
         data: {
           ...prev.data,
@@ -97,12 +104,12 @@ function EditNode(props: { isViewEditNode: boolean }) {
             type="button"
             className="btn-close"
             aria-label="Close"
-            onClick={() => setFocusNode({} as MyNode)}
+            onClick={() => setEditContent({} as MyNode)}
           />
         )}
       </div>
       {isEmpty(focusNode) ? (
-        <div>
+        <>
           <div className="mb-3">
             <label htmlFor="nodeLabelInput" className="form-label">
               Node Label
@@ -126,9 +133,9 @@ function EditNode(props: { isViewEditNode: boolean }) {
               Add Node
             </button>
           </div>
-        </div>
+        </>
       ) : (
-        <div>
+        <>
           <div className="mb-3">
             <label htmlFor="nodeLabelInput" className="form-label">
               Node Label
@@ -173,7 +180,8 @@ function EditNode(props: { isViewEditNode: boolean }) {
               Change Image
             </button>
           </div>
-        </div>
+          <div className="mb-3"></div>
+        </>
       )}
     </aside>
   );

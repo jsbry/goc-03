@@ -3,7 +3,7 @@
     "id": "0",
     "type": "imageNode",
     "data": {
-      "label": "Image Node",
+      "label": "ImageNode",
       "imageUrl": "https://picsum.photos/200/300"
     },
     "position": {

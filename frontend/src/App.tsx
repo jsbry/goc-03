@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { EventsOn, EventsOff } from "../wailsjs/runtime/runtime";
 import { GetConstants } from "../wailsjs/go/main/App";
 import { DataContext, MyNode } from "./context";
@@ -18,6 +18,7 @@ function App() {
   const [nodes, setNodes] = useState<MyNode[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [focusNode, setFocusNode] = useState<MyNode>({} as MyNode);
+  const [nodeName, setNodeName] = useState<string>("");
 
   useEffect(() => {
     async function fetchConstants() {
@@ -70,6 +71,17 @@ function App() {
     };
   });
 
+  const setEditContent = useCallback(
+    (value: MyNode | ((prev: MyNode) => MyNode)) => {
+      setFocusNode((prev) => {
+        const next = typeof value === "function" ? value(prev) : value;
+        setNodeName(next.data?.label || "");
+        return next;
+      });
+    },
+    [],
+  );
+
   const value = useMemo(
     () => ({
       baseURL,
@@ -78,7 +90,7 @@ function App() {
       edges,
       setEdges,
       focusNode,
-      setFocusNode,
+      setEditContent,
     }),
     [baseURL, nodes, edges, focusNode],
   );

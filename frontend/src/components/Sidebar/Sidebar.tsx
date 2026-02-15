@@ -5,8 +5,15 @@ import { useDataContext, MyNode } from "../../context";
 
 function Sidebar(props: { workspace: string }) {
   const { workspace } = props;
-  const { baseURL, nodes, setNodes, edges, setEdges, focusNode, setFocusNode } =
-    useDataContext();
+  const {
+    baseURL,
+    nodes,
+    setNodes,
+    edges,
+    setEdges,
+    focusNode,
+    setEditContent,
+  } = useDataContext();
 
   return (
     <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">
@@ -22,7 +29,7 @@ function Sidebar(props: { workspace: string }) {
             <a
               href="#"
               className="nav-link link-dark"
-              onClick={() => setFocusNode(node)}
+              onClick={() => setEditContent(node)}
             >
               {node.data.label}
             </a>
