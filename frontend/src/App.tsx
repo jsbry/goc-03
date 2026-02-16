@@ -1,6 +1,10 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { EventsOn, EventsOff } from "../wailsjs/runtime/runtime";
-import { GetConstants, OpenMarkdown } from "../wailsjs/go/main/App";
+import {
+  GetConstants,
+  OpenMarkdown,
+  SaveMarkdown,
+} from "../wailsjs/go/main/App";
 import { DataContext, MyNode } from "./context";
 import { Edge } from "@xyflow/react";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -19,16 +23,20 @@ function App() {
   const [edges, setEdges] = useState<Edge[]>([]);
   const [focusNode, setFocusNode] = useState<MyNode>({} as MyNode);
   const [content, setContent] = useState<string>("");
+  const [notes, setNotes] = useState<string[]>([]);
 
   useEffect(() => {
     async function fetchConstants() {
       const constants = await GetConstants();
+      console.log(constants);
+
       setPageName(constants.PageName);
       setIsViewComment(constants.IsViewComment);
       setIsViewEditNode(constants.IsViewEditNode);
       setWorkspace(constants.Workspace);
       setNodes(JSON.parse(constants.Nodes));
       setEdges(JSON.parse(constants.Edges));
+      setNotes(JSON.parse(constants.Notes));
     }
     fetchConstants();
   }, []);
@@ -62,6 +70,10 @@ function App() {
     EventsOn("content", (content: string) => {
       setContent(content);
     });
+    EventsOn("notes", (jsonData: string) => {
+      const notes: string[] = JSON.parse(jsonData);
+      setNotes(notes);
+    });
 
     return () => {
       EventsOff("isViewComment");
@@ -72,8 +84,19 @@ function App() {
       EventsOff("nodes");
       EventsOff("edges");
       EventsOff("content");
+      EventsOff("notes");
     };
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (focusNode.data) {
+        SaveMarkdown(focusNode.data.label, content);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [focusNode, content]);
 
   const setEditContent = useCallback(
     (value: MyNode | ((prev: MyNode) => MyNode)) => {
@@ -99,8 +122,10 @@ function App() {
       setEditContent,
       content,
       setContent,
+      notes,
+      setNotes,
     }),
-    [baseURL, nodes, edges, focusNode, content],
+    [baseURL, nodes, edges, focusNode, content, notes],
   );
 
   return (

@@ -22,6 +22,8 @@ function Markdown() {
     setEditContent,
     content,
     setContent,
+    notes,
+    setNotes,
   } = useDataContext();
 
   return (

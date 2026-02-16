@@ -4,6 +4,8 @@ import {main} from '../models';
 
 export function GetConstants():Promise<main.AppConstants>;
 
+export function GetWalkDir():Promise<string>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function OpenFileDialog():Promise<string>;
@@ -17,6 +19,8 @@ export function RemoveNodeLabel(arg1:string):Promise<void>;
 export function RenameNodeLabel(arg1:string,arg2:string):Promise<void>;
 
 export function SaveEdges(arg1:string):Promise<void>;
+
+export function SaveMarkdown(arg1:string,arg2:string):Promise<void>;
 
 export function SaveNodes(arg1:string):Promise<void>;
 

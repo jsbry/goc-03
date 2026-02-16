@@ -17,6 +17,11 @@ var assets embed.FS
 
 const isDebug = true
 
+const (
+	nodesFile = "nodes.json"
+	edgesFile = "edges.json"
+)
+
 var (
 	pageName          = "flow"
 	isViewComment     = false

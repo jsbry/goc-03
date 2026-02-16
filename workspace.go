@@ -23,11 +23,14 @@ func (a *App) OpenWorkspace(absPath string) {
 		fmt.Println("Error setting up public assets:", err)
 	}
 
-	nodes := getJsonFileContent("nodes.json")
+	nodes := a.getJsonFileContent(nodesFile)
 	runtime.EventsEmit(a.ctx, "nodes", nodes)
 
-	edges := getJsonFileContent("edges.json")
+	edges := a.getJsonFileContent(edgesFile)
 	runtime.EventsEmit(a.ctx, "edges", edges)
+
+	notes, _ := a.GetWalkDir()
+	runtime.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) publicAssets() error {

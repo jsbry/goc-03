@@ -20,6 +20,8 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setEditContent,
     content,
     setContent,
+    notes,
+    setNotes,
   } = useDataContext();
 
   const [addLabel, setAddLabel] = useState("");
@@ -135,9 +137,17 @@ function EditNode(props: { isViewEditNode: boolean }) {
             <button
               className="btn btn-sm btn-primary"
               onClick={addNewNode}
-              disabled={addLabel.trim() === ""}
+              disabled={
+                addLabel.trim() === "" ||
+                nodes.some(
+                  (node: MyNode) => node.data.label === addLabel.trim() + ".md",
+                )
+              }
             >
               Add Node
+              {nodes.some(
+                (node: MyNode) => node.data.label === addLabel.trim() + ".md",
+              ) && <span className="text-danger"> (Node already exists)</span>}
             </button>
           </div>
         </>

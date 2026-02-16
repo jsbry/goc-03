@@ -13,6 +13,7 @@ import (
 type App struct {
 	ctx    context.Context
 	server *http.Server
+	nodes  []Node
 }
 
 type AppConstants struct {
@@ -22,6 +23,7 @@ type AppConstants struct {
 	Workspace      string
 	Nodes          string
 	Edges          string
+	Notes          string
 }
 
 // NewApp creates a new App application struct
@@ -48,6 +50,7 @@ func (a *App) GetConstants() AppConstants {
 
 	workspaceFullPath = absPath
 	workspace = filepath.Base(absPath)
+
 	err = a.publicAssets()
 	if err != nil {
 		fmt.Println("Error setting up public assets:", err)
@@ -56,8 +59,10 @@ func (a *App) GetConstants() AppConstants {
 		runtime.EventsEmit(a.ctx, "workspace", workspace)
 	}
 
-	nodes := getJsonFileContent("nodes.json")
-	edges := getJsonFileContent("edges.json")
+	nodes := a.getJsonFileContent(nodesFile)
+	edges := a.getJsonFileContent(edgesFile)
+
+	notes, _ := a.GetWalkDir()
 
 	return AppConstants{
 		PageName:       pageName,
@@ -66,5 +71,6 @@ func (a *App) GetConstants() AppConstants {
 		Workspace:      workspace,
 		Nodes:          nodes,
 		Edges:          edges,
+		Notes:          notes,
 	}
 }

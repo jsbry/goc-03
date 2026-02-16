@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -79,4 +80,54 @@ func (a *App) RemoveNodeLabel(label string) {
 		return
 	}
 	fmt.Printf("Removed file %s\n", filepath)
+}
+
+func (a *App) SaveMarkdown(nodeName string, content string) {
+	filepath := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", nodeName))
+
+	content = strings.ReplaceAll(content, "\r\n", "\n")
+	content = strings.ReplaceAll(content, "\r", "\n")
+
+	err := os.WriteFile(filepath, []byte(content), 0666)
+	if err != nil {
+		fmt.Printf("Failed to save file %s: %v\n", filepath, err)
+		return
+	}
+	fmt.Printf("Saved file %s\n", filepath)
+}
+
+func (a *App) GetWalkDir() (string, error) {
+	expectedFiles := make(map[string]bool)
+	for _, v := range a.nodes {
+		expectedFiles[v.Data.Label] = true
+	}
+	fmt.Println("Expected files:", expectedFiles)
+
+	var files []string
+	err := filepath.Walk(workspaceFullPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && strings.HasSuffix(info.Name(), ".md") && !expectedFiles[strings.TrimSuffix(info.Name(), ".md")] {
+			files = append(files, info.Name())
+		}
+		return nil
+	})
+	if err != nil {
+		fmt.Printf("Error walking the path %s: %v\n", workspaceFullPath, err)
+		return "[]", err
+	}
+	fmt.Println("GetWalkDir files:", files)
+
+	if len(files) == 0 {
+		return "[]", nil
+	}
+
+	jsonBytes, err := json.Marshal(files)
+	if err != nil {
+		fmt.Printf("Error marshaling files: %v\n", err)
+		return "[]", err
+	}
+	fmt.Printf("GetWalkDir JSON: %s\n", string(jsonBytes))
+	return string(jsonBytes), nil
 }

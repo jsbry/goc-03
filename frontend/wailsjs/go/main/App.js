@@ -6,6 +6,10 @@ export function GetConstants() {
   return window['go']['main']['App']['GetConstants']();
 }
 
+export function GetWalkDir() {
+  return window['go']['main']['App']['GetWalkDir']();
+}
+
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
@@ -32,6 +36,10 @@ export function RenameNodeLabel(arg1, arg2) {
 
 export function SaveEdges(arg1) {
   return window['go']['main']['App']['SaveEdges'](arg1);
+}
+
+export function SaveMarkdown(arg1, arg2) {
+  return window['go']['main']['App']['SaveMarkdown'](arg1, arg2);
 }
 
 export function SaveNodes(arg1) {

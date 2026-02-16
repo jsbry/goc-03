@@ -15,6 +15,8 @@ function Sidebar(props: { workspace: string }) {
     setEditContent,
     content,
     setContent,
+    notes,
+    setNotes,
   } = useDataContext();
 
   return (
@@ -40,11 +42,17 @@ function Sidebar(props: { workspace: string }) {
       </ul>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
-        <li className="nav-item">
-          <a className="nav-link link-dark" href="#">
-            Note
-          </a>
-        </li>
+        {notes.map((note) => (
+          <li key={note} className="nav-item">
+            <a
+              href="#"
+              className="nav-link link-dark"
+              onClick={() => console.log(note)}
+            >
+              {note}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   );

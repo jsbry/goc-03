@@ -48,6 +48,8 @@ const AddNodeOnEdgeDrop = () => {
     setEditContent,
     content,
     setContent,
+    notes,
+    setNotes,
   } = useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);
@@ -146,35 +148,38 @@ const AddNodeOnEdgeDrop = () => {
   );
 
   const onNodesDelete = useCallback(
-    (deleted: MyNode[]) => {
+    async (deleted: MyNode[]) => {
       let remainingNodes = [...nodes];
-      setEdges(
-        deleted.reduce((acc: Edge[], node: MyNode) => {
-          if (node.data) {
-            RemoveNodeLabel(node.data.label);
-          }
 
-          const incomers = getIncomers(node, remainingNodes, acc);
-          const outgoers = getOutgoers(node, remainingNodes, acc);
-          const connectedEdges = getConnectedEdges([node], acc);
+      let nextEdges = edges;
 
-          const remainingEdges = acc.filter(
-            (edge) => !connectedEdges.includes(edge),
-          );
+      for (const node of deleted) {
+        setEditContent({} as MyNode);
+        if (node.data) {
+          await RemoveNodeLabel(node.data.label);
+        }
 
-          const createdEdges = incomers.flatMap(({ id: source }) =>
-            outgoers.map(({ id: target }) => ({
-              id: `${source}->${target}`,
-              source,
-              target,
-            })),
-          );
+        const incomers = getIncomers(node, remainingNodes, nextEdges);
+        const outgoers = getOutgoers(node, remainingNodes, nextEdges);
+        const connectedEdges = getConnectedEdges([node], nextEdges);
 
-          remainingNodes = remainingNodes.filter((rn) => rn.id !== node.id);
+        const remainingEdges = nextEdges.filter(
+          (edge) => !connectedEdges.includes(edge),
+        );
 
-          return [...remainingEdges, ...createdEdges];
-        }, edges),
-      );
+        const createdEdges = incomers.flatMap(({ id: source }) =>
+          outgoers.map(({ id: target }) => ({
+            id: `${source}->${target}`,
+            source,
+            target,
+          })),
+        );
+
+        remainingNodes = remainingNodes.filter((rn) => rn.id !== node.id);
+        nextEdges = [...remainingEdges, ...createdEdges];
+      }
+
+      setEdges(nextEdges);
     },
     [nodes, edges],
   );

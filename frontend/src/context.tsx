@@ -17,6 +17,8 @@ export type DataContextType = {
   setEditContent: (node: MyNode | ((prev: MyNode) => MyNode)) => void;
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  notes: string[];
+  setNotes: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const DataContext = createContext<DataContextType | null>(null);
