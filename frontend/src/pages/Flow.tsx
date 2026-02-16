@@ -1,5 +1,9 @@
 import { useEffect, useCallback, useRef } from "react";
-import { SaveNodes, SaveEdges } from "../../wailsjs/go/main/App";
+import {
+  SaveNodes,
+  SaveEdges,
+  RemoveNodeLabel,
+} from "../../wailsjs/go/main/App";
 import { MyNode, useDataContext, setNodeId, getNodeId } from "../context";
 import isEqual from "lodash/isEqual";
 
@@ -42,6 +46,8 @@ const AddNodeOnEdgeDrop = () => {
     setEdges,
     focusNode,
     setEditContent,
+    content,
+    setContent,
   } = useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);
@@ -140,10 +146,14 @@ const AddNodeOnEdgeDrop = () => {
   );
 
   const onNodesDelete = useCallback(
-    (deleted: Node[]) => {
+    (deleted: MyNode[]) => {
       let remainingNodes = [...nodes];
       setEdges(
-        deleted.reduce((acc, node) => {
+        deleted.reduce((acc: Edge[], node: MyNode) => {
+          if (node.data) {
+            RemoveNodeLabel(node.data.label);
+          }
+
           const incomers = getIncomers(node, remainingNodes, acc);
           const outgoers = getOutgoers(node, remainingNodes, acc);
           const connectedEdges = getConnectedEdges([node], acc);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
@@ -9,8 +9,20 @@ import "highlight.js/styles/github-dark.min.css";
 import Editor from "@monaco-editor/react";
 // import "monaco-editor/esm/vs/basic-languages/markdown/markdown";
 
+import { useDataContext } from "../context";
+
 function Markdown() {
-  const [content, setContent] = useState<string>("");
+  const {
+    baseURL,
+    nodes,
+    setNodes,
+    edges,
+    setEdges,
+    focusNode,
+    setEditContent,
+    content,
+    setContent,
+  } = useDataContext();
 
   return (
     <div className="h-100">
@@ -27,7 +39,7 @@ function Markdown() {
           width="100%"
           height="100%"
           language="markdown"
-          defaultValue={content}
+          value={content}
           theme="vs-dark"
           onChange={(value) => setContent(value || "")}
           className="flex-fill"

@@ -13,6 +13,8 @@ function Sidebar(props: { workspace: string }) {
     setEdges,
     focusNode,
     setEditContent,
+    content,
+    setContent,
   } = useDataContext();
 
   return (
@@ -35,6 +37,14 @@ function Sidebar(props: { workspace: string }) {
             </a>
           </li>
         ))}
+      </ul>
+      <hr />
+      <ul className="nav nav-pills flex-column mb-auto">
+        <li className="nav-item">
+          <a className="nav-link link-dark" href="#">
+            Note
+          </a>
+        </li>
       </ul>
     </nav>
   );

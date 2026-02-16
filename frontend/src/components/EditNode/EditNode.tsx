@@ -1,6 +1,10 @@
 import { useState, useCallback } from "react";
 import isEmpty from "lodash/isEmpty";
-import { OpenFileDialog, SaveToAssets } from "../../../wailsjs/go/main/App";
+import {
+  OpenFileDialog,
+  SaveToAssets,
+  RenameNodeLabel,
+} from "../../../wailsjs/go/main/App";
 import { MyNode, useDataContext, isURL, getNodeId } from "../../context";
 
 function EditNode(props: { isViewEditNode: boolean }) {
@@ -14,6 +18,8 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setEdges,
     focusNode,
     setEditContent,
+    content,
+    setContent,
   } = useDataContext();
 
   const [addLabel, setAddLabel] = useState("");
@@ -37,11 +43,12 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setAddLabel("");
   }, [addLabel, setAddLabel, setNodes]);
 
-  const onNodeLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNodeLabelChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let newLabel = e.target.value;
     if (newLabel === "") {
       newLabel = "Node " + focusNode.id;
     }
+    await RenameNodeLabel(focusNode.data.label, newLabel);
     setEditContent((prev) => ({
       ...prev,
       data: {

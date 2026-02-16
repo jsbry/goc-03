@@ -14,8 +14,20 @@ export function OpenFileDialog() {
   return window['go']['main']['App']['OpenFileDialog']();
 }
 
+export function OpenMarkdown(arg1) {
+  return window['go']['main']['App']['OpenMarkdown'](arg1);
+}
+
 export function OpenWorkspace(arg1) {
   return window['go']['main']['App']['OpenWorkspace'](arg1);
+}
+
+export function RemoveNodeLabel(arg1) {
+  return window['go']['main']['App']['RemoveNodeLabel'](arg1);
+}
+
+export function RenameNodeLabel(arg1, arg2) {
+  return window['go']['main']['App']['RenameNodeLabel'](arg1, arg2);
 }
 
 export function SaveEdges(arg1) {

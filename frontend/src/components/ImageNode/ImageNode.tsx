@@ -15,6 +15,8 @@ export default function ImageNode({ data }: { data: ImageNodeData }) {
     setEdges,
     focusNode,
     setEditContent,
+    content,
+    setContent,
   } = useDataContext();
 
   let src = "";

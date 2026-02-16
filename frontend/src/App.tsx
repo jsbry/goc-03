@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { EventsOn, EventsOff } from "../wailsjs/runtime/runtime";
-import { GetConstants } from "../wailsjs/go/main/App";
+import { GetConstants, OpenMarkdown } from "../wailsjs/go/main/App";
 import { DataContext, MyNode } from "./context";
 import { Edge } from "@xyflow/react";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -18,7 +18,7 @@ function App() {
   const [nodes, setNodes] = useState<MyNode[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [focusNode, setFocusNode] = useState<MyNode>({} as MyNode);
-  const [nodeName, setNodeName] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
   useEffect(() => {
     async function fetchConstants() {
@@ -59,6 +59,9 @@ function App() {
       const parsedEdges: Edge[] = JSON.parse(jsonData);
       setEdges(parsedEdges);
     });
+    EventsOn("content", (content: string) => {
+      setContent(content);
+    });
 
     return () => {
       EventsOff("isViewComment");
@@ -68,6 +71,7 @@ function App() {
       EventsOff("baseURL");
       EventsOff("nodes");
       EventsOff("edges");
+      EventsOff("content");
     };
   });
 
@@ -75,7 +79,9 @@ function App() {
     (value: MyNode | ((prev: MyNode) => MyNode)) => {
       setFocusNode((prev) => {
         const next = typeof value === "function" ? value(prev) : value;
-        setNodeName(next.data?.label || "");
+        if (next.data) {
+          OpenMarkdown(next.data.label);
+        }
         return next;
       });
     },
@@ -91,8 +97,10 @@ function App() {
       setEdges,
       focusNode,
       setEditContent,
+      content,
+      setContent,
     }),
-    [baseURL, nodes, edges, focusNode],
+    [baseURL, nodes, edges, focusNode, content],
   );
 
   return (

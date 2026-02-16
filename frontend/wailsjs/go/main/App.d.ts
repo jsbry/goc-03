@@ -8,7 +8,13 @@ export function Greet(arg1:string):Promise<string>;
 
 export function OpenFileDialog():Promise<string>;
 
+export function OpenMarkdown(arg1:string):Promise<void>;
+
 export function OpenWorkspace(arg1:string):Promise<void>;
+
+export function RemoveNodeLabel(arg1:string):Promise<void>;
+
+export function RenameNodeLabel(arg1:string,arg2:string):Promise<void>;
 
 export function SaveEdges(arg1:string):Promise<void>;
 
