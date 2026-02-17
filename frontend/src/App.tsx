@@ -23,7 +23,9 @@ function App() {
   const [edges, setEdges] = useState<Edge[]>([]);
   const [focusNode, setFocusNode] = useState<MyNode>({} as MyNode);
   const [content, setContent] = useState<string>("");
+  const [focusContent, setFocusContent] = useState<string>("");
   const [notes, setNotes] = useState<string[]>([]);
+  const [focusNote, setFocusNote] = useState<string>("");
 
   useEffect(() => {
     async function fetchConstants() {
@@ -90,20 +92,41 @@ function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (focusNode.data) {
-        SaveMarkdown(focusNode.data.label, content);
+      if (focusContent !== "") {
+        SaveMarkdown(focusContent, content);
       }
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [focusNode, content]);
+  }, [focusContent, content]);
 
-  const setEditContent = useCallback(
+  const editFocusNode = useCallback(
     (value: MyNode | ((prev: MyNode) => MyNode)) => {
       setFocusNode((prev) => {
         const next = typeof value === "function" ? value(prev) : value;
         if (next.data) {
           OpenMarkdown(next.data.label);
+          setFocusContent(next.data.label);
+        } else {
+          setContent("");
+          setFocusContent("");
+        }
+        return next;
+      });
+    },
+    [],
+  );
+
+  const editFocusNote = useCallback(
+    (value: string | ((prev: string) => string)) => {
+      setFocusNote((prev) => {
+        const next = typeof value === "function" ? value(prev) : value;
+        if (next !== "") {
+          OpenMarkdown(next);
+          setFocusContent(next);
+        } else {
+          setContent("");
+          setFocusContent("");
         }
         return next;
       });
@@ -119,13 +142,17 @@ function App() {
       edges,
       setEdges,
       focusNode,
-      setEditContent,
+      editFocusNode,
       content,
       setContent,
+      focusContent,
+      setFocusContent,
       notes,
       setNotes,
+      focusNote,
+      editFocusNote,
     }),
-    [baseURL, nodes, edges, focusNode, content, notes],
+    [baseURL, nodes, edges, focusNode, content, focusContent, notes, focusNote],
   );
 
   return (

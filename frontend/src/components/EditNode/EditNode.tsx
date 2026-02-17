@@ -1,9 +1,9 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import isEmpty from "lodash/isEmpty";
 import {
   OpenFileDialog,
   SaveToAssets,
-  RenameNodeLabel,
+  RenameMarkdown,
 } from "../../../wailsjs/go/main/App";
 import { MyNode, useDataContext, isURL, getNodeId } from "../../context";
 
@@ -17,11 +17,15 @@ function EditNode(props: { isViewEditNode: boolean }) {
     edges,
     setEdges,
     focusNode,
-    setEditContent,
+    editFocusNode,
     content,
     setContent,
+    focusContent,
+    setFocusContent,
     notes,
     setNotes,
+    focusNote,
+    editFocusNote,
   } = useDataContext();
 
   const [addLabel, setAddLabel] = useState("");
@@ -45,13 +49,17 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setAddLabel("");
   }, [addLabel, setAddLabel, setNodes]);
 
+  useEffect(() => {
+    setAddLabel("");
+  }, [focusNode]);
+
   const onNodeLabelChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let newLabel = e.target.value;
     if (newLabel === "") {
       newLabel = "Node " + focusNode.id;
     }
-    await RenameNodeLabel(focusNode.data.label, newLabel);
-    setEditContent((prev) => ({
+    await RenameMarkdown(focusNode.data.label, newLabel);
+    editFocusNode((prev) => ({
       ...prev,
       data: {
         ...prev.data,
@@ -77,7 +85,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
     const path = await OpenFileDialog();
 
     await SaveToAssets(path).then((imageUrl) => {
-      setEditContent((prev) => ({
+      editFocusNode((prev) => ({
         ...prev,
         data: {
           ...prev.data,
@@ -112,8 +120,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
           <button
             type="button"
             className="btn-close"
-            aria-label="Close"
-            onClick={() => setEditContent({} as MyNode)}
+            onClick={() => editFocusNode({} as MyNode)}
           />
         )}
       </div>
@@ -140,14 +147,14 @@ function EditNode(props: { isViewEditNode: boolean }) {
               disabled={
                 addLabel.trim() === "" ||
                 nodes.some(
-                  (node: MyNode) => node.data.label === addLabel.trim() + ".md",
+                  (node: MyNode) => node.data.label === addLabel.trim(),
                 )
               }
             >
               Add Node
               {nodes.some(
-                (node: MyNode) => node.data.label === addLabel.trim() + ".md",
-              ) && <span className="text-danger"> (Node already exists)</span>}
+                (node: MyNode) => node.data.label === addLabel.trim(),
+              ) && <>(duplicate!)</>}
             </button>
           </div>
         </>

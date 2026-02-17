@@ -59,7 +59,7 @@ func (a *App) OpenMarkdown(nodeName string) {
 	runtime.EventsEmit(a.ctx, "content", content)
 }
 
-func (a *App) RenameNodeLabel(oldLabel string, newLabel string) {
+func (a *App) RenameMarkdown(oldLabel string, newLabel string) {
 	old := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", oldLabel))
 	new := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", newLabel))
 
@@ -71,7 +71,7 @@ func (a *App) RenameNodeLabel(oldLabel string, newLabel string) {
 	fmt.Printf("Renamed file from %s to %s\n", old, new)
 }
 
-func (a *App) RemoveNodeLabel(label string) {
+func (a *App) RemoveMarkdown(label string) {
 	filepath := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", label))
 
 	err := os.Remove(filepath)
@@ -109,7 +109,8 @@ func (a *App) GetWalkDir() (string, error) {
 			return err
 		}
 		if !info.IsDir() && strings.HasSuffix(info.Name(), ".md") && !expectedFiles[strings.TrimSuffix(info.Name(), ".md")] {
-			files = append(files, info.Name())
+			files = append(files, withoutExt(info.Name()))
+
 		}
 		return nil
 	})
@@ -130,4 +131,8 @@ func (a *App) GetWalkDir() (string, error) {
 	}
 	fmt.Printf("GetWalkDir JSON: %s\n", string(jsonBytes))
 	return string(jsonBytes), nil
+}
+
+func withoutExt(filename string) string {
+	return filepath.Base(filename[:len(filename)-len(filepath.Ext(filename))])
 }

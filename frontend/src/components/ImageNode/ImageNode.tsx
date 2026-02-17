@@ -14,11 +14,15 @@ export default function ImageNode({ data }: { data: ImageNodeData }) {
     edges,
     setEdges,
     focusNode,
-    setEditContent,
+    editFocusNode,
     content,
     setContent,
+    focusContent,
+    setFocusContent,
     notes,
     setNotes,
+    focusNote,
+    editFocusNote,
   } = useDataContext();
 
   let src = "";

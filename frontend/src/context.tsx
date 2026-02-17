@@ -14,11 +14,15 @@ export type DataContextType = {
   edges: Edge[];
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   focusNode: MyNode;
-  setEditContent: (node: MyNode | ((prev: MyNode) => MyNode)) => void;
+  editFocusNode: (node: MyNode | ((prev: MyNode) => MyNode)) => void;
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  focusContent: string;
+  setFocusContent: React.Dispatch<React.SetStateAction<string>>;
   notes: string[];
   setNotes: React.Dispatch<React.SetStateAction<string[]>>;
+  focusNote: string;
+  editFocusNote: (note: string | ((prev: string) => string)) => void;
 };
 
 export const DataContext = createContext<DataContextType | null>(null);

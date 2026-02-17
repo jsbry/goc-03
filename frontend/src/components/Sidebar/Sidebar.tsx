@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { FaFolderOpen, FaPlus, FaTrashCan } from "react-icons/fa6";
+import { PiFlowArrow, PiBookOpenText } from "react-icons/pi";
 import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
-import { FaFolderOpen } from "react-icons/fa6";
 import { useDataContext, MyNode } from "../../context";
+import { RemoveMarkdown, RenameMarkdown } from "../../../wailsjs/go/main/App";
 
 function Sidebar(props: { workspace: string }) {
   const { workspace } = props;
@@ -12,12 +14,42 @@ function Sidebar(props: { workspace: string }) {
     edges,
     setEdges,
     focusNode,
-    setEditContent,
+    editFocusNode,
     content,
     setContent,
+    focusContent,
+    setFocusContent,
     notes,
     setNotes,
+    focusNote,
+    editFocusNote,
   } = useDataContext();
+
+  const [addNote, setAddNote] = useState("");
+
+  const onNoteChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newNote = e.target.value;
+    if (newNote === "") {
+      return;
+    }
+    await RenameMarkdown(focusNote, newNote);
+
+    editFocusNote(newNote);
+    setNotes((nts) => nts.map((n) => (n === focusNote ? newNote : n)));
+  };
+
+  const removeNote = useCallback(async () => {
+    editFocusNote("");
+    await RemoveMarkdown(focusNote);
+    setNotes((nts) => nts.filter((note) => note !== focusNote));
+  }, [notes, focusNote]);
+
+  const addNewNote = useCallback(() => {
+    const newNote: string = addNote;
+
+    setNotes((nts) => [...nts, newNote]);
+    setAddNote("");
+  }, [addNote, setAddNote, setNotes]);
 
   return (
     <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">
@@ -32,9 +64,10 @@ function Sidebar(props: { workspace: string }) {
           <li key={node.id} className="nav-item">
             <a
               href="#"
-              className="nav-link link-dark"
-              onClick={() => setEditContent(node)}
+              className={`nav-link ${focusContent === node.data.label ? "active" : "link-dark"}`}
+              onClick={() => editFocusNode(node)}
             >
+              <PiFlowArrow className="me-2" />
               {node.data.label}
             </a>
           </li>
@@ -46,14 +79,54 @@ function Sidebar(props: { workspace: string }) {
           <li key={note} className="nav-item">
             <a
               href="#"
-              className="nav-link link-dark"
-              onClick={() => console.log(note)}
+              className={`nav-link ${focusContent === note ? "active" : "link-dark"}`}
+              onClick={() => editFocusNote(note)}
             >
+              <PiBookOpenText className="me-2" />
               {note}
             </a>
           </li>
         ))}
       </ul>
+      <div className="d-flex justify-content-between align-items-center p-2 mb-2 input-group">
+        {focusNote === "" ? (
+          <>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter note"
+              value={addNote}
+              onChange={(e) => setAddNote(e.target.value)}
+              autoComplete="off"
+            />
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={addNewNote}
+            >
+              <FaPlus />
+            </button>
+          </>
+        ) : (
+          <>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter note"
+              value={focusNote}
+              onChange={onNoteChange}
+              autoComplete="off"
+            />
+            <button
+              className="btn btn-danger"
+              type="button"
+              onClick={removeNote}
+            >
+              <FaTrashCan />
+            </button>
+          </>
+        )}
+      </div>
     </nav>
   );
 }

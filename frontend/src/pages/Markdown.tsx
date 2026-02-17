@@ -19,11 +19,15 @@ function Markdown() {
     edges,
     setEdges,
     focusNode,
-    setEditContent,
+    editFocusNode,
     content,
     setContent,
+    focusContent,
+    setFocusContent,
     notes,
     setNotes,
+    focusNote,
+    editFocusNote,
   } = useDataContext();
 
   return (

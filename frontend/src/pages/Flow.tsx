@@ -2,7 +2,7 @@ import { useEffect, useCallback, useRef } from "react";
 import {
   SaveNodes,
   SaveEdges,
-  RemoveNodeLabel,
+  RemoveMarkdown,
 } from "../../wailsjs/go/main/App";
 import { MyNode, useDataContext, setNodeId, getNodeId } from "../context";
 import isEqual from "lodash/isEqual";
@@ -45,11 +45,15 @@ const AddNodeOnEdgeDrop = () => {
     edges,
     setEdges,
     focusNode,
-    setEditContent,
+    editFocusNode,
     content,
     setContent,
+    focusContent,
+    setFocusContent,
     notes,
     setNotes,
+    focusNote,
+    editFocusNote,
   } = useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);
@@ -87,14 +91,14 @@ const AddNodeOnEdgeDrop = () => {
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: MyNode) => {
-      setEditContent(node);
+      editFocusNode(node);
     },
-    [setEditContent],
+    [editFocusNode],
   );
 
   const onPaneClick = useCallback(() => {
-    setEditContent({} as MyNode);
-  }, [setEditContent]);
+    editFocusNode({} as MyNode);
+  }, [editFocusNode]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<MyNode>[]) => {
@@ -154,9 +158,9 @@ const AddNodeOnEdgeDrop = () => {
       let nextEdges = edges;
 
       for (const node of deleted) {
-        setEditContent({} as MyNode);
+        editFocusNode({} as MyNode);
         if (node.data) {
-          await RemoveNodeLabel(node.data.label);
+          await RemoveMarkdown(node.data.label);
         }
 
         const incomers = getIncomers(node, remainingNodes, nextEdges);
