@@ -34,7 +34,10 @@ export default function ImageNode({ data }: { data: ImageNodeData }) {
 
   return (
     <div className="node-image">
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={Position.Top} id="tt" />
+      <Handle type="target" position={Position.Left} id="tl" />
+      <Handle type="target" position={Position.Right} id="tr" />
+      <Handle type="target" position={Position.Bottom} id="tb" />
 
       <img
         src={src}
@@ -48,7 +51,10 @@ export default function ImageNode({ data }: { data: ImageNodeData }) {
 
       <div style={{ marginTop: 8, textAlign: "center" }}>{data.label}</div>
 
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Bottom} id="sb" />
+      <Handle type="source" position={Position.Right} id="sr" />
+      <Handle type="source" position={Position.Top} id="st" />
+      <Handle type="source" position={Position.Left} id="sl" />
     </div>
   );
 }
