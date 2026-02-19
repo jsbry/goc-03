@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"path/filepath"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -43,15 +42,7 @@ func (a *App) Greet(name string) string {
 }
 
 func (a *App) GetConstants() AppConstants {
-	absPath, err := filepath.Abs(workspace)
-	if err != nil {
-		absPath = ""
-	}
-
-	workspaceFullPath = absPath
-	workspace = filepath.Base(absPath)
-
-	err = a.publicAssets()
+	err := a.publicAssets()
 	if err != nil {
 		fmt.Println("Error setting up public assets:", err)
 		workspace = ""

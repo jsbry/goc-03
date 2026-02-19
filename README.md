@@ -12,11 +12,14 @@
 
 - `frontend> npm install react-bootstrap bootstrap`
 - `frontend> npm install react-markdown`
+- `frontend> npm install github-markdown-css`
 - `frontend> npm install react-icons`
 - `frontend> npm install @monaco-editor/react`
 - `frontend> npm install rehype-highlight`
 - `frontend> npm install remark-gfm`
 - `frontend> npm install remark-breaks`
+- `frontend> npm install wcwidth`
+- `frontend> npm install @types/wcwidth`
 - `frontend> npm install @xyflow/react`
 - `frontend> npm install lodash`
 - `frontend> npm install @types/lodash`

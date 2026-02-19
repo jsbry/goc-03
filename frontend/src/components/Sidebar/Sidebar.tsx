@@ -39,6 +39,9 @@ function Sidebar(props: { workspace: string }) {
   };
 
   const removeNote = useCallback(async () => {
+    if (!confirm('Delete "' + focusNote + '.md"?')) {
+      return;
+    }
     editFocusNote("");
     await RemoveMarkdown(focusNote);
     setNotes((nts) => nts.filter((note) => note !== focusNote));
@@ -75,8 +78,8 @@ function Sidebar(props: { workspace: string }) {
       </ul>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
-        {notes.map((note) => (
-          <li key={note} className="nav-item">
+        {notes.map((note, i) => (
+          <li key={i} className="nav-item">
             <a
               href="#"
               className={`nav-link ${focusContent === note ? "active" : "link-dark"}`}

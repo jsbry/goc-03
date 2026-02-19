@@ -53,6 +53,10 @@ func (a *App) SaveEdges(jsonData string) {
 }
 
 func saveJsonFileContent(filename string, jsonData string) error {
+	if workspaceFullPath == "" {
+		return nil
+	}
+
 	path := filepath.Join(workspaceFullPath, filename)
 	jsonByte := []byte(jsonData)
 	if isDebug {
@@ -75,6 +79,10 @@ func saveJsonFileContent(filename string, jsonData string) error {
 }
 
 func (a *App) getJsonFileContent(filePath string) string {
+	if workspaceFullPath == "" {
+		return "[]"
+	}
+
 	path := filepath.Join(workspaceFullPath, filePath)
 	jsonFile, err := os.Open(path)
 	if err != nil {
@@ -88,7 +96,7 @@ func (a *App) getJsonFileContent(filePath string) string {
 		fmt.Println("Error reading JSON file:", err)
 		return "[]"
 	}
-	fmt.Println("jsonData:", string(jsonData))
+	// fmt.Println("jsonData:", string(jsonData))
 
 	switch filePath {
 	case nodesFile:

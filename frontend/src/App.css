@@ -23,8 +23,10 @@
 }
 
 .content-markdown {
+    font-size: 11px;
     max-height: 50vh;
     min-height: 50vh;
+    padding-top: .5rem;
     padding-right: calc(var(--bs-gutter-x) * .5);
     padding-left: calc(var(--bs-gutter-x) * .5);
 }

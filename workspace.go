@@ -37,6 +37,9 @@ func (a *App) publicAssets() error {
 	if a.server != nil {
 		a.server.Shutdown(context.Background())
 	}
+	if workspaceFullPath == "" {
+		return nil
+	}
 
 	info, err := os.Stat(workspaceFullPath)
 	if err != nil {

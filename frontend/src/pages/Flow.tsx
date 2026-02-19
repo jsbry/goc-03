@@ -214,11 +214,11 @@ const AddNodeOnEdgeDrop = () => {
 
 function Flow() {
   return (
-    <div className="h-100">
+    <>
       <ReactFlowProvider>
         <AddNodeOnEdgeDrop />
       </ReactFlowProvider>
-    </div>
+    </>
   );
 }
 

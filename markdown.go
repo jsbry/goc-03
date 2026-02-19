@@ -15,6 +15,10 @@ import (
 const template = "# %s\n"
 
 func (a *App) OpenMarkdown(nodeName string) {
+	if workspaceFullPath == "" {
+		return
+	}
+
 	filepath := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", nodeName))
 
 	isNewFile := true
@@ -60,6 +64,10 @@ func (a *App) OpenMarkdown(nodeName string) {
 }
 
 func (a *App) RenameMarkdown(oldLabel string, newLabel string) {
+	if workspaceFullPath == "" {
+		return
+	}
+
 	old := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", oldLabel))
 	new := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", newLabel))
 
@@ -72,6 +80,10 @@ func (a *App) RenameMarkdown(oldLabel string, newLabel string) {
 }
 
 func (a *App) RemoveMarkdown(label string) {
+	if workspaceFullPath == "" {
+		return
+	}
+
 	filepath := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", label))
 
 	err := os.Remove(filepath)
@@ -83,6 +95,10 @@ func (a *App) RemoveMarkdown(label string) {
 }
 
 func (a *App) SaveMarkdown(nodeName string, content string) {
+	if workspaceFullPath == "" {
+		return
+	}
+
 	filepath := filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", nodeName))
 
 	content = strings.ReplaceAll(content, "\r\n", "\n")
@@ -97,6 +113,10 @@ func (a *App) SaveMarkdown(nodeName string, content string) {
 }
 
 func (a *App) GetWalkDir() (string, error) {
+	if workspaceFullPath == "" {
+		return "[]", nil
+	}
+
 	expectedFiles := make(map[string]bool)
 	for _, v := range a.nodes {
 		expectedFiles[v.Data.Label] = true

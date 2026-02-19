@@ -11,8 +11,10 @@
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "@types/lodash": "^4.17.23",
+    "@types/wcwidth": "^1.0.2",
     "@xyflow/react": "^12.10.0",
     "bootstrap": "^5.3.8",
+    "github-markdown-css": "^5.9.0",
     "lodash": "^4.17.23",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.10",
@@ -21,7 +23,8 @@
     "react-markdown": "^10.1.0",
     "rehype-highlight": "^7.0.2",
     "remark-breaks": "^4.0.0",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "wcwidth": "^1.0.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.13",
