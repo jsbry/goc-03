@@ -8,6 +8,7 @@ export namespace main {
 	    Nodes: string;
 	    Edges: string;
 	    Notes: string;
+	    Comments: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new AppConstants(source);
@@ -22,6 +23,7 @@ export namespace main {
 	        this.Nodes = source["Nodes"];
 	        this.Edges = source["Edges"];
 	        this.Notes = source["Notes"];
+	        this.Comments = source["Comments"];
 	    }
 	}
 

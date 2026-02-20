@@ -46,6 +46,10 @@ export default function MarkdownEditor() {
     setNotes,
     focusNote,
     editFocusNote,
+    comments,
+    setComments,
+    focusComment,
+    setFocusComment,
   } = useDataContext();
 
   const options = {

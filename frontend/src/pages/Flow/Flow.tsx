@@ -3,8 +3,8 @@ import {
   SaveNodes,
   SaveEdges,
   RemoveMarkdown,
-} from "../../wailsjs/go/main/App";
-import { MyNode, useDataContext, setNodeId, getNodeId } from "../context";
+} from "../../../wailsjs/go/main/App";
+import { MyNode, useDataContext, setNodeId, getNodeId } from "../../context";
 import isEqual from "lodash/isEqual";
 
 import {
@@ -26,7 +26,7 @@ import {
   EdgeChange,
   applyEdgeChanges,
 } from "@xyflow/react";
-import ImageNode from "../components/ImageNode/ImageNode";
+import ImageNode from "../../components/ImageNode/ImageNode";
 import "@xyflow/react/dist/style.css";
 
 const nodeTypes = {
@@ -54,6 +54,10 @@ const AddNodeOnEdgeDrop = () => {
     setNotes,
     focusNote,
     editFocusNote,
+    comments,
+    setComments,
+    focusComment,
+    setFocusComment,
   } = useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);

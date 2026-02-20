@@ -7,6 +7,14 @@ export type ImageNodeData = {
 };
 export type MyNode = Node<ImageNodeData>;
 
+export type CommentData = {
+  filename: string;
+  start: number;
+  end: number;
+  selectedText: string;
+  content: string;
+};
+
 export type DataContextType = {
   baseURL: string;
   nodes: MyNode[];
@@ -23,6 +31,10 @@ export type DataContextType = {
   setNotes: React.Dispatch<React.SetStateAction<string[]>>;
   focusNote: string;
   editFocusNote: (note: string | ((prev: string) => string)) => void;
+  comments: CommentData[];
+  setComments: React.Dispatch<React.SetStateAction<CommentData[]>>;
+  focusComment: CommentData;
+  setFocusComment: React.Dispatch<React.SetStateAction<CommentData>>;
 };
 
 export const DataContext = createContext<DataContextType | null>(null);

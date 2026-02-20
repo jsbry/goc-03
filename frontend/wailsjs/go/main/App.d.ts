@@ -18,6 +18,8 @@ export function RemoveMarkdown(arg1:string):Promise<void>;
 
 export function RenameMarkdown(arg1:string,arg2:string):Promise<void>;
 
+export function SaveComments(arg1:string):Promise<void>;
+
 export function SaveEdges(arg1:string):Promise<void>;
 
 export function SaveMarkdown(arg1:string,arg2:string):Promise<void>;

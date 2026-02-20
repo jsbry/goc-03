@@ -26,6 +26,10 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setNotes,
     focusNote,
     editFocusNote,
+    comments,
+    setComments,
+    focusComment,
+    setFocusComment,
   } = useDataContext();
 
   const [addLabel, setAddLabel] = useState("");

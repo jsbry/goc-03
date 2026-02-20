@@ -34,6 +34,10 @@ export function RenameMarkdown(arg1, arg2) {
   return window['go']['main']['App']['RenameMarkdown'](arg1, arg2);
 }
 
+export function SaveComments(arg1) {
+  return window['go']['main']['App']['SaveComments'](arg1);
+}
+
 export function SaveEdges(arg1) {
   return window['go']['main']['App']['SaveEdges'](arg1);
 }

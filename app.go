@@ -23,6 +23,7 @@ type AppConstants struct {
 	Nodes          string
 	Edges          string
 	Notes          string
+	Comments       string
 }
 
 // NewApp creates a new App application struct
@@ -52,6 +53,7 @@ func (a *App) GetConstants() AppConstants {
 
 	nodes := a.getJsonFileContent(nodesFile)
 	edges := a.getJsonFileContent(edgesFile)
+	comments := a.getJsonFileContent(commentsFile)
 
 	notes, _ := a.GetWalkDir()
 
@@ -63,5 +65,6 @@ func (a *App) GetConstants() AppConstants {
 		Nodes:          nodes,
 		Edges:          edges,
 		Notes:          notes,
+		Comments:       comments,
 	}
 }

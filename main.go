@@ -19,8 +19,9 @@ var assets embed.FS
 const isDebug = true
 
 const (
-	nodesFile = "nodes.json"
-	edgesFile = "edges.json"
+	nodesFile    = "nodes.json"
+	edgesFile    = "edges.json"
+	commentsFile = "comments.json"
 )
 
 var (
@@ -74,11 +75,11 @@ func main() {
 		runtime.EventsEmit(app.ctx, "pageName", "markdown")
 	})
 	ViewMenu.AddSeparator()
-	ViewMenu.AddCheckbox("Comment", isViewComment, nil, func(_ *menu.CallbackData) {
+	ViewMenu.AddCheckbox("Comment", isViewComment, keys.CmdOrCtrl("w"), func(_ *menu.CallbackData) {
 		isViewComment = !isViewComment
 		runtime.EventsEmit(app.ctx, "isViewComment", isViewComment)
 	})
-	ViewMenu.AddCheckbox("Edit Node", isViewEditNode, nil, func(_ *menu.CallbackData) {
+	ViewMenu.AddCheckbox("Edit Node", isViewEditNode, keys.CmdOrCtrl("e"), func(_ *menu.CallbackData) {
 		isViewEditNode = !isViewEditNode
 		runtime.EventsEmit(app.ctx, "isViewEditNode", isViewEditNode)
 	})

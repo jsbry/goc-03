@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import Modal from "react-bootstrap/Modal";
-import Markdown from "../../pages/Markdown";
-import Flow from "../../pages/Flow";
+import Markdown from "../../pages/Markdown/Markdown";
+import Flow from "../../pages/Flow/Flow";
 
 function Content(props: {
   pageName: string;

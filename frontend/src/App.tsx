@@ -5,8 +5,9 @@ import {
   OpenMarkdown,
   SaveMarkdown,
 } from "../wailsjs/go/main/App";
-import { DataContext, MyNode } from "./context";
+import { DataContext, MyNode, CommentData } from "./context";
 import { Edge } from "@xyflow/react";
+import isEmpty from "lodash/isEmpty";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Content from "./components/Content/Content";
 import CommentList from "./components/CommentList/CommentList";
@@ -26,6 +27,10 @@ function App() {
   const [focusContent, setFocusContent] = useState<string>("");
   const [notes, setNotes] = useState<string[]>([]);
   const [focusNote, setFocusNote] = useState<string>("");
+  const [comments, setComments] = useState<CommentData[]>([]);
+  const [focusComment, setFocusComment] = useState<CommentData>(
+    {} as CommentData,
+  );
 
   useEffect(() => {
     async function fetchConstants() {
@@ -76,6 +81,10 @@ function App() {
       const notes: string[] = JSON.parse(jsonData);
       setNotes(notes);
     });
+    EventsOn("comments", (jsonData: string) => {
+      const comments: CommentData[] = JSON.parse(jsonData);
+      setComments(comments);
+    });
 
     return () => {
       EventsOff("isViewComment");
@@ -87,6 +96,7 @@ function App() {
       EventsOff("edges");
       EventsOff("content");
       EventsOff("notes");
+      EventsOff("comments");
     };
   });
 
@@ -121,17 +131,18 @@ function App() {
     (value: string | ((prev: string) => string)) => {
       setFocusNote((prev) => {
         const next = typeof value === "function" ? value(prev) : value;
-        if (next !== "") {
+        if (next !== "" && focusNote !== next) {
           OpenMarkdown(next);
           setFocusContent(next);
         } else {
+          setFocusNote("");
           setContent("");
           setFocusContent("");
         }
         return next;
       });
     },
-    [],
+    [focusNote],
   );
 
   const value = useMemo(
@@ -151,8 +162,23 @@ function App() {
       setNotes,
       focusNote,
       editFocusNote,
+      comments,
+      setComments,
+      focusComment,
+      setFocusComment,
     }),
-    [baseURL, nodes, edges, focusNode, content, focusContent, notes, focusNote],
+    [
+      baseURL,
+      nodes,
+      edges,
+      focusNode,
+      content,
+      focusContent,
+      notes,
+      focusNote,
+      comments,
+      focusComment,
+    ],
   );
 
   return (

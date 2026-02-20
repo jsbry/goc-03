@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { FaFolderOpen, FaPlus, FaTrashCan } from "react-icons/fa6";
-import { PiFlowArrow, PiBookOpenText } from "react-icons/pi";
+import {
+  PiGenderNeuter,
+  PiFlowArrow,
+  PiBook,
+  PiBookOpenText,
+} from "react-icons/pi";
 import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import { useDataContext, MyNode } from "../../context";
 import { RemoveMarkdown, RenameMarkdown } from "../../../wailsjs/go/main/App";
@@ -23,6 +28,10 @@ function Sidebar(props: { workspace: string }) {
     setNotes,
     focusNote,
     editFocusNote,
+    comments,
+    setComments,
+    focusComment,
+    setFocusComment,
   } = useDataContext();
 
   const [addNote, setAddNote] = useState("");
@@ -48,11 +57,17 @@ function Sidebar(props: { workspace: string }) {
   }, [notes, focusNote]);
 
   const addNewNote = useCallback(() => {
-    const newNote: string = addNote;
-
-    setNotes((nts) => [...nts, newNote]);
+    if (nodes.some((node) => node.data.label === addNote)) {
+      return;
+    }
+    if (notes.some((note) => note === addNote)) {
+      return;
+    }
+    setNotes((nts) => [...nts, addNote]);
     setAddNote("");
-  }, [addNote, setAddNote, setNotes]);
+
+    editFocusNote(addNote);
+  }, [nodes, notes, addNote, setAddNote, setNotes]);
 
   return (
     <nav className="sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto">
@@ -70,7 +85,11 @@ function Sidebar(props: { workspace: string }) {
               className={`nav-link ${focusContent === node.data.label ? "active" : "link-dark"}`}
               onClick={() => editFocusNode(node)}
             >
-              <PiFlowArrow className="me-2" />
+              {focusContent === node.data.label ? (
+                <PiFlowArrow className="me-2" />
+              ) : (
+                <PiGenderNeuter className="me-2" />
+              )}
               {node.data.label}
             </a>
           </li>
@@ -85,7 +104,11 @@ function Sidebar(props: { workspace: string }) {
               className={`nav-link ${focusContent === note ? "active" : "link-dark"}`}
               onClick={() => editFocusNote(note)}
             >
-              <PiBookOpenText className="me-2" />
+              {focusContent === note ? (
+                <PiBookOpenText className="me-2" />
+              ) : (
+                <PiBook className="me-2" />
+              )}
               {note}
             </a>
           </li>

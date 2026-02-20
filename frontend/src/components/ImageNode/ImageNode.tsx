@@ -23,6 +23,10 @@ export default function ImageNode({ data }: { data: ImageNodeData }) {
     setNotes,
     focusNote,
     editFocusNote,
+    comments,
+    setComments,
+    focusComment,
+    setFocusComment,
   } = useDataContext();
 
   let src = "";
