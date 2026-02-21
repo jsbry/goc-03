@@ -35,7 +35,6 @@ function App() {
   useEffect(() => {
     async function fetchConstants() {
       const constants = await GetConstants();
-      console.log(constants);
 
       setPageName(constants.PageName);
       setIsViewComment(constants.IsViewComment);
@@ -63,7 +62,6 @@ function App() {
       setWorkspace(workspaceName);
     });
     EventsOn("baseURL", (url: string) => {
-      console.log(url);
       setBaseURL(url);
       setFocusNode({} as MyNode);
     });

@@ -110,7 +110,6 @@ function CommentList(props: { isViewComment: boolean }) {
     >
       <div className="d-flex align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">Comments</span>
-        {JSON.stringify(focusComment)}
       </div>
       {!isEmpty(focusComment) && focusComment.id === 0 ? (
         <>

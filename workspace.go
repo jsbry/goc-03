@@ -29,6 +29,9 @@ func (a *App) OpenWorkspace(absPath string) {
 	edges := a.getJsonFileContent(edgesFile)
 	runtime.EventsEmit(a.ctx, "edges", edges)
 
+	comments := a.getJsonFileContent(commentsFile)
+	runtime.EventsEmit(a.ctx, "comments", comments)
+
 	notes, _ := a.GetWalkDir()
 	runtime.EventsEmit(a.ctx, "notes", notes)
 }

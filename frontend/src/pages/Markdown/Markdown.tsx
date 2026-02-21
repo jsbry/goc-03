@@ -44,19 +44,8 @@ function Markdown() {
     if (!selection || selection.isCollapsed) return;
 
     const selectedText = selection.toString();
-    console.log(selectedText);
-
-    const range = selection.getRangeAt(0);
-    console.log("range:", range);
-    const element = range.startContainer.parentElement;
-    console.log("element:", element);
-    console.log("textContent", element?.textContent);
-
     const lineRange = getSelectionLineRange(selection);
-    if (lineRange) {
-      console.log("lineRange.startLine:", lineRange.startLine);
-      console.log("lineRange.endLine:", lineRange.endLine);
-    }
+
     setFocusComment({
       id: 0,
       filename: focusContent,
