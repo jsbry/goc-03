@@ -57,14 +57,14 @@ function Markdown() {
       console.log("lineRange.startLine:", lineRange.startLine);
       console.log("lineRange.endLine:", lineRange.endLine);
     }
-    setFocusComment((prev) => ({
-      ...prev,
+    setFocusComment({
+      id: 0,
       filename: focusContent,
       start: lineRange ? lineRange.startLine : 0,
       end: lineRange ? lineRange.endLine : 0,
       selectedText: selectedText,
       content: "",
-    }));
+    });
   };
 
   return (

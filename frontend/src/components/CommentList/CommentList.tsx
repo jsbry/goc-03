@@ -74,7 +74,7 @@ function CommentList(props: { isViewComment: boolean }) {
     };
     setComments((comments) => [...comments, newComment]);
     setAddComment("");
-    setFocusComment({} as CommentData);
+    setFocusComment(newComment);
   }, [addComment, setAddComment, setComments]);
 
   const onContentChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -90,14 +90,29 @@ function CommentList(props: { isViewComment: boolean }) {
     );
   };
 
+  const deleteComment = useCallback(
+    (comment: CommentData) => {
+      if (!confirm("Delete Comment?")) {
+        return;
+      }
+      setComments((comments) => {
+        const next = comments.filter((c) => c.id !== comment.id);
+        return next;
+      });
+      setFocusComment({} as CommentData);
+    },
+    [setComments],
+  );
+
   return (
     <aside
       className={`comments-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto ${isViewComment ? "" : "d-none"}`}
     >
       <div className="d-flex align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">Comments</span>
+        {JSON.stringify(focusComment)}
       </div>
-      {!isEmpty(focusComment) && focusComment.id === undefined ? (
+      {!isEmpty(focusComment) && focusComment.id === 0 ? (
         <>
           <div className="card">
             <div className="card-body">
@@ -187,7 +202,7 @@ function CommentList(props: { isViewComment: boolean }) {
                       className="me-2"
                       onClick={() => setFocusComment(c)}
                     />
-                    <FaTrashCan onClick={() => {}} />
+                    <FaTrashCan onClick={() => deleteComment(c)} />
                   </div>
                 </div>
                 <pre className="comment-selected">
