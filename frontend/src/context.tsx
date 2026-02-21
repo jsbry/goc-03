@@ -8,6 +8,7 @@ export type ImageNodeData = {
 export type MyNode = Node<ImageNodeData>;
 
 export type CommentData = {
+  id: number;
   filename: string;
   start: number;
   end: number;
@@ -66,5 +67,20 @@ export function setNodeId(nodes: MyNode[]) {
     nodeId = maxId + 1;
   } else {
     nodeId = 1;
+  }
+}
+
+let commentId: number = 1;
+
+export function getCommentId(): number {
+  return commentId++;
+}
+
+export function setCommentId(comments: CommentData[]) {
+  if (comments.length > 0) {
+    const maxId = Math.max(...comments.map((c) => c.id));
+    commentId = maxId + 1;
+  } else {
+    commentId = 1;
   }
 }

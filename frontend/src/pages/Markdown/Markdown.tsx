@@ -12,7 +12,7 @@ import "github-markdown-css/github-markdown.css";
 import Editor, { OnMount } from "@monaco-editor/react";
 // import "monaco-editor/esm/vs/basic-languages/markdown/markdown";
 
-import { useDataContext } from "../../context";
+import { getCommentId, useDataContext } from "../../context";
 import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditor";
 import { componentsWithLinePosition, getSelectionLineRange } from "./selection";
 
@@ -62,7 +62,8 @@ function Markdown() {
       filename: focusContent,
       start: lineRange ? lineRange.startLine : 0,
       end: lineRange ? lineRange.endLine : 0,
-      selectedText,
+      selectedText: selectedText,
+      content: "",
     }));
   };
 

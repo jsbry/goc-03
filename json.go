@@ -1,12 +1,12 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func saveJsonFileContent(filename string, jsonData string) error {
@@ -17,13 +17,19 @@ func saveJsonFileContent(filename string, jsonData string) error {
 	path := filepath.Join(workspaceFullPath, filename)
 	jsonByte := []byte(jsonData)
 	if isDebug {
-		var buf bytes.Buffer
-		err := json.Indent(&buf, []byte(jsonData), "", "  ")
+		// var buf bytes.Buffer
+		// err := json.Indent(&buf, []byte(jsonData), "", "  ")
+		// if err != nil {
+		// 	fmt.Println("Failed to indent JSON:", err)
+		// 	return err
+		// }
+		// jsonByte = buf.Bytes()
+		formatted, err := formatJson(jsonByte)
 		if err != nil {
-			fmt.Println("Failed to indent JSON:", err)
+			fmt.Println("Error formatting JSON:", err)
 			return err
 		}
-		jsonByte = buf.Bytes()
+		jsonByte = []byte(formatted)
 	}
 
 	fmt.Println("Saving JSON to:", path)
@@ -65,4 +71,26 @@ func (a *App) getJsonFileContent(filePath string) string {
 	case edgesFile, commentsFile:
 	}
 	return string(jsonData)
+}
+
+func formatJson(jsonByte []byte) ([]byte, error) {
+	var raw []json.RawMessage
+	if err := json.Unmarshal(jsonByte, &raw); err != nil {
+		return nil, err
+	}
+
+	var b strings.Builder
+	b.WriteString("[\n")
+
+	for i, r := range raw {
+		b.WriteString("  ")
+		b.Write(r)
+		if i != len(raw)-1 {
+			b.WriteString(",")
+		}
+		b.WriteString("\n")
+	}
+
+	b.WriteString("]")
+	return []byte(b.String()), nil
 }

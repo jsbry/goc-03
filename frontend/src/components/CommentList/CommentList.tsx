@@ -1,11 +1,19 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
+import { FaRegEdit } from "react-icons/fa";
+import { FaTrashCan } from "react-icons/fa6";
 import {
   SaveComments,
   // RemoveComments,
 } from "../../../wailsjs/go/main/App";
-import { useDataContext, CommentData } from "../../context";
+import {
+  useDataContext,
+  CommentData,
+  setCommentId,
+  getCommentId,
+} from "../../context";
+import { set } from "lodash";
 
 function CommentList(props: { isViewComment: boolean }) {
   const { isViewComment } = props;
@@ -36,6 +44,10 @@ function CommentList(props: { isViewComment: boolean }) {
   const prevCommentsRef = useRef(comments);
 
   useEffect(() => {
+    setCommentId(comments);
+  }, [nodes]);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
       if (!isEqual(prevCommentsRef.current, comments)) {
         SaveComments(JSON.stringify(comments));
@@ -53,6 +65,7 @@ function CommentList(props: { isViewComment: boolean }) {
       return;
     }
     const newComment: CommentData = {
+      id: getCommentId(),
       filename: focusComment.filename,
       start: focusComment.start,
       end: focusComment.end,
@@ -61,7 +74,21 @@ function CommentList(props: { isViewComment: boolean }) {
     };
     setComments((comments) => [...comments, newComment]);
     setAddComment("");
+    setFocusComment({} as CommentData);
   }, [addComment, setAddComment, setComments]);
+
+  const onContentChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    let newContent = e.target.value;
+    if (newContent === "") {
+      return;
+    }
+    setFocusComment({ ...focusComment, content: newContent });
+    setComments((comments) =>
+      comments.map((c) =>
+        c.id === focusComment.id ? { ...c, content: newContent } : c,
+      ),
+    );
+  };
 
   return (
     <aside
@@ -70,12 +97,12 @@ function CommentList(props: { isViewComment: boolean }) {
       <div className="d-flex align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">Comments</span>
       </div>
-      {!isEmpty(focusComment) ? (
+      {!isEmpty(focusComment) && focusComment.id === undefined ? (
         <>
           <div className="card">
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center comment-line-number">
-                <span className="fw-semibold ">
+                <span className="fw-semibold p-1">
                   Line:
                   {focusComment.start === focusComment.end
                     ? focusComment.start
@@ -84,7 +111,7 @@ function CommentList(props: { isViewComment: boolean }) {
                 {!isEmpty(focusComment) && (
                   <button
                     type="button"
-                    className="btn-sm btn-close"
+                    className="btn-close p-1"
                     onClick={() => setFocusComment({} as CommentData)}
                   />
                 )}
@@ -94,8 +121,7 @@ function CommentList(props: { isViewComment: boolean }) {
                 {focusComment.selectedText.slice(0, 50)}
               </pre>
               <textarea
-                id="comment-content"
-                name="comment-content"
+                id="comment-content-area"
                 className="form-control mt-2"
                 rows={5}
                 value={addComment}
@@ -111,21 +137,68 @@ function CommentList(props: { isViewComment: boolean }) {
           </div>
           <hr />
         </>
-      ) : null}
-      {comments.map((c, index) => (
-        <div className="card mb-3" key={index}>
-          <div className="card-body">
-            <span className="comment-line-number">
-              Line:
-              {c.start === c.end ? c.start : `${c.start}-${c.end}`}
-            </span>
-            <pre className="comment-selected">
-              {c.selectedText.slice(0, 50)}
-            </pre>
-            <span className="comment-content">{c.content}</span>
+      ) : !isEmpty(focusComment) && focusComment.id ? (
+        <>
+          <div className="card">
+            <div className="card-body">
+              <div className="d-flex justify-content-between align-items-center comment-line-number">
+                <span className="fw-semibold p-1">
+                  Line:
+                  {focusComment.start === focusComment.end
+                    ? focusComment.start
+                    : `${focusComment.start}-${focusComment.end}`}
+                </span>
+                {!isEmpty(focusComment) && (
+                  <button
+                    type="button"
+                    className="btn-close p-1"
+                    onClick={() => setFocusComment({} as CommentData)}
+                  />
+                )}
+              </div>
+
+              <pre className="comment-selected">
+                {focusComment.selectedText.slice(0, 50)}
+              </pre>
+              <textarea
+                id="comment-content-area"
+                className="form-control mt-2"
+                rows={5}
+                value={focusComment.content}
+                onChange={onContentChange}
+              ></textarea>
+            </div>
           </div>
-        </div>
-      ))}
+          <hr />
+        </>
+      ) : null}
+      {comments.map((c, i) => {
+        if (c.filename == focusContent) {
+          return (
+            <div className="card mb-3" key={i}>
+              <div className="card-body">
+                <div className="d-flex comment-line-number">
+                  <span className="fw-semibold p-1">
+                    Line:
+                    {c.start === c.end ? c.start : `${c.start}-${c.end}`}
+                  </span>
+                  <div className="ms-auto btn-comment-line p-1">
+                    <FaRegEdit
+                      className="me-2"
+                      onClick={() => setFocusComment(c)}
+                    />
+                    <FaTrashCan onClick={() => {}} />
+                  </div>
+                </div>
+                <pre className="comment-selected">
+                  {c.selectedText.slice(0, 50)}
+                </pre>
+                <p className="comment-content p-1">{c.content}</p>
+              </div>
+            </div>
+          );
+        }
+      })}
     </aside>
   );
 }

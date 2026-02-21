@@ -44,6 +44,7 @@ function App() {
       setNodes(JSON.parse(constants.Nodes));
       setEdges(JSON.parse(constants.Edges));
       setNotes(JSON.parse(constants.Notes));
+      setComments(JSON.parse(constants.Comments));
     }
     fetchConstants();
   }, []);
@@ -117,9 +118,11 @@ function App() {
         if (next.data) {
           OpenMarkdown(next.data.label);
           setFocusContent(next.data.label);
+          setFocusComment({} as CommentData);
         } else {
           setContent("");
           setFocusContent("");
+          setFocusComment({} as CommentData);
         }
         return next;
       });
@@ -134,10 +137,12 @@ function App() {
         if (next !== "" && focusNote !== next) {
           OpenMarkdown(next);
           setFocusContent(next);
+          setFocusComment({} as CommentData);
         } else {
           setFocusNote("");
           setContent("");
           setFocusContent("");
+          setFocusComment({} as CommentData);
         }
         return next;
       });
