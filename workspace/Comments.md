@@ -1,8 +1,11 @@
 # Comments
 
-| name         | type   |
+| Name         | Type   |
 | :----------- | :----- |
-| Line         | number |
-| SelectedText | string |
-| Comment      | string |
+| id           | number |
+| filename     | string |
+| start        | number |
+| end          | number |
+| selectedText | string |
+| content      | string |
 
