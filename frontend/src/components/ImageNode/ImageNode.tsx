@@ -1,4 +1,4 @@
-import { Handle, Position } from "@xyflow/react";
+import { NodeResizer, Handle, Position } from "@xyflow/react";
 import { useDataContext, isURL } from "../../context";
 
 type ImageNodeData = {
@@ -6,7 +6,13 @@ type ImageNodeData = {
   imageUrl: string;
 };
 
-export default function ImageNode({ data }: { data: ImageNodeData }) {
+export default function ImageNode({
+  data,
+  selected,
+}: {
+  data: ImageNodeData;
+  selected: boolean;
+}) {
   const {
     baseURL,
     nodes,
@@ -38,6 +44,14 @@ export default function ImageNode({ data }: { data: ImageNodeData }) {
 
   return (
     <div className="node-image">
+      <NodeResizer
+        color="#ff0071"
+        isVisible={selected}
+        keepAspectRatio={true}
+        minWidth={50}
+        minHeight={50}
+      />
+
       <Handle type="target" position={Position.Top} id="tt" />
       <Handle type="target" position={Position.Left} id="tl" />
       <Handle type="target" position={Position.Right} id="tr" />
