@@ -16,6 +16,7 @@ type App struct {
 }
 
 type AppConstants struct {
+	Language       string
 	PageName       string
 	IsViewComment  bool
 	IsViewEditNode bool
@@ -58,6 +59,7 @@ func (a *App) GetConstants() AppConstants {
 	notes, _ := a.GetWalkDir()
 
 	return AppConstants{
+		Language:       lng,
 		PageName:       pageName,
 		IsViewComment:  isViewComment,
 		IsViewEditNode: isViewEditNode,

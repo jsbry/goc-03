@@ -12,7 +12,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-const template = "# %s\n"
+const mdTemplate = "# %s\n"
 
 func (a *App) OpenMarkdown(nodeName string) {
 	if workspaceFullPath == "" {
@@ -38,7 +38,7 @@ func (a *App) OpenMarkdown(nodeName string) {
 
 	content := ""
 	if isNewFile {
-		content = fmt.Sprintf(template, nodeName)
+		content = fmt.Sprintf(mdTemplate, nodeName)
 		_, err := file.WriteString(content)
 		if err != nil {
 			panic(err)

@@ -1,6 +1,7 @@
 export namespace main {
 	
 	export class AppConstants {
+	    Language: string;
 	    PageName: string;
 	    IsViewComment: boolean;
 	    IsViewEditNode: boolean;
@@ -16,6 +17,7 @@ export namespace main {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Language = source["Language"];
 	        this.PageName = source["PageName"];
 	        this.IsViewComment = source["IsViewComment"];
 	        this.IsViewEditNode = source["IsViewEditNode"];

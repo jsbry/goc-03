@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
+import { useTranslation } from "react-i18next";
 import Modal from "react-bootstrap/Modal";
+import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import Markdown from "../../pages/Markdown/Markdown";
 import Flow from "../../pages/Flow/Flow";
 
@@ -10,8 +11,9 @@ function Content(props: {
   isViewEditNode: boolean;
 }) {
   const { pageName, isViewComment, isViewEditNode } = props;
-
   const [helpShow, setHelpShow] = useState<boolean>(false);
+  const { t } = useTranslation();
+
   const handleHelpClose = () => {
     setHelpShow(false);
   };
@@ -48,9 +50,9 @@ function Content(props: {
 
       <Modal show={helpShow} onHide={handleHelpClose} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Help</Modal.Title>
+          <Modal.Title>{t("Help")}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Text</Modal.Body>
+        <Modal.Body></Modal.Body>
       </Modal>
     </main>
   );

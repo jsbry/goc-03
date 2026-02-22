@@ -1,0 +1,23 @@
+{
+    "Comments": "Comments",
+    "Add Comment": "Add Comment",
+    "Delete Comment?": "Delete Comment?",
+    "Line": "Line",
+    "Help": "Help",
+    "Node Label": "Node Label",
+    "Enter node label": "Enter node label",
+    "Add Node": "Add Node",
+    "Edit Node": "Edit Node",
+    "Node Image": "Node Image",
+    "Change Image": "Change Image",
+    "Enter note": "Enter note",
+    "Delete file.md?": "Delete {{name}}.md?",
+    "File": "File",
+    "Open": "Open",
+    "Select a folder": "Select a folder",
+    "Quit": "Quit",
+    "View": "View",
+    "Comment": "Comment",
+    "Flow": "Flow",
+    "Markdown": "Markdown"
+}

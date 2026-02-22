@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import { CiNoWaitingSign } from "react-icons/ci";
 import isEmpty from "lodash/isEmpty";
 import {
   OpenFileDialog,
@@ -9,7 +11,7 @@ import { MyNode, useDataContext, isURL, getNodeId } from "../../context";
 
 function EditNode(props: { isViewEditNode: boolean }) {
   const { isViewEditNode } = props;
-
+  const { t } = useTranslation();
   const {
     baseURL,
     nodes,
@@ -118,7 +120,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
     >
       <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">
-          {isEmpty(focusNode) ? "Add Node" : "Edit Node"}
+          {isEmpty(focusNode) ? t("Add Node") : t("Edit Node")}
         </span>
         {!isEmpty(focusNode) && (
           <button
@@ -132,13 +134,13 @@ function EditNode(props: { isViewEditNode: boolean }) {
         <>
           <div className="mb-3">
             <label htmlFor="nodeLabelInput" className="form-label">
-              Node Label
+              {t("Node Label")}
             </label>
             <input
               type="text"
               className="form-control"
               id="nodeLabelInput"
-              placeholder="Enter node label"
+              placeholder={t("Enter node label")}
               value={addLabel}
               onChange={(e) => setAddLabel(e.target.value)}
               autoComplete="off"
@@ -155,10 +157,10 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 )
               }
             >
-              Add Node
+              {t("Add Node")}
               {nodes.some(
                 (node: MyNode) => node.data.label === addLabel.trim(),
-              ) && <>(duplicate!)</>}
+              ) && <CiNoWaitingSign className="ms-1" />}
             </button>
           </div>
         </>
@@ -166,13 +168,13 @@ function EditNode(props: { isViewEditNode: boolean }) {
         <>
           <div className="mb-3">
             <label htmlFor="nodeLabelInput" className="form-label">
-              Node Label
+              {t("Node Label")}
             </label>
             <input
               type="text"
               className="form-control"
               id="nodeLabelInput"
-              placeholder="Enter node label"
+              placeholder={t("Enter node label")}
               value={focusNode.data?.label || ""}
               onChange={onNodeLabelChange}
               autoComplete="off"
@@ -180,7 +182,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
           </div>
           <div className="mb-3">
             <label htmlFor="nodeLabelInput" className="form-label">
-              Node Image
+              {t("Node Image")}
             </label>
             <div className="node-image">
               <img
@@ -205,7 +207,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
               className="btn btn-sm btn-outline-secondary mt-2"
               onClick={selectFile}
             >
-              Change Image
+              {t("Change Image")}
             </button>
           </div>
           <div className="mb-3"></div>

@@ -1,0 +1,23 @@
+{
+    "Comments": "コメント",
+    "Add Comment": "コメントを追加",
+    "Delete Comment?": "コメントを削除しますか？",
+    "Line": "行",
+    "Help": "ヘルプ",
+    "Node Label": "ノードラベル",
+    "Enter node label": "ノードラベルを入力",
+    "Add Node": "ノードを追加",
+    "Edit Node": "ノードを編集",
+    "Node Image": "ノード画像",
+    "Change Image": "画像を変更",
+    "Enter note": "ノート名を入力",
+    "Delete file.md?": "{{name}}.md を削除しますか？",
+    "File": "ファイル",
+    "Open": "開く",
+    "Select a folder": "フォルダを選択",
+    "Quit": "終了",
+    "View": "表示",
+    "Comment": "コメント",
+    "Flow": "フロー",
+    "Markdown": "マークダウン"
+}

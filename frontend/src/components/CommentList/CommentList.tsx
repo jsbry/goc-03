@@ -1,24 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
 import { FaRegEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
-import {
-  SaveComments,
-  // RemoveComments,
-} from "../../../wailsjs/go/main/App";
+import { SaveComments } from "../../../wailsjs/go/main/App";
 import {
   useDataContext,
   CommentData,
   setCommentId,
   getCommentId,
 } from "../../context";
-import { set } from "lodash";
 
 function CommentList(props: { isViewComment: boolean }) {
   const { isViewComment } = props;
   const [addComment, setAddComment] = useState("");
-
+  const { t } = useTranslation();
   const {
     baseURL,
     nodes,
@@ -92,7 +89,7 @@ function CommentList(props: { isViewComment: boolean }) {
 
   const deleteComment = useCallback(
     (comment: CommentData) => {
-      if (!confirm("Delete Comment?")) {
+      if (!confirm(t("Delete Comment?"))) {
         return;
       }
       setComments((comments) => {
@@ -109,7 +106,7 @@ function CommentList(props: { isViewComment: boolean }) {
       className={`comments-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto ${isViewComment ? "" : "d-none"}`}
     >
       <div className="d-flex align-items-center p-2 mb-2 border-bottom">
-        <span className="fw-semibold">Comments</span>
+        <span className="fw-semibold">{t("Comments")}</span>
       </div>
       {!isEmpty(focusComment) && focusComment.id === 0 ? (
         <>
@@ -117,7 +114,7 @@ function CommentList(props: { isViewComment: boolean }) {
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center comment-line-number">
                 <span className="fw-semibold p-1">
-                  Line:
+                  {t("Line")}:
                   {focusComment.start === focusComment.end
                     ? focusComment.start
                     : `${focusComment.start}-${focusComment.end}`}
@@ -145,7 +142,7 @@ function CommentList(props: { isViewComment: boolean }) {
                 className="btn btn-sm btn-primary mt-2"
                 onClick={addNewComment}
               >
-                Add Comment
+                {t("Add Comment")}
               </button>
             </div>
           </div>
@@ -157,7 +154,7 @@ function CommentList(props: { isViewComment: boolean }) {
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center comment-line-number">
                 <span className="fw-semibold p-1">
-                  Line:
+                  {t("Line")}:
                   {focusComment.start === focusComment.end
                     ? focusComment.start
                     : `${focusComment.start}-${focusComment.end}`}
@@ -193,7 +190,7 @@ function CommentList(props: { isViewComment: boolean }) {
               <div className="card-body">
                 <div className="d-flex comment-line-number">
                   <span className="fw-semibold p-1">
-                    Line:
+                    {t("Line")}:
                     {c.start === c.end ? c.start : `${c.start}-${c.end}`}
                   </span>
                   <div className="ms-auto btn-comment-line p-1">

@@ -24,5 +24,7 @@
 - `frontend> npm install @xyflow/react`
 - `frontend> npm install lodash`
 - `frontend> npm install @types/lodash`
+- `frontend> npm install i18next`
+- `frontend> npm install react-i18next`
     - about_Execution_Policies
     - `frontend> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`

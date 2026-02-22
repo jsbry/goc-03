@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { FaFolderOpen, FaPlus, FaTrashCan } from "react-icons/fa6";
 import {
   PiGenderNeuter,
@@ -6,12 +7,12 @@ import {
   PiBook,
   PiBookOpenText,
 } from "react-icons/pi";
-import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import { useDataContext, MyNode } from "../../context";
 import { RemoveMarkdown, RenameMarkdown } from "../../../wailsjs/go/main/App";
 
 function Sidebar(props: { workspace: string }) {
   const { workspace } = props;
+  const { t } = useTranslation();
   const {
     baseURL,
     nodes,
@@ -48,7 +49,7 @@ function Sidebar(props: { workspace: string }) {
   };
 
   const removeNote = useCallback(async () => {
-    if (!confirm('Delete "' + focusNote + '.md"?')) {
+    if (!confirm(t("Delete file.md?", { name: focusNote }))) {
       return;
     }
     editFocusNote("");
@@ -120,7 +121,7 @@ function Sidebar(props: { workspace: string }) {
             <input
               type="text"
               className="form-control"
-              placeholder="Enter note"
+              placeholder={t("Enter note")}
               value={addNote}
               onChange={(e) => setAddNote(e.target.value)}
               autoComplete="off"
@@ -138,7 +139,7 @@ function Sidebar(props: { workspace: string }) {
             <input
               type="text"
               className="form-control"
-              placeholder="Enter note"
+              placeholder={t("Enter note")}
               value={focusNote}
               onChange={onNoteChange}
               autoComplete="off"

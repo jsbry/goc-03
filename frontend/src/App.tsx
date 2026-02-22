@@ -7,16 +7,18 @@ import {
 } from "../wailsjs/go/main/App";
 import { DataContext, MyNode, CommentData } from "./context";
 import { Edge } from "@xyflow/react";
-import isEmpty from "lodash/isEmpty";
+import i18n from "i18next";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Content from "./components/Content/Content";
 import CommentList from "./components/CommentList/CommentList";
 import EditNode from "./components/EditNode/EditNode";
+
 import "./App.css";
 
 function App() {
   const [isViewComment, setIsViewComment] = useState<boolean>(true);
   const [isViewEditNode, setIsViewEditNode] = useState<boolean>(true);
+  const [lng, setLng] = useState<string>("en");
   const [pageName, setPageName] = useState<string>("markdown");
   const [workspace, setWorkspace] = useState<string>("");
   const [baseURL, setBaseURL] = useState<string>("");
@@ -36,6 +38,7 @@ function App() {
     async function fetchConstants() {
       const constants = await GetConstants();
 
+      setLng(constants.Language);
       setPageName(constants.PageName);
       setIsViewComment(constants.IsViewComment);
       setIsViewEditNode(constants.IsViewEditNode);
@@ -54,6 +57,9 @@ function App() {
     });
     EventsOn("isViewEditNode", (b: boolean) => {
       setIsViewEditNode(b);
+    });
+    EventsOn("lng", (lng: string) => {
+      setLng(lng);
     });
     EventsOn("pageName", (page: string) => {
       setPageName(page);
@@ -88,6 +94,7 @@ function App() {
     return () => {
       EventsOff("isViewComment");
       EventsOff("isViewEditNode");
+      EventsOff("lng");
       EventsOff("pageName");
       EventsOff("workspace");
       EventsOff("baseURL");
@@ -98,6 +105,10 @@ function App() {
       EventsOff("comments");
     };
   });
+
+  useEffect(() => {
+    i18n.changeLanguage(lng);
+  }, [lng]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

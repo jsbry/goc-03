@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-
-import ReactMarkdown, { Components } from "react-markdown";
+import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -12,7 +10,7 @@ import "github-markdown-css/github-markdown.css";
 import Editor, { OnMount } from "@monaco-editor/react";
 // import "monaco-editor/esm/vs/basic-languages/markdown/markdown";
 
-import { getCommentId, useDataContext } from "../../context";
+import { useDataContext } from "../../context";
 import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditor";
 import { componentsWithLinePosition, getSelectionLineRange } from "./selection";
 
