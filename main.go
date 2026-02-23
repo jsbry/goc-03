@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"path/filepath"
 
 	"github.com/wailsapp/wails/v2"
@@ -22,11 +21,17 @@ const (
 	nodesFile    = "nodes.json"
 	edgesFile    = "edges.json"
 	commentsFile = "comments.json"
+
+	languageEnglish  = "en"
+	languageJapanese = "ja"
+
+	pageFlow     = "flow"
+	pageMarkdown = "markdown"
 )
 
 var (
-	lng               = "en"
-	pageName          = "markdown"
+	lng               = languageEnglish
+	pageName          = pageFlow
 	isViewComment     = true
 	isViewEditNode    = false
 	workspace         = "./workspace"
@@ -48,11 +53,12 @@ func main() {
 
 	// Create application with options
 	err = wails.Run(&options.App{
-		Title:    "goc-03",
-		Width:    1024,
-		Height:   768,
-		MinWidth: 640,
-		Menu:     AppMenu,
+		Title:     "goc-03",
+		Width:     1024,
+		Height:    768,
+		MinWidth:  730,
+		MinHeight: 300,
+		Menu:      AppMenu,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
@@ -91,13 +97,13 @@ func (a *App) makeMenu() *menu.Menu {
 
 	// View
 	ViewMenu := AppMenu.AddSubmenu(T("View", nil))
-	ViewMenu.AddRadio(T("Flow", nil), pageName == "flow", keys.CmdOrCtrl("n"), func(_ *menu.CallbackData) {
-		pageName = "flow"
-		rt.EventsEmit(a.ctx, "pageName", "flow")
+	ViewMenu.AddRadio(T("Flow", nil), pageName == pageFlow, keys.CmdOrCtrl("n"), func(_ *menu.CallbackData) {
+		pageName = pageFlow
+		rt.EventsEmit(a.ctx, "pageName", pageFlow)
 	})
-	ViewMenu.AddRadio(T("Markdown", nil), pageName == "markdown", keys.CmdOrCtrl("m"), func(_ *menu.CallbackData) {
-		pageName = "markdown"
-		rt.EventsEmit(a.ctx, "pageName", "markdown")
+	ViewMenu.AddRadio(T("Markdown", nil), pageName == pageMarkdown, keys.CmdOrCtrl("m"), func(_ *menu.CallbackData) {
+		pageName = pageMarkdown
+		rt.EventsEmit(a.ctx, "pageName", pageMarkdown)
 	})
 	ViewMenu.AddSeparator()
 	ViewMenu.AddCheckbox(T("Comment", nil), isViewComment, keys.CmdOrCtrl("w"), func(_ *menu.CallbackData) {
@@ -114,16 +120,15 @@ func (a *App) makeMenu() *menu.Menu {
 		rt.EventsEmit(a.ctx, "help", true)
 	})
 	HelpMenu.AddSeparator()
-	HelpMenu.AddRadio(T("English", nil), lng == "en", nil, func(_ *menu.CallbackData) {
-		lng = "en"
-		rt.EventsEmit(a.ctx, "lng", "en")
+	HelpMenu.AddRadio(T("English", nil), lng == languageEnglish, nil, func(_ *menu.CallbackData) {
+		lng = languageEnglish
+		rt.EventsEmit(a.ctx, "lng", languageEnglish)
 		a.updateMenu()
 	})
-	HelpMenu.AddRadio(T("日本語", nil), lng == "ja", nil, func(_ *menu.CallbackData) {
-		lng = "ja"
-		rt.EventsEmit(a.ctx, "lng", "ja")
+	HelpMenu.AddRadio(T("日本語", nil), lng == languageJapanese, nil, func(_ *menu.CallbackData) {
+		lng = languageJapanese
+		rt.EventsEmit(a.ctx, "lng", languageJapanese)
 		a.updateMenu()
-		fmt.Println("change ja 2")
 	})
 
 	return AppMenu

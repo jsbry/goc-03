@@ -126,26 +126,8 @@ function App() {
         const next = typeof value === "function" ? value(prev) : value;
         if (next.data) {
           OpenMarkdown(next.data.label);
+          setFocusNote("");
           setFocusContent(next.data.label);
-          setFocusComment({} as CommentData);
-        } else {
-          setContent("");
-          setFocusContent("");
-          setFocusComment({} as CommentData);
-        }
-        return next;
-      });
-    },
-    [],
-  );
-
-  const editFocusNote = useCallback(
-    (value: string | ((prev: string) => string)) => {
-      setFocusNote((prev) => {
-        const next = typeof value === "function" ? value(prev) : value;
-        if (next !== "" && focusNote !== next) {
-          OpenMarkdown(next);
-          setFocusContent(next);
           setFocusComment({} as CommentData);
         } else {
           setFocusNote("");
@@ -155,6 +137,22 @@ function App() {
         }
         return next;
       });
+    },
+    [],
+  );
+  const editFocusNote = useCallback(
+    (value: string) => {
+      if (value !== "" && focusNote !== value) {
+        setFocusNote(value);
+        OpenMarkdown(value);
+        setFocusContent(value);
+        setFocusComment({} as CommentData);
+      } else {
+        setFocusNote("");
+        setContent("");
+        setFocusContent("");
+        setFocusComment({} as CommentData);
+      }
     },
     [focusNote],
   );

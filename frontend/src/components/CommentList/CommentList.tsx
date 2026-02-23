@@ -139,7 +139,7 @@ function CommentList(props: { isViewComment: boolean }) {
                 onChange={(e) => setAddComment(e.target.value)}
               ></textarea>
               <button
-                className="btn btn-sm btn-primary mt-2"
+                className="btn btn-sm btn-outline-primary mt-2"
                 onClick={addNewComment}
               >
                 {t("Add Comment")}

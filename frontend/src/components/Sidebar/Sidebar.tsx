@@ -1,13 +1,14 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { FaFolderOpen, FaPlus, FaTrashCan } from "react-icons/fa6";
+import { CiNoWaitingSign } from "react-icons/ci";
 import {
   PiGenderNeuter,
   PiFlowArrow,
   PiBook,
   PiBookOpenText,
 } from "react-icons/pi";
-import { useDataContext, MyNode } from "../../context";
+import { useDataContext, MyNode, isDuplicateName } from "../../context";
 import { RemoveMarkdown, RenameMarkdown } from "../../../wailsjs/go/main/App";
 
 function Sidebar(props: { workspace: string }) {
@@ -38,8 +39,11 @@ function Sidebar(props: { workspace: string }) {
   const [addNote, setAddNote] = useState("");
 
   const onNoteChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newNote = e.target.value;
+    const newNote = e.target.value;
     if (newNote === "") {
+      return;
+    }
+    if (isDuplicateName(nodes, notes, newNote)) {
       return;
     }
     await RenameMarkdown(focusNote, newNote);
@@ -58,10 +62,7 @@ function Sidebar(props: { workspace: string }) {
   }, [notes, focusNote]);
 
   const addNewNote = useCallback(() => {
-    if (nodes.some((node) => node.data.label === addNote)) {
-      return;
-    }
-    if (notes.some((note) => note === addNote)) {
+    if (isDuplicateName(nodes, notes, addNote)) {
       return;
     }
     setNotes((nts) => [...nts, addNote]);
@@ -127,11 +128,16 @@ function Sidebar(props: { workspace: string }) {
               autoComplete="off"
             />
             <button
-              className="btn btn-primary"
+              className="btn btn-outline-primary"
               type="button"
               onClick={addNewNote}
+              disabled={isDuplicateName(nodes, notes, addNote) ? true : false}
             >
-              <FaPlus />
+              {!isDuplicateName(nodes, notes, addNote) ? (
+                <FaPlus />
+              ) : (
+                <CiNoWaitingSign />
+              )}
             </button>
           </>
         ) : (
@@ -145,7 +151,7 @@ function Sidebar(props: { workspace: string }) {
               autoComplete="off"
             />
             <button
-              className="btn btn-danger"
+              className="btn btn-outline-danger"
               type="button"
               onClick={removeNote}
             >

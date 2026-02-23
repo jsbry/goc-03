@@ -119,7 +119,10 @@ const AddNodeOnEdgeDrop = () => {
   );
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Connection) => {
+      const edge = { ...params, type: "step", label: "test" };
+      setEdges((eds) => addEdge(edge, eds));
+    },
     [setEdges],
   );
 
@@ -148,6 +151,8 @@ const AddNodeOnEdgeDrop = () => {
           id,
           source: connectionState.fromNode!.id,
           target: id,
+          type: "step",
+          label: "test",
         };
         setEdges((eds) => eds.concat(newEdge));
       }

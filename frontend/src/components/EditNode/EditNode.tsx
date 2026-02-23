@@ -7,7 +7,13 @@ import {
   SaveToAssets,
   RenameMarkdown,
 } from "../../../wailsjs/go/main/App";
-import { MyNode, useDataContext, isURL, getNodeId } from "../../context";
+import {
+  MyNode,
+  useDataContext,
+  isURL,
+  isDuplicateName,
+  getNodeId,
+} from "../../context";
 
 function EditNode(props: { isViewEditNode: boolean }) {
   const { isViewEditNode } = props;
@@ -60,11 +66,15 @@ function EditNode(props: { isViewEditNode: boolean }) {
   }, [focusNode]);
 
   const onNodeLabelChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newLabel = e.target.value;
+    const newLabel = e.target.value;
     if (newLabel === "") {
-      newLabel = "Node " + focusNode.id;
+      return;
+    }
+    if (isDuplicateName(nodes, notes, newLabel)) {
+      return;
     }
     await RenameMarkdown(focusNode.data.label, newLabel);
+
     editFocusNode((prev) => ({
       ...prev,
       data: {
@@ -116,7 +126,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
 
   return (
     <aside
-      className={`edit-node-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto ${isViewEditNode ? "" : "d-none"}`}
+      className={`edit-node-sidebar d-flex flex-column flex-shrink-0 bg-body-secondary overflow-auto ${isViewEditNode ? "" : "d-none"}`}
     >
       <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">
@@ -148,19 +158,16 @@ function EditNode(props: { isViewEditNode: boolean }) {
           </div>
           <div className="mb-3">
             <button
-              className="btn btn-sm btn-primary"
+              className="btn btn-sm btn-outline-primary"
               onClick={addNewNode}
               disabled={
-                addLabel.trim() === "" ||
-                nodes.some(
-                  (node: MyNode) => node.data.label === addLabel.trim(),
-                )
+                addLabel === "" || isDuplicateName(nodes, notes, addLabel)
               }
             >
               {t("Add Node")}
-              {nodes.some(
-                (node: MyNode) => node.data.label === addLabel.trim(),
-              ) && <CiNoWaitingSign className="ms-1" />}
+              {isDuplicateName(nodes, notes, addLabel) && (
+                <CiNoWaitingSign className="ms-1" />
+              )}
             </button>
           </div>
         </>

@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"regexp"
 )
@@ -32,7 +31,6 @@ func Interpolate(text string, values map[string]string) string {
 	return re.ReplaceAllStringFunc(text, func(match string) string {
 		key := re.FindStringSubmatch(match)[1]
 		if v, ok := values[key]; ok {
-			fmt.Println(v, ok)
 			return v
 		}
 		return match

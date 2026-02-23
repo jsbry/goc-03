@@ -40,12 +40,7 @@ function Content(props: {
   };
 
   return (
-    <main
-      className="main h-100"
-      style={
-        !isViewComment && !isViewEditNode ? { width: `calc(100% - 210px)` } : {}
-      }
-    >
+    <main className="main h-100">
       {renderPage(pageName)}
 
       <Modal show={helpShow} onHide={handleHelpClose} size="lg">

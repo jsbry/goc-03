@@ -31,7 +31,7 @@ export type DataContextType = {
   notes: string[];
   setNotes: React.Dispatch<React.SetStateAction<string[]>>;
   focusNote: string;
-  editFocusNote: (note: string | ((prev: string) => string)) => void;
+  editFocusNote: (note: string) => void;
   comments: CommentData[];
   setComments: React.Dispatch<React.SetStateAction<CommentData[]>>;
   focusComment: CommentData;
@@ -53,6 +53,21 @@ export function isURL(str: string): boolean {
   } catch (_) {
     return false;
   }
+}
+
+export function isDuplicateName(
+  nodes: MyNode[],
+  notes: string[],
+  name: string,
+): boolean {
+  if (nodes.some((node) => node.data.label === name)) {
+    return true;
+  }
+  if (notes.some((note) => note === name)) {
+    return true;
+  }
+
+  return false;
 }
 
 let nodeId: number = 1;
