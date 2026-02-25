@@ -24,6 +24,8 @@ function CommentList(props: { isViewComment: boolean }) {
     setEdges,
     focusNode,
     editFocusNode,
+    focusEdge,
+    setFocusEdge,
     content,
     setContent,
     focusContent,

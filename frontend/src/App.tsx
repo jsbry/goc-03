@@ -25,6 +25,7 @@ function App() {
   const [nodes, setNodes] = useState<MyNode[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [focusNode, setFocusNode] = useState<MyNode>({} as MyNode);
+  const [focusEdge, setFocusEdge] = useState<Edge>({} as Edge);
   const [content, setContent] = useState<string>("");
   const [focusContent, setFocusContent] = useState<string>("");
   const [notes, setNotes] = useState<string[]>([]);
@@ -140,6 +141,7 @@ function App() {
     },
     [],
   );
+
   const editFocusNote = useCallback(
     (value: string) => {
       if (value !== "" && focusNote !== value) {
@@ -166,6 +168,8 @@ function App() {
       setEdges,
       focusNode,
       editFocusNode,
+      focusEdge,
+      setFocusEdge,
       content,
       setContent,
       focusContent,
@@ -184,6 +188,7 @@ function App() {
       nodes,
       edges,
       focusNode,
+      focusEdge,
       content,
       focusContent,
       notes,

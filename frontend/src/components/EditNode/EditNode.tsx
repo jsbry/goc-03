@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { Edge } from "@xyflow/react";
 import { CiNoWaitingSign } from "react-icons/ci";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -26,6 +27,8 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setEdges,
     focusNode,
     editFocusNode,
+    focusEdge,
+    setFocusEdge,
     content,
     setContent,
     focusContent,
@@ -97,6 +100,26 @@ function EditNode(props: { isViewEditNode: boolean }) {
     );
   };
 
+  const onEdgeLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newLabel = e.target.value;
+    const newFocusEdge = {
+      ...focusEdge,
+      label: newLabel,
+    };
+
+    setFocusEdge(newFocusEdge);
+    setEdges((eds) =>
+      eds.map((ed: Edge) =>
+        ed.id === focusEdge.id
+          ? {
+              ...ed,
+              label: newLabel,
+            }
+          : ed,
+      ),
+    );
+  };
+
   const selectFile = async () => {
     const path = await OpenFileDialog();
 
@@ -126,7 +149,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
 
   return (
     <aside
-      className={`edit-node-sidebar d-flex flex-column flex-shrink-0 bg-body-secondary overflow-auto ${isViewEditNode ? "" : "d-none"}`}
+      className={`edit-node-sidebar d-flex flex-column flex-shrink-0 overflow-auto ${isViewEditNode ? "" : "d-none"}`}
     >
       <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">
@@ -218,6 +241,33 @@ function EditNode(props: { isViewEditNode: boolean }) {
             </button>
           </div>
           <div className="mb-3"></div>
+        </>
+      )}
+
+      {!isEmpty(focusEdge) && (
+        <>
+          <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
+            <span className="fw-semibold">{t("Edit Edge")}</span>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => setFocusEdge({} as Edge)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="nodeLabelInput" className="form-label">
+              {t("Edge Label")}
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="edgeLabelInput"
+              placeholder={t("Enter edge label")}
+              value={focusEdge.label?.toString()}
+              onChange={onEdgeLabelChange}
+              autoComplete="off"
+            />
+          </div>
         </>
       )}
     </aside>

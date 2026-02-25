@@ -23,6 +23,8 @@ function Markdown() {
     setEdges,
     focusNode,
     editFocusNode,
+    focusEdge,
+    setFocusEdge,
     content,
     setContent,
     focusContent,

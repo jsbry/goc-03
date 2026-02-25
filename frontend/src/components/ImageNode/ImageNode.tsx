@@ -21,6 +21,8 @@ export default function ImageNode({
     setEdges,
     focusNode,
     editFocusNode,
+    focusEdge,
+    setFocusEdge,
     content,
     setContent,
     focusContent,

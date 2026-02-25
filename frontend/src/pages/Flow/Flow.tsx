@@ -4,7 +4,13 @@ import {
   SaveEdges,
   RemoveMarkdown,
 } from "../../../wailsjs/go/main/App";
-import { MyNode, useDataContext, setNodeId, getNodeId } from "../../context";
+import {
+  MyNode,
+  useDataContext,
+  getPairHandle,
+  setNodeId,
+  getNodeId,
+} from "../../context";
 import isEqual from "lodash/isEqual";
 
 import {
@@ -46,6 +52,8 @@ const AddNodeOnEdgeDrop = () => {
     setEdges,
     focusNode,
     editFocusNode,
+    focusEdge,
+    setFocusEdge,
     content,
     setContent,
     focusContent,
@@ -96,13 +104,23 @@ const AddNodeOnEdgeDrop = () => {
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: MyNode) => {
       editFocusNode(node);
+      setFocusEdge({} as Edge);
     },
     [editFocusNode],
   );
 
+  const onEdgeClick = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      editFocusNode({} as MyNode);
+      setFocusEdge(edge);
+    },
+    [setFocusEdge],
+  );
+
   const onPaneClick = useCallback(() => {
     editFocusNode({} as MyNode);
-  }, [editFocusNode]);
+    setFocusEdge({} as Edge);
+  }, [editFocusNode, setFocusEdge]);
 
   const onNodesChange = useCallback(
     (changes: NodeChange<MyNode>[]) => {
@@ -120,7 +138,7 @@ const AddNodeOnEdgeDrop = () => {
 
   const onConnect = useCallback(
     (params: Connection) => {
-      const edge = { ...params, type: "step", label: "test" };
+      const edge = { ...params, type: "step", label: "" };
       setEdges((eds) => addEdge(edge, eds));
     },
     [setEdges],
@@ -152,7 +170,9 @@ const AddNodeOnEdgeDrop = () => {
           source: connectionState.fromNode!.id,
           target: id,
           type: "step",
-          label: "test",
+          label: "",
+          sourceHandle: connectionState.fromHandle?.id,
+          targetHandle: getPairHandle(connectionState.fromHandle?.id),
         };
         setEdges((eds) => eds.concat(newEdge));
       }
@@ -203,6 +223,7 @@ const AddNodeOnEdgeDrop = () => {
         nodes={nodes}
         edges={edges}
         onNodeClick={onNodeClick}
+        onEdgeClick={onEdgeClick}
         onPaneClick={onPaneClick}
         onNodesChange={onNodesChange}
         onNodesDelete={onNodesDelete}

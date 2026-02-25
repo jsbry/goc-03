@@ -38,6 +38,8 @@ export default function MarkdownEditor() {
     setEdges,
     focusNode,
     editFocusNode,
+    focusEdge,
+    setFocusEdge,
     content,
     setContent,
     focusContent,

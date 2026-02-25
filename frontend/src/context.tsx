@@ -24,6 +24,8 @@ export type DataContextType = {
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   focusNode: MyNode;
   editFocusNode: (node: MyNode | ((prev: MyNode) => MyNode)) => void;
+  focusEdge: Edge;
+  setFocusEdge: React.Dispatch<React.SetStateAction<Edge>>;
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
   focusContent: string;
@@ -45,6 +47,20 @@ export const useDataContext = (): DataContextType => {
   if (!ctx) throw new Error("DataContext not found");
   return ctx;
 };
+
+export function getPairHandle(id: string | null | undefined): string {
+  switch (id) {
+    case "sb":
+      return "tt";
+    case "sr":
+      return "tl";
+    case "st":
+      return "tb";
+    case "sl":
+      return "tr";
+  }
+  return "tt";
+}
 
 export function isURL(str: string): boolean {
   try {

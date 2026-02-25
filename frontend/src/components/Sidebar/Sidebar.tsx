@@ -22,6 +22,8 @@ function Sidebar(props: { workspace: string }) {
     setEdges,
     focusNode,
     editFocusNode,
+    focusEdge,
+    setFocusEdge,
     content,
     setContent,
     focusContent,
