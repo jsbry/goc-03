@@ -22,5 +22,6 @@
     "View": "表示",
     "Comment": "コメント",
     "Flow": "フロー",
-    "Markdown": "マークダウン"
+    "Markdown": "マークダウン",
+    "Content will be lost. Continue?": "内容が失われます。続行しますか？"
 }

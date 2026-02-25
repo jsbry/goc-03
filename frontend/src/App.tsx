@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { EventsOn, EventsOff } from "../wailsjs/runtime/runtime";
 import {
   GetConstants,
@@ -34,6 +35,7 @@ function App() {
   const [focusComment, setFocusComment] = useState<CommentData>(
     {} as CommentData,
   );
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchConstants() {
@@ -123,6 +125,11 @@ function App() {
 
   const editFocusNode = useCallback(
     (value: MyNode | ((prev: MyNode) => MyNode)) => {
+      if (content !== "" && focusContent === "") {
+        if (!confirm(i18n.t("Content will be lost. Continue?"))) {
+          return;
+        }
+      }
       setFocusNode((prev) => {
         const next = typeof value === "function" ? value(prev) : value;
         if (next.data) {
@@ -139,11 +146,16 @@ function App() {
         return next;
       });
     },
-    [],
+    [i18n, focusContent, content],
   );
 
   const editFocusNote = useCallback(
     (value: string) => {
+      if (content !== "" && focusContent === "") {
+        if (!confirm(i18n.t("Content will be lost. Continue?"))) {
+          return false;
+        }
+      }
       if (value !== "" && focusNote !== value) {
         setFocusNote(value);
         OpenMarkdown(value);
@@ -155,8 +167,9 @@ function App() {
         setFocusContent("");
         setFocusComment({} as CommentData);
       }
+      return true;
     },
-    [focusNote],
+    [i18n, focusNote, focusContent, content],
   );
 
   const value = useMemo(

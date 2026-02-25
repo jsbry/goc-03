@@ -33,7 +33,7 @@ export type DataContextType = {
   notes: string[];
   setNotes: React.Dispatch<React.SetStateAction<string[]>>;
   focusNote: string;
-  editFocusNote: (note: string) => void;
+  editFocusNote: (note: string) => boolean;
   comments: CommentData[];
   setComments: React.Dispatch<React.SetStateAction<CommentData[]>>;
   focusComment: CommentData;

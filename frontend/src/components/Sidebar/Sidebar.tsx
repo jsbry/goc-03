@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "i18next";
 import { FaFolderOpen, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { CiNoWaitingSign } from "react-icons/ci";
 import {
@@ -67,10 +68,10 @@ function Sidebar(props: { workspace: string }) {
     if (isDuplicateName(nodes, notes, addNote)) {
       return;
     }
-    setNotes((nts) => [...nts, addNote]);
-    setAddNote("");
-
-    editFocusNote(addNote);
+    if (editFocusNote(addNote)) {
+      setNotes((nts) => [...nts, addNote]);
+      setAddNote("");
+    }
   }, [nodes, notes, addNote, setAddNote, setNotes]);
 
   return (
@@ -133,7 +134,11 @@ function Sidebar(props: { workspace: string }) {
               className="btn btn-outline-primary"
               type="button"
               onClick={addNewNote}
-              disabled={isDuplicateName(nodes, notes, addNote) ? true : false}
+              disabled={
+                addNote === "" || isDuplicateName(nodes, notes, addNote)
+                  ? true
+                  : false
+              }
             >
               {!isDuplicateName(nodes, notes, addNote) ? (
                 <FaPlus />
