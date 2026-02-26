@@ -32,8 +32,8 @@ const (
 var (
 	lng               = languageEnglish
 	pageName          = pageFlow
-	isViewComment     = true
-	isViewEditNode    = false
+	isViewComment     = false
+	isViewEditNode    = true
 	workspace         = "./workspace"
 	workspaceFullPath = ""
 )

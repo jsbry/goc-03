@@ -33,3 +33,10 @@
 ### TODO
 
 - react-flow history
+- resizer size
+
+
+## Inspiration
+
+This project was inspired by:
+- [ryo-manba/md-review](https://github.com/ryo-manba/md-review)

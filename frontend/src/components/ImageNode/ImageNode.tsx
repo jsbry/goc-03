@@ -1,4 +1,9 @@
-import { NodeResizer, Handle, Position } from "@xyflow/react";
+import {
+  NodeResizer,
+  useUpdateNodeInternals,
+  Handle,
+  Position,
+} from "@xyflow/react";
 import { useDataContext, isURL } from "../../context";
 
 type ImageNodeData = {
@@ -7,9 +12,11 @@ type ImageNodeData = {
 };
 
 export default function ImageNode({
+  id,
   data,
   selected,
 }: {
+  id: string;
   data: ImageNodeData;
   selected: boolean;
 }) {
@@ -36,6 +43,10 @@ export default function ImageNode({
     focusComment,
     setFocusComment,
   } = useDataContext();
+  const updateNodeInternals = useUpdateNodeInternals();
+  const onLoad = () => {
+    updateNodeInternals(id);
+  };
 
   let src = "";
   if (isURL(data.imageUrl)) {
@@ -84,6 +95,7 @@ export default function ImageNode({
         key={src}
         alt={data.label}
         style={{ width: "100%" }}
+        onLoad={onLoad}
         onError={(e) => {
           e.currentTarget.style.display = "none";
         }}

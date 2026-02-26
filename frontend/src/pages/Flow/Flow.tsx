@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   SaveNodes,
   SaveEdges,
@@ -31,6 +31,7 @@ import {
   applyNodeChanges,
   EdgeChange,
   applyEdgeChanges,
+  useKeyPress,
 } from "@xyflow/react";
 import ImageNode from "../../components/ImageNode/ImageNode";
 import "@xyflow/react/dist/style.css";
@@ -40,6 +41,8 @@ const nodeTypes = {
 };
 
 const nodeOrigin: [number, number] = [0.5, 0];
+
+const historyMax = 100;
 
 const AddNodeOnEdgeDrop = () => {
   const reactFlowWrapper = useRef(null);
@@ -71,35 +74,129 @@ const AddNodeOnEdgeDrop = () => {
   const prevEdgesRef = useRef(edges);
   const { screenToFlowPosition } = useReactFlow();
 
+  const nodeUndoHistory = useRef<MyNode[][]>([]);
+  const edgeUndoHistory = useRef<Edge[][]>([]);
+  const nodeRedoHistory = useRef<MyNode[][]>([]);
+  const edgeRedoHistory = useRef<Edge[][]>([]);
+  const [isUndoRedo, setIsUndoRedo] = useState<boolean>(false);
+
+  const undoPressed = useKeyPress(["Meta+z", "Strg+z", "Control+z"]);
+  const redoPressed = useKeyPress([
+    "Meta+y",
+    "Strg+y",
+    "Control+y",
+    "Meta+Shift+z",
+    "Strg+Shift+z",
+    "Control+Shift+z",
+  ]);
+
+  useEffect(() => {
+    if (!undoPressed) {
+      return;
+    }
+
+    setIsUndoRedo(true);
+    const latestNodes = nodeUndoHistory.current.pop();
+    const latestEdges = edgeUndoHistory.current.pop();
+    if (latestNodes) {
+      setNodes(latestNodes);
+      nodeRedoHistory.current.push(latestNodes);
+    }
+    if (latestEdges) {
+      setEdges(latestEdges);
+      edgeRedoHistory.current.push(latestEdges);
+    }
+  }, [
+    undoPressed,
+    nodeUndoHistory,
+    edgeUndoHistory,
+    nodeRedoHistory,
+    edgeRedoHistory,
+  ]);
+
+  useEffect(() => {
+    if (!redoPressed) {
+      return;
+    }
+
+    setIsUndoRedo(true);
+    const latestNodes = nodeRedoHistory.current.pop();
+    const latestEdges = edgeRedoHistory.current.pop();
+    if (latestNodes) {
+      setNodes(latestNodes);
+      nodeUndoHistory.current.push(latestNodes);
+    }
+    if (latestEdges) {
+      setEdges(latestEdges);
+      edgeUndoHistory.current.push(latestEdges);
+    }
+  }, [
+    redoPressed,
+    nodeUndoHistory,
+    edgeUndoHistory,
+    nodeRedoHistory,
+    edgeRedoHistory,
+  ]);
+
   useEffect(() => {
     setNodeId(nodes);
   }, [nodes]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (!isEqual(prevNodesRef.current, nodes)) {
+      if (
+        !isEqual(prevNodesRef.current, nodes) ||
+        !isEqual(prevEdgesRef.current, edges)
+      ) {
+        if (!isUndoRedo) {
+          nodeUndoHistory.current.push(prevNodesRef.current);
+          edgeUndoHistory.current.push(prevEdgesRef.current);
+        }
+        setIsUndoRedo(false);
+        if (nodeUndoHistory.current.length > historyMax) {
+          nodeUndoHistory.current.shift();
+        }
+        if (edgeUndoHistory.current.length > historyMax) {
+          edgeUndoHistory.current.shift();
+        }
+
         SaveNodes(JSON.stringify(nodes));
-        prevNodesRef.current = nodes;
-      }
-    }, 3000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [nodes]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (!isEqual(prevEdgesRef.current, edges)) {
         SaveEdges(JSON.stringify(edges));
+        prevNodesRef.current = nodes;
         prevEdgesRef.current = edges;
       }
-    }, 3000);
+    }, 1000);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [edges]);
+  }, [nodes, edges, isUndoRedo]);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (!isEqual(prevNodesRef.current, nodes)) {
+  //       SaveNodes(JSON.stringify(nodes));
+  //       prevNodesRef.current = nodes;
+  //     }
+  //   }, 3000);
+
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, [nodes]);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (!isEqual(prevEdgesRef.current, edges)) {
+  //       SaveEdges(JSON.stringify(edges));
+  //       prevEdgesRef.current = edges;
+  //     }
+  //   }, 3000);
+
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, [edges]);
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: MyNode) => {
@@ -125,6 +222,7 @@ const AddNodeOnEdgeDrop = () => {
   const onNodesChange = useCallback(
     (changes: NodeChange<MyNode>[]) => {
       setNodes((nds) => applyNodeChanges(changes, nds));
+      nodeRedoHistory.current = [];
     },
     [setNodes],
   );
@@ -132,6 +230,7 @@ const AddNodeOnEdgeDrop = () => {
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
       setEdges((nds) => applyEdgeChanges(changes, nds));
+      edgeRedoHistory.current = [];
     },
     [setEdges],
   );
@@ -140,6 +239,7 @@ const AddNodeOnEdgeDrop = () => {
     (params: Connection) => {
       const edge = { ...params, type: "step", label: "" };
       setEdges((eds) => addEdge(edge, eds));
+      edgeRedoHistory.current = [];
     },
     [setEdges],
   );
@@ -175,6 +275,9 @@ const AddNodeOnEdgeDrop = () => {
           targetHandle: getPairHandle(connectionState.fromHandle?.id),
         };
         setEdges((eds) => eds.concat(newEdge));
+
+        nodeRedoHistory.current = [];
+        edgeRedoHistory.current = [];
       }
     },
     [screenToFlowPosition],
@@ -231,7 +334,7 @@ const AddNodeOnEdgeDrop = () => {
         onConnect={onConnect}
         onConnectEnd={onConnectEnd}
         fitView
-        fitViewOptions={{ padding: 2 }}
+        // fitViewOptions={{ padding: 2 }}
         nodeOrigin={nodeOrigin}
         nodeTypes={nodeTypes}
       >
