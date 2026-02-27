@@ -18,6 +18,7 @@ type App struct {
 type AppConstants struct {
 	Language       string
 	PageName       string
+	MarkdownView   string
 	IsViewComment  bool
 	IsViewEditNode bool
 	Workspace      string
@@ -61,6 +62,7 @@ func (a *App) GetConstants() AppConstants {
 	return AppConstants{
 		Language:       lng,
 		PageName:       pageName,
+		MarkdownView:   markdownView,
 		IsViewComment:  isViewComment,
 		IsViewEditNode: isViewEditNode,
 		Workspace:      workspace,

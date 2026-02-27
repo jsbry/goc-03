@@ -21,6 +21,7 @@ function App() {
   const [isViewEditNode, setIsViewEditNode] = useState<boolean>(true);
   const [lng, setLng] = useState<string>("en");
   const [pageName, setPageName] = useState<string>("markdown");
+  const [markdownView, setMarkdownView] = useState<string>("both");
   const [workspace, setWorkspace] = useState<string>("");
   const [baseURL, setBaseURL] = useState<string>("");
   const [nodes, setNodes] = useState<MyNode[]>([]);
@@ -43,6 +44,7 @@ function App() {
 
       setLng(constants.Language);
       setPageName(constants.PageName);
+      setMarkdownView(constants.MarkdownView);
       setIsViewComment(constants.IsViewComment);
       setIsViewEditNode(constants.IsViewEditNode);
       setWorkspace(constants.Workspace);
@@ -66,6 +68,9 @@ function App() {
     });
     EventsOn("pageName", (page: string) => {
       setPageName(page);
+    });
+    EventsOn("markdownView", (mdview: string) => {
+      setMarkdownView(mdview);
     });
     EventsOn("workspace", (workspaceName: string) => {
       setWorkspace(workspaceName);
@@ -99,6 +104,7 @@ function App() {
       EventsOff("isViewEditNode");
       EventsOff("lng");
       EventsOff("pageName");
+      EventsOff("markdownView");
       EventsOff("workspace");
       EventsOff("baseURL");
       EventsOff("nodes");
@@ -217,11 +223,7 @@ function App() {
         <div className="container-fluid h-100">
           <div className="row h-100">
             <Sidebar workspace={workspace}></Sidebar>
-            <Content
-              pageName={pageName}
-              isViewComment={isViewComment}
-              isViewEditNode={isViewEditNode}
-            ></Content>
+            <Content pageName={pageName} markdownView={markdownView}></Content>
             <EditNode isViewEditNode={isViewEditNode}></EditNode>
             <CommentList isViewComment={isViewComment}></CommentList>
           </div>

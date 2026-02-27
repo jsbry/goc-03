@@ -15,25 +15,15 @@ func saveJsonFileContent(filename string, jsonData string) error {
 	}
 
 	path := filepath.Join(workspaceFullPath, filename)
-	jsonByte := []byte(jsonData)
-	if isDebug {
-		// var buf bytes.Buffer
-		// err := json.Indent(&buf, []byte(jsonData), "", "  ")
-		// if err != nil {
-		// 	fmt.Println("Failed to indent JSON:", err)
-		// 	return err
-		// }
-		// jsonByte = buf.Bytes()
-		formatted, err := formatJson(jsonByte)
-		if err != nil {
-			fmt.Println("Error formatting JSON:", err)
-			return err
-		}
-		jsonByte = []byte(formatted)
+	formatted, err := formatJson([]byte(jsonData))
+	if err != nil {
+		fmt.Println("Error formatting JSON:", err)
+		return err
 	}
+	jsonByte := []byte(formatted)
 
 	fmt.Println("Saving JSON to:", path)
-	err := os.WriteFile(path, jsonByte, 0644)
+	err = os.WriteFile(path, jsonByte, 0644)
 	if err != nil {
 		fmt.Println("Error writing JSON file:", err)
 		return err

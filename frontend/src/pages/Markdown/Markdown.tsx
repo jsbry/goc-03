@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
@@ -14,7 +15,8 @@ import { useDataContext } from "../../context";
 import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditor";
 import { componentsWithLinePosition, getSelectionLineRange } from "./selection";
 
-function Markdown() {
+function Markdown(props: { markdownView: string }) {
+  const { markdownView } = props;
   const {
     baseURL,
     nodes,
@@ -56,10 +58,21 @@ function Markdown() {
     });
   };
 
+  const getMarkdownStyle = (
+    area: string,
+    markdownView: string,
+  ): CSSProperties => {
+    if (markdownView === "both") return {};
+
+    if (area !== markdownView) return { display: "none" };
+    return {};
+  };
+
   return (
-    <>
+    <div className="content-parent-markdown">
       <div
         className="flex-fill overflow-auto content-markdown markdown-body"
+        style={getMarkdownStyle("preview", markdownView)}
         onMouseUp={handleMouseUp}
       >
         <ReactMarkdown
@@ -70,10 +83,13 @@ function Markdown() {
           {content}
         </ReactMarkdown>
       </div>
-      <div className="flex-fill content-editor">
+      <div
+        className="flex-fill content-editor"
+        style={getMarkdownStyle("editor", markdownView)}
+      >
         <MarkdownEditor></MarkdownEditor>
       </div>
-    </>
+    </div>
   );
 }
 

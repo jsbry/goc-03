@@ -42,6 +42,10 @@ const nodeTypes = {
 
 const nodeOrigin: [number, number] = [0.5, 0];
 
+type FlowSnapshot = {
+  nodes: MyNode[];
+  edges: Edge[];
+};
 const historyMax = 100;
 
 const AddNodeOnEdgeDrop = () => {
@@ -74,10 +78,8 @@ const AddNodeOnEdgeDrop = () => {
   const prevEdgesRef = useRef(edges);
   const { screenToFlowPosition } = useReactFlow();
 
-  const nodeUndoHistory = useRef<MyNode[][]>([]);
-  const edgeUndoHistory = useRef<Edge[][]>([]);
-  const nodeRedoHistory = useRef<MyNode[][]>([]);
-  const edgeRedoHistory = useRef<Edge[][]>([]);
+  const undoHistory = useRef<FlowSnapshot[]>([{ nodes: nodes, edges: edges }]);
+  const redoHistory = useRef<FlowSnapshot[]>([]);
   const [isUndoRedo, setIsUndoRedo] = useState<boolean>(false);
 
   const undoPressed = useKeyPress(["Meta+z", "Strg+z", "Control+z"]);
@@ -90,53 +92,48 @@ const AddNodeOnEdgeDrop = () => {
     "Control+Shift+z",
   ]);
 
+  const saveHistory = () => {
+    undoHistory.current.push({
+      nodes: structuredClone(nodes),
+      edges: structuredClone(edges),
+    });
+    if (undoHistory.current.length > historyMax) {
+      undoHistory.current.shift();
+    }
+    redoHistory.current = [];
+  };
+
   useEffect(() => {
     if (!undoPressed) {
       return;
     }
+    const prev = undoHistory.current.pop();
+    if (!prev) return;
 
+    redoHistory.current.push({
+      nodes: structuredClone(nodes),
+      edges: structuredClone(edges),
+    });
+    setNodes(prev.nodes);
+    setEdges(prev.edges);
     setIsUndoRedo(true);
-    const latestNodes = nodeUndoHistory.current.pop();
-    const latestEdges = edgeUndoHistory.current.pop();
-    if (latestNodes) {
-      setNodes(latestNodes);
-      nodeRedoHistory.current.push(latestNodes);
-    }
-    if (latestEdges) {
-      setEdges(latestEdges);
-      edgeRedoHistory.current.push(latestEdges);
-    }
-  }, [
-    undoPressed,
-    nodeUndoHistory,
-    edgeUndoHistory,
-    nodeRedoHistory,
-    edgeRedoHistory,
-  ]);
+  }, [undoPressed]);
 
   useEffect(() => {
     if (!redoPressed) {
       return;
     }
+    const next = redoHistory.current.pop();
+    if (!next) return;
 
+    undoHistory.current.push({
+      nodes: structuredClone(nodes),
+      edges: structuredClone(edges),
+    });
+    setNodes(next.nodes);
+    setEdges(next.edges);
     setIsUndoRedo(true);
-    const latestNodes = nodeRedoHistory.current.pop();
-    const latestEdges = edgeRedoHistory.current.pop();
-    if (latestNodes) {
-      setNodes(latestNodes);
-      nodeUndoHistory.current.push(latestNodes);
-    }
-    if (latestEdges) {
-      setEdges(latestEdges);
-      edgeUndoHistory.current.push(latestEdges);
-    }
-  }, [
-    redoPressed,
-    nodeUndoHistory,
-    edgeUndoHistory,
-    nodeRedoHistory,
-    edgeRedoHistory,
-  ]);
+  }, [redoPressed]);
 
   useEffect(() => {
     setNodeId(nodes);
@@ -149,54 +146,21 @@ const AddNodeOnEdgeDrop = () => {
         !isEqual(prevEdgesRef.current, edges)
       ) {
         if (!isUndoRedo) {
-          nodeUndoHistory.current.push(prevNodesRef.current);
-          edgeUndoHistory.current.push(prevEdgesRef.current);
+          saveHistory();
         }
         setIsUndoRedo(false);
-        if (nodeUndoHistory.current.length > historyMax) {
-          nodeUndoHistory.current.shift();
-        }
-        if (edgeUndoHistory.current.length > historyMax) {
-          edgeUndoHistory.current.shift();
-        }
 
         SaveNodes(JSON.stringify(nodes));
         SaveEdges(JSON.stringify(edges));
         prevNodesRef.current = nodes;
         prevEdgesRef.current = edges;
       }
-    }, 1000);
+    }, 500);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [nodes, edges, isUndoRedo]);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     if (!isEqual(prevNodesRef.current, nodes)) {
-  //       SaveNodes(JSON.stringify(nodes));
-  //       prevNodesRef.current = nodes;
-  //     }
-  //   }, 3000);
-
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, [nodes]);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     if (!isEqual(prevEdgesRef.current, edges)) {
-  //       SaveEdges(JSON.stringify(edges));
-  //       prevEdgesRef.current = edges;
-  //     }
-  //   }, 3000);
-
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, [edges]);
+  }, [nodes, edges]);
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: MyNode) => {
@@ -222,7 +186,6 @@ const AddNodeOnEdgeDrop = () => {
   const onNodesChange = useCallback(
     (changes: NodeChange<MyNode>[]) => {
       setNodes((nds) => applyNodeChanges(changes, nds));
-      nodeRedoHistory.current = [];
     },
     [setNodes],
   );
@@ -230,7 +193,6 @@ const AddNodeOnEdgeDrop = () => {
   const onEdgesChange = useCallback(
     (changes: EdgeChange[]) => {
       setEdges((nds) => applyEdgeChanges(changes, nds));
-      edgeRedoHistory.current = [];
     },
     [setEdges],
   );
@@ -239,7 +201,6 @@ const AddNodeOnEdgeDrop = () => {
     (params: Connection) => {
       const edge = { ...params, type: "step", label: "" };
       setEdges((eds) => addEdge(edge, eds));
-      edgeRedoHistory.current = [];
     },
     [setEdges],
   );
@@ -275,9 +236,6 @@ const AddNodeOnEdgeDrop = () => {
           targetHandle: getPairHandle(connectionState.fromHandle?.id),
         };
         setEdges((eds) => eds.concat(newEdge));
-
-        nodeRedoHistory.current = [];
-        edgeRedoHistory.current = [];
       }
     },
     [screenToFlowPosition],
@@ -306,6 +264,8 @@ const AddNodeOnEdgeDrop = () => {
         const createdEdges = incomers.flatMap(({ id: source }) =>
           outgoers.map(({ id: target }) => ({
             id: `${source}->${target}`,
+            type: "step",
+            label: "",
             source,
             target,
           })),

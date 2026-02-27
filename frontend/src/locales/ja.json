@@ -23,5 +23,8 @@
     "Comment": "コメント",
     "Flow": "フロー",
     "Markdown": "マークダウン",
+    "md - Both": "md - 両方",
+    "md - Preview": "md - プレビューのみ",
+    "md - Editor": "md - エディターのみ",
     "Content will be lost. Continue?": "内容が失われます。続行しますか？"
 }

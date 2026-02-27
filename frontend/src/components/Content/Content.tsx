@@ -5,12 +5,8 @@ import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import Markdown from "../../pages/Markdown/Markdown";
 import Flow from "../../pages/Flow/Flow";
 
-function Content(props: {
-  pageName: string;
-  isViewComment: boolean;
-  isViewEditNode: boolean;
-}) {
-  const { pageName, isViewComment, isViewEditNode } = props;
+function Content(props: { pageName: string; markdownView: string }) {
+  const { pageName, markdownView } = props;
   const [helpShow, setHelpShow] = useState<boolean>(false);
   const { t } = useTranslation();
 
@@ -33,9 +29,9 @@ function Content(props: {
       case "flow":
         return <Flow></Flow>;
       case "markdown":
-        return <Markdown></Markdown>;
+        return <Markdown markdownView={markdownView}></Markdown>;
       default:
-        return <Markdown></Markdown>;
+        return <Markdown markdownView={markdownView}></Markdown>;
     }
   };
 

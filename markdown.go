@@ -138,7 +138,7 @@ func (a *App) GetWalkDir() (string, error) {
 		fmt.Printf("Error walking the path %s: %v\n", workspaceFullPath, err)
 		return "[]", err
 	}
-	fmt.Println("GetWalkDir files:", files)
+	// fmt.Println("GetWalkDir files:", files)
 
 	if len(files) == 0 {
 		return "[]", nil
@@ -149,7 +149,7 @@ func (a *App) GetWalkDir() (string, error) {
 		fmt.Printf("Error marshaling files: %v\n", err)
 		return "[]", err
 	}
-	fmt.Printf("GetWalkDir JSON: %s\n", string(jsonBytes))
+	// fmt.Printf("GetWalkDir JSON: %s\n", string(jsonBytes))
 	return string(jsonBytes), nil
 }
 

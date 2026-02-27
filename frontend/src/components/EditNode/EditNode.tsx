@@ -140,6 +140,8 @@ function EditNode(props: { isViewEditNode: boolean }) {
                   ...n.data,
                   imageUrl,
                 },
+                width: undefined,
+                height: undefined,
               }
             : n,
         ),
@@ -214,7 +216,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
             <label htmlFor="nodeLabelInput" className="form-label">
               {t("Node Image")}
             </label>
-            <div className="node-image">
+            <div className="node-image" style={{ height: "auto" }}>
               <img
                 key={
                   isURL(focusNode.data?.imageUrl || "")

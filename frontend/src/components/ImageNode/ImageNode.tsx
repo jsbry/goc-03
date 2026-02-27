@@ -90,18 +90,29 @@ export default function ImageNode({
         // style={{ left: "35%", background: "red" }}
       />
 
-      <img
-        src={src}
-        key={src}
-        alt={data.label}
-        style={{ width: "100%" }}
-        onLoad={onLoad}
-        onError={(e) => {
-          e.currentTarget.style.display = "none";
+      <div
+        style={{
+          flex: 1,
+          position: "relative",
         }}
-      />
+      >
+        <img
+          src={src}
+          key={src}
+          alt={data.label}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+          }}
+          onLoad={onLoad}
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      </div>
 
-      <div style={{ marginTop: 8, textAlign: "center" }}>{data.label}</div>
+      <div style={{ textAlign: "center" }}>{data.label}</div>
 
       <Handle
         type="source"

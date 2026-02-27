@@ -15,8 +15,6 @@ import (
 //go:embed frontend/dist
 var assets embed.FS
 
-const isDebug = true
-
 const (
 	nodesFile    = "nodes.json"
 	edgesFile    = "edges.json"
@@ -27,11 +25,16 @@ const (
 
 	pageFlow     = "flow"
 	pageMarkdown = "markdown"
+
+	markdownViewBoth        = "both"
+	markdownViewOnlyPreview = "preview"
+	markdownViewOnlyEditor  = "editor"
 )
 
 var (
 	lng               = languageEnglish
 	pageName          = pageFlow
+	markdownView      = markdownViewBoth
 	isViewComment     = false
 	isViewEditNode    = true
 	workspace         = "./workspace"
@@ -104,6 +107,19 @@ func (a *App) makeMenu() *menu.Menu {
 	ViewMenu.AddRadio(T("Markdown", nil), pageName == pageMarkdown, keys.CmdOrCtrl("m"), func(_ *menu.CallbackData) {
 		pageName = pageMarkdown
 		rt.EventsEmit(a.ctx, "pageName", pageMarkdown)
+	})
+	ViewMenu.AddSeparator()
+	ViewMenu.AddRadio(T("md - Both", nil), markdownView == markdownViewBoth, nil, func(_ *menu.CallbackData) {
+		markdownView = markdownViewBoth
+		rt.EventsEmit(a.ctx, "markdownView", markdownViewBoth)
+	})
+	ViewMenu.AddRadio(T("md - Preview", nil), markdownView == markdownViewOnlyPreview, nil, func(_ *menu.CallbackData) {
+		markdownView = markdownViewOnlyPreview
+		rt.EventsEmit(a.ctx, "markdownView", markdownViewOnlyPreview)
+	})
+	ViewMenu.AddRadio(T("md - Editor", nil), markdownView == markdownViewOnlyEditor, nil, func(_ *menu.CallbackData) {
+		markdownView = markdownViewOnlyEditor
+		rt.EventsEmit(a.ctx, "markdownView", markdownViewOnlyEditor)
 	})
 	ViewMenu.AddSeparator()
 	ViewMenu.AddCheckbox(T("Comment", nil), isViewComment, keys.CmdOrCtrl("w"), func(_ *menu.CallbackData) {

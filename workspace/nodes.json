@@ -1,3 +1,3 @@
 [
-  {"id":"1","type":"imageNode","data":{"label":"ImageNode","imageUrl":"https://picsum.photos/200/300"},"position":{"x":0,"y":0},"measured":{"width":180,"height":291},"selected":false,"dragging":false,"sourcePosition":"top","targetPosition":"bottom"}
+  {"id":"1","type":"imageNode","data":{"label":"ImageNode","imageUrl":"https://picsum.photos/200/300"},"position":{"x":0,"y":0},"measured":{"width":180,"height":291},"selected":false,"dragging":false,"sourcePosition":"top","targetPosition":"bottom", "width": 180, "height": 291}
 ]
