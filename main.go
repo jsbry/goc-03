@@ -26,9 +26,9 @@ const (
 	pageFlow     = "flow"
 	pageMarkdown = "markdown"
 
-	markdownViewBoth        = "both"
 	markdownViewOnlyPreview = "preview"
 	markdownViewOnlyEditor  = "editor"
+	markdownViewBoth        = "both"
 )
 
 var (
@@ -109,17 +109,17 @@ func (a *App) makeMenu() *menu.Menu {
 		rt.EventsEmit(a.ctx, "pageName", pageMarkdown)
 	})
 	ViewMenu.AddSeparator()
-	ViewMenu.AddRadio(T("md - Both", nil), markdownView == markdownViewBoth, nil, func(_ *menu.CallbackData) {
-		markdownView = markdownViewBoth
-		rt.EventsEmit(a.ctx, "markdownView", markdownViewBoth)
-	})
-	ViewMenu.AddRadio(T("md - Preview", nil), markdownView == markdownViewOnlyPreview, nil, func(_ *menu.CallbackData) {
+	ViewMenu.AddRadio(T("md - Preview", nil), markdownView == markdownViewOnlyPreview, keys.CmdOrCtrl("1"), func(_ *menu.CallbackData) {
 		markdownView = markdownViewOnlyPreview
 		rt.EventsEmit(a.ctx, "markdownView", markdownViewOnlyPreview)
 	})
-	ViewMenu.AddRadio(T("md - Editor", nil), markdownView == markdownViewOnlyEditor, nil, func(_ *menu.CallbackData) {
+	ViewMenu.AddRadio(T("md - Editor", nil), markdownView == markdownViewOnlyEditor, keys.CmdOrCtrl("2"), func(_ *menu.CallbackData) {
 		markdownView = markdownViewOnlyEditor
 		rt.EventsEmit(a.ctx, "markdownView", markdownViewOnlyEditor)
+	})
+	ViewMenu.AddRadio(T("md - Both", nil), markdownView == markdownViewBoth, keys.CmdOrCtrl("3"), func(_ *menu.CallbackData) {
+		markdownView = markdownViewBoth
+		rt.EventsEmit(a.ctx, "markdownView", markdownViewBoth)
 	})
 	ViewMenu.AddSeparator()
 	ViewMenu.AddCheckbox(T("Comment", nil), isViewComment, keys.CmdOrCtrl("w"), func(_ *menu.CallbackData) {
