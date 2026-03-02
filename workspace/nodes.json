@@ -1,3 +1,4 @@
 [
-  {"id":"1","type":"imageNode","data":{"label":"ImageNode","imageUrl":"https://picsum.photos/200/300"},"position":{"x":0,"y":0},"measured":{"width":180,"height":291},"selected":false,"dragging":false,"sourcePosition":"top","targetPosition":"bottom", "width": 180, "height": 291}
+  {"id":"1","type":"imageNode","position":{"x":2,"y":0},"data":{"label":"Flow-Empty","imageUrl":"assets/flow-empty.png"},"origin":[0.5,0],"measured":{"width":384,"height":307},"selected":false,"width":383.69247311827957,"height":307.0860585197935,"resizing":false,"dragging":false},
+  {"id":"2","type":"imageNode","position":{"x":191.9280303030303,"y":390},"data":{"label":"Markdown","imageUrl":"assets/markdown-flow-empty.png"},"origin":[0.5,0],"measured":{"width":384,"height":306},"selected":false,"dragging":false,"width":383.8560606060606,"height":306.1570996978852,"resizing":false}
 ]

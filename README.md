@@ -34,6 +34,8 @@
 
 - react-flow history
 - resizer size
+- image copy and paste
+- node/comment id => uuid?
 
 
 ## Inspiration

@@ -241,6 +241,18 @@ const AddNodeOnEdgeDrop = () => {
     [screenToFlowPosition],
   );
 
+  const onNodeDrag = useCallback(
+    (event: React.MouseEvent, node: MyNode) => {
+      if (node.id === focusNode.id) {
+        editFocusNode((prev) => ({
+          ...prev,
+          position: node.position,
+        }));
+      }
+    },
+    [focusNode],
+  );
+
   const onNodesDelete = useCallback(
     async (deleted: MyNode[]) => {
       let remainingNodes = [...nodes];
@@ -293,10 +305,14 @@ const AddNodeOnEdgeDrop = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onConnectEnd={onConnectEnd}
+        onNodeDrag={onNodeDrag}
         fitView
         // fitViewOptions={{ padding: 2 }}
         nodeOrigin={nodeOrigin}
         nodeTypes={nodeTypes}
+        snapToGrid
+        snapGrid={[5, 5]}
+        minZoom={0.1}
       >
         <Controls />
         <Background />

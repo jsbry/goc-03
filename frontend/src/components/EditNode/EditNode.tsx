@@ -242,7 +242,27 @@ function EditNode(props: { isViewEditNode: boolean }) {
               {t("Change Image")}
             </button>
           </div>
-          <div className="mb-3"></div>
+          <div className="mb-3 ">
+            <label htmlFor="position" className="form-label">
+              {t("Node Position")}
+            </label>
+            <div className="input-group">
+              <span className="input-group-text">x</span>
+              <input
+                type="text"
+                className="form-control"
+                value={focusNode.position?.x || 0}
+                disabled
+              />
+              <span className="input-group-text">y</span>
+              <input
+                type="text"
+                className="form-control"
+                value={focusNode.position?.y || 0}
+                disabled
+              />
+            </div>
+          </div>
         </>
       )}
 

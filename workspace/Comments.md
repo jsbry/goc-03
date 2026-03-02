@@ -9,3 +9,6 @@
 | selectedText | string |
 | content      | string |
 
+- TODO
+    - id
+        - nubmer => string (uuid?)
