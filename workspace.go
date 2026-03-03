@@ -1,13 +1,20 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/base64"
+	"errors"
 	"fmt"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"net"
 	"net/http"
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -92,6 +99,10 @@ func (a *App) publicAssets() error {
 }
 
 func (a *App) SaveToAssets(src string) (string, error) {
+	if workspaceFullPath == "" {
+		return "", nil
+	}
+
 	filename := filepath.Base(src)
 	dest := filepath.Join(workspaceFullPath, "assets", filename)
 
@@ -107,5 +118,50 @@ func (a *App) SaveToAssets(src string) (string, error) {
 
 	uri := path.Join("assets", filename)
 
+	return uri, nil
+}
+
+func (a *App) SaveToAssetsBase64(label string, base64Data string) (string, error) {
+	if workspaceFullPath == "" {
+		return "", nil
+	}
+
+	if !strings.HasPrefix(base64Data, "data:image") {
+		return "", errors.New("invalid image data")
+	}
+
+	parts := strings.SplitN(base64Data, ",", 2)
+	if len(parts) != 2 {
+		return "", errors.New("invalid base64 format")
+	}
+
+	meta := parts[0]
+	base64Data = parts[1]
+
+	ext := "png"
+	if strings.Contains(meta, "image/jpeg") {
+		ext = "jpg"
+	}
+	if strings.Contains(meta, "image/webp") {
+		ext = "webp"
+	}
+
+	decoded, err := base64.StdEncoding.DecodeString(base64Data)
+	if err != nil {
+		return "", err
+	}
+	_, _, err = image.Decode(bytes.NewReader(decoded))
+	if err != nil {
+		return "", errors.New("invalid image file")
+	}
+
+	filename := label + "." + ext
+	dest := filepath.Join(workspaceFullPath, "assets", filename)
+	err = os.WriteFile(dest, decoded, 0644)
+	if err != nil {
+		return "", err
+	}
+
+	uri := path.Join("assets", filename)
 	return uri, nil
 }

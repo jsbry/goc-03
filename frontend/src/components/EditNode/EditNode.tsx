@@ -6,6 +6,7 @@ import isEmpty from "lodash/isEmpty";
 import {
   OpenFileDialog,
   SaveToAssets,
+  SaveToAssetsBase64,
   RenameMarkdown,
 } from "../../../wailsjs/go/main/App";
 import {
@@ -149,6 +150,48 @@ function EditNode(props: { isViewEditNode: boolean }) {
     });
   };
 
+  const onPaste = async (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const items = e.clipboardData.items;
+    for (let item of items) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        const reader = new FileReader();
+        reader.onload = async () => {
+          await SaveToAssetsBase64(
+            focusNode.data.label,
+            reader.result as string,
+          ).then((imageUrl) => {
+            editFocusNode((prev) => ({
+              ...prev,
+              data: {
+                ...prev.data,
+                imageUrl,
+              },
+            }));
+            setNodes((nds) =>
+              nds.map((n) =>
+                n.id === focusNode.id
+                  ? {
+                      ...n,
+                      data: {
+                        ...n.data,
+                        imageUrl,
+                      },
+                      width: undefined,
+                      height: undefined,
+                    }
+                  : n,
+              ),
+            );
+          });
+        };
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+  };
+
   return (
     <aside
       className={`edit-node-sidebar d-flex flex-column flex-shrink-0 overflow-auto ${isViewEditNode ? "" : "d-none"}`}
@@ -239,8 +282,15 @@ function EditNode(props: { isViewEditNode: boolean }) {
               className="btn btn-sm btn-outline-secondary mt-2"
               onClick={selectFile}
             >
-              {t("Change Image")}
+              {t("Select Image")}
             </button>
+            <input
+              id="pasteImageInput"
+              type="text"
+              className="form-control form-control-sm mt-2"
+              onPaste={onPaste}
+              placeholder={t("Paste Image")}
+            />
           </div>
           <div className="mb-3 ">
             <label htmlFor="position" className="form-label">

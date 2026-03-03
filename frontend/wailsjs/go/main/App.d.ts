@@ -27,3 +27,5 @@ export function SaveMarkdown(arg1:string,arg2:string):Promise<void>;
 export function SaveNodes(arg1:string):Promise<void>;
 
 export function SaveToAssets(arg1:string):Promise<string>;
+
+export function SaveToAssetsBase64(arg1:string,arg2:string):Promise<string>;

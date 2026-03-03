@@ -53,3 +53,7 @@ export function SaveNodes(arg1) {
 export function SaveToAssets(arg1) {
   return window['go']['main']['App']['SaveToAssets'](arg1);
 }
+
+export function SaveToAssetsBase64(arg1, arg2) {
+  return window['go']['main']['App']['SaveToAssetsBase64'](arg1, arg2);
+}
