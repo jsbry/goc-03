@@ -8,9 +8,12 @@
 ## TODO
 
 - react-flow history
-- resizer size
+- node resizer
 - image copy and paste
 - node/comment id => uuid?
+- pageName: Ultra Wide mode
+    - sidebar : flow : markdown : edit node : comments
+- components resize
 
 
 ## Inspiration
