@@ -23,8 +23,9 @@ const (
 	languageEnglish  = "en"
 	languageJapanese = "ja"
 
-	pageFlow     = "flow"
-	pageMarkdown = "markdown"
+	pageFlow         = "flow"
+	pageMarkdown     = "markdown"
+	pageFlowMarkdown = "flow-markdown"
 
 	markdownViewOnlyPreview = "preview"
 	markdownViewOnlyEditor  = "editor"
@@ -107,6 +108,10 @@ func (a *App) makeMenu() *menu.Menu {
 	ViewMenu.AddRadio(T("Markdown", nil), pageName == pageMarkdown, keys.CmdOrCtrl("m"), func(_ *menu.CallbackData) {
 		pageName = pageMarkdown
 		rt.EventsEmit(a.ctx, "pageName", pageMarkdown)
+	})
+	ViewMenu.AddRadio(T("Flow/Markdown", nil), pageName == pageFlowMarkdown, keys.CmdOrCtrl("b"), func(_ *menu.CallbackData) {
+		pageName = pageFlowMarkdown
+		rt.EventsEmit(a.ctx, "pageName", pageFlowMarkdown)
 	})
 	ViewMenu.AddSeparator()
 	ViewMenu.AddRadio(T("md - Preview", nil), markdownView == markdownViewOnlyPreview, keys.CmdOrCtrl("1"), func(_ *menu.CallbackData) {

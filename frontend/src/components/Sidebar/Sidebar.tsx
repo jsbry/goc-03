@@ -17,6 +17,7 @@ function Sidebar(props: { workspace: string }) {
   const { t } = useTranslation();
   const {
     baseURL,
+    pageName,
     nodes,
     setNodes,
     edges,

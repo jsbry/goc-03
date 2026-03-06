@@ -32,6 +32,7 @@ export default function MarkdownEditor() {
 
   const {
     baseURL,
+    pageName,
     nodes,
     setNodes,
     edges,

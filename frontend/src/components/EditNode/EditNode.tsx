@@ -22,6 +22,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
   const { t } = useTranslation();
   const {
     baseURL,
+    pageName,
     nodes,
     setNodes,
     edges,

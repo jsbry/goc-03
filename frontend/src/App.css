@@ -12,6 +12,10 @@
     padding-right: 0rem;
 }
 
+.main-flex {
+    display: flex;
+}
+
 .comments-sidebar {
     width: 210px;
     height: 100vh;

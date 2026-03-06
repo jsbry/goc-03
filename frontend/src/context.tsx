@@ -18,6 +18,7 @@ export type CommentData = {
 
 export type DataContextType = {
   baseURL: string;
+  pageName: string;
   nodes: MyNode[];
   setNodes: React.Dispatch<React.SetStateAction<MyNode[]>>;
   edges: Edge[];

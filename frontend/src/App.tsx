@@ -181,6 +181,7 @@ function App() {
   const value = useMemo(
     () => ({
       baseURL,
+      pageName,
       nodes,
       setNodes,
       edges,
@@ -204,6 +205,7 @@ function App() {
     }),
     [
       baseURL,
+      pageName,
       nodes,
       edges,
       focusNode,

@@ -22,6 +22,7 @@ export default function ImageNode({
 }) {
   const {
     baseURL,
+    pageName,
     nodes,
     setNodes,
     edges,

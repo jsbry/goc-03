@@ -30,13 +30,24 @@ function Content(props: { pageName: string; markdownView: string }) {
         return <Flow></Flow>;
       case "markdown":
         return <Markdown markdownView={markdownView}></Markdown>;
+      case "flow-markdown":
+        return (
+          <>
+            <Flow></Flow>
+            <Markdown markdownView={markdownView}></Markdown>
+          </>
+        );
       default:
         return <Markdown markdownView={markdownView}></Markdown>;
     }
   };
 
   return (
-    <main className="main h-100">
+    <main
+      className={
+        "main h-100 " + (pageName === "flow-markdown" ? "main-flex" : "")
+      }
+    >
       {renderPage(pageName)}
 
       <Modal show={helpShow} onHide={handleHelpClose} size="lg">

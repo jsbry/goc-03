@@ -19,6 +19,7 @@ function Markdown(props: { markdownView: string }) {
   const { markdownView } = props;
   const {
     baseURL,
+    pageName,
     nodes,
     setNodes,
     edges,
@@ -69,7 +70,9 @@ function Markdown(props: { markdownView: string }) {
   };
 
   return (
-    <div className="content-parent-markdown">
+    <div
+      className={`content-parent-markdown ${pageName === "flow-markdown" ? " w-50" : ""}`}
+    >
       <div
         className="flex-fill overflow-auto content-markdown markdown-body"
         style={getMarkdownStyle("preview", markdownView)}

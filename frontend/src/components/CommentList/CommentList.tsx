@@ -18,6 +18,7 @@ function CommentList(props: { isViewComment: boolean }) {
   const { t } = useTranslation();
   const {
     baseURL,
+    pageName,
     nodes,
     setNodes,
     edges,
