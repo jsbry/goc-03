@@ -51,6 +51,7 @@ func (a *App) GetConstants() AppConstants {
 		workspace = ""
 		workspaceFullPath = ""
 		runtime.EventsEmit(a.ctx, "workspace", workspace)
+		a.updateMenu()
 	}
 
 	nodes := a.getJsonFileContent(nodesFile)

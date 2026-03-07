@@ -2,7 +2,9 @@ package main
 
 import (
 	"embed"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -91,9 +93,17 @@ func (a *App) makeMenu() *menu.Menu {
 		} else {
 			if absPath != "" {
 				a.OpenWorkspace(absPath)
+				a.updateMenu()
 			}
 		}
 	})
+	showExplorer := FileMenu.AddText(T("Show in Explorer", nil), nil, func(_ *menu.CallbackData) {
+		if workspaceFullPath == "" {
+			return
+		}
+		OpenExplorer(workspaceFullPath)
+	})
+	showExplorer.Disabled = workspaceFullPath == ""
 	FileMenu.AddSeparator()
 	FileMenu.AddText(T("Quit", nil), keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
 		rt.Quit(a.ctx)
@@ -159,4 +169,17 @@ func (a *App) updateMenu() {
 	Load(lng)
 	AppMenu := a.makeMenu()
 	rt.MenuSetApplicationMenu(a.ctx, AppMenu)
+}
+
+func OpenExplorer(path string) error {
+	switch runtime.GOOS {
+	case "windows":
+		return exec.Command("explorer", path).Start()
+	case "darwin":
+		return exec.Command("open", path).Start()
+	case "linux":
+		return exec.Command("xdg-open", path).Start()
+	default:
+		return nil
+	}
 }
