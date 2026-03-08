@@ -9,6 +9,7 @@
 
 - react-flow history
 - node resizer
+- node type change
 - image copy and paste
 - node/comment id => uuid?
 - components resize
