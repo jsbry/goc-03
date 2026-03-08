@@ -12,6 +12,7 @@
 - image copy and paste
 - node/comment id => uuid?
 - components resize
+- monaco-editor localize
 
 
 ## Inspiration
