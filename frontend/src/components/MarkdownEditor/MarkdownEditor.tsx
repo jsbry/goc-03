@@ -30,30 +30,7 @@ export default function MarkdownEditor() {
     );
   };
 
-  const {
-    baseURL,
-    pageName,
-    nodes,
-    setNodes,
-    edges,
-    setEdges,
-    focusNode,
-    editFocusNode,
-    focusEdge,
-    setFocusEdge,
-    content,
-    setContent,
-    focusContent,
-    setFocusContent,
-    notes,
-    setNotes,
-    focusNote,
-    editFocusNote,
-    comments,
-    setComments,
-    focusComment,
-    setFocusComment,
-  } = useDataContext();
+  const { content, setContent } = useDataContext();
 
   const options = {
     fontFamily: "'BIZ UDゴシック',Consolas, 'Courier New', monospace",

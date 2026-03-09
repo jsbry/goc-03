@@ -8,39 +8,13 @@ import "github-markdown-css/github-markdown.css";
 // import 'highlight.js/styles/github.css';
 // import 'highlight.js/styles/github-dark.css';
 
-import Editor, { OnMount } from "@monaco-editor/react";
-// import "monaco-editor/esm/vs/basic-languages/markdown/markdown";
-
 import { useDataContext } from "../../context";
 import MarkdownEditor from "../../components/MarkdownEditor/MarkdownEditor";
 import { componentsWithLinePosition, getSelectionLineRange } from "./selection";
 
 function Markdown(props: { markdownView: string }) {
   const { markdownView } = props;
-  const {
-    baseURL,
-    pageName,
-    nodes,
-    setNodes,
-    edges,
-    setEdges,
-    focusNode,
-    editFocusNode,
-    focusEdge,
-    setFocusEdge,
-    content,
-    setContent,
-    focusContent,
-    setFocusContent,
-    notes,
-    setNotes,
-    focusNote,
-    editFocusNote,
-    comments,
-    setComments,
-    focusComment,
-    setFocusComment,
-  } = useDataContext();
+  const { pageName, content, focusContent, setFocusComment } = useDataContext();
 
   const handleMouseUp = () => {
     const selection = window.getSelection();

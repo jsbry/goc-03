@@ -25,7 +25,6 @@ import {
   getIncomers,
   getOutgoers,
   getConnectedEdges,
-  Node,
   Edge,
   NodeChange,
   applyNodeChanges,
@@ -52,7 +51,6 @@ const AddNodeOnEdgeDrop = () => {
   const reactFlowWrapper = useRef(null);
 
   const {
-    baseURL,
     pageName,
     nodes,
     setNodes,
@@ -60,20 +58,7 @@ const AddNodeOnEdgeDrop = () => {
     setEdges,
     focusNode,
     editFocusNode,
-    focusEdge,
     setFocusEdge,
-    content,
-    setContent,
-    focusContent,
-    setFocusContent,
-    notes,
-    setNotes,
-    focusNote,
-    editFocusNote,
-    comments,
-    setComments,
-    focusComment,
-    setFocusComment,
   } = useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);

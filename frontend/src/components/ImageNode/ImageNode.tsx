@@ -20,30 +20,7 @@ export default function ImageNode({
   data: ImageNodeData;
   selected: boolean;
 }) {
-  const {
-    baseURL,
-    pageName,
-    nodes,
-    setNodes,
-    edges,
-    setEdges,
-    focusNode,
-    editFocusNode,
-    focusEdge,
-    setFocusEdge,
-    content,
-    setContent,
-    focusContent,
-    setFocusContent,
-    notes,
-    setNotes,
-    focusNote,
-    editFocusNote,
-    comments,
-    setComments,
-    focusComment,
-    setFocusComment,
-  } = useDataContext();
+  const { baseURL } = useDataContext();
   const updateNodeInternals = useUpdateNodeInternals();
   const onLoad = () => {
     updateNodeInternals(id);

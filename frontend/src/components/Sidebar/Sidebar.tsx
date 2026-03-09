@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import i18n from "i18next";
 import { FaFolderOpen, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { CiNoWaitingSign } from "react-icons/ci";
 import {
@@ -16,28 +15,13 @@ function Sidebar(props: { workspace: string }) {
   const { workspace } = props;
   const { t } = useTranslation();
   const {
-    baseURL,
-    pageName,
     nodes,
-    setNodes,
-    edges,
-    setEdges,
-    focusNode,
     editFocusNode,
-    focusEdge,
-    setFocusEdge,
-    content,
-    setContent,
     focusContent,
-    setFocusContent,
     notes,
     setNotes,
     focusNote,
     editFocusNote,
-    comments,
-    setComments,
-    focusComment,
-    setFocusComment,
   } = useDataContext();
 
   const [addNote, setAddNote] = useState("");

@@ -22,27 +22,14 @@ function EditNode(props: { isViewEditNode: boolean }) {
   const { t } = useTranslation();
   const {
     baseURL,
-    pageName,
     nodes,
     setNodes,
-    edges,
     setEdges,
     focusNode,
     editFocusNode,
     focusEdge,
     setFocusEdge,
-    content,
-    setContent,
-    focusContent,
-    setFocusContent,
     notes,
-    setNotes,
-    focusNote,
-    editFocusNote,
-    comments,
-    setComments,
-    focusComment,
-    setFocusComment,
   } = useDataContext();
 
   const [addLabel, setAddLabel] = useState("");
@@ -293,11 +280,11 @@ function EditNode(props: { isViewEditNode: boolean }) {
               placeholder={t("Paste Image")}
             />
           </div>
-          <div className="mb-3 ">
+          <div className="mb-3">
             <label htmlFor="position" className="form-label">
               {t("Node Position")}
             </label>
-            <div className="input-group">
+            <div className="input-group input-group-sm">
               <span className="input-group-text">x</span>
               <input
                 type="text"
