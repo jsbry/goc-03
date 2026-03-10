@@ -14,6 +14,9 @@
 - node/comment id => uuid?
 - components resize
 - monaco-editor localize
+- image remove
+- ultra wide mode space/tab key unable in markdown page
+- flow page : node pair md exists icon
 
 
 ## Inspiration

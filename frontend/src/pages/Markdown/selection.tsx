@@ -26,6 +26,16 @@ export const componentsWithLinePosition: Components = {
       {children}
     </p>
   ),
+  a: ({ node, className, children, ...props }: any) => (
+    <a
+      className={className}
+      data-line-start={node?.position?.start?.line}
+      target="_blank"
+      {...props}
+    >
+      {children}
+    </a>
+  ),
   h1: ({ node, className, children, ...props }: any) => (
     <h1
       className={className}
