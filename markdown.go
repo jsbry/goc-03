@@ -77,6 +77,9 @@ func (a *App) RenameMarkdown(oldLabel string, newLabel string) {
 		return
 	}
 	fmt.Printf("Renamed file from %s to %s\n", old, new)
+
+	notes, _ := a.GetWalkDir()
+	runtime.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) RemoveMarkdown(label string) {
@@ -92,6 +95,9 @@ func (a *App) RemoveMarkdown(label string) {
 		return
 	}
 	fmt.Printf("Removed file %s\n", filepath)
+
+	notes, _ := a.GetWalkDir()
+	runtime.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) SaveMarkdown(nodeName string, content string) {
@@ -110,6 +116,9 @@ func (a *App) SaveMarkdown(nodeName string, content string) {
 		return
 	}
 	fmt.Printf("Saved file %s\n", filepath)
+
+	notes, _ := a.GetWalkDir()
+	runtime.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) GetWalkDir() (string, error) {
@@ -118,9 +127,9 @@ func (a *App) GetWalkDir() (string, error) {
 	}
 
 	expectedFiles := make(map[string]bool)
-	for _, v := range a.nodes {
-		expectedFiles[v.Data.Label] = true
-	}
+	// for _, v := range a.nodes {
+	// 	expectedFiles[v.Data.Label] = true
+	// }
 	fmt.Println("Expected files:", expectedFiles)
 
 	var files []string

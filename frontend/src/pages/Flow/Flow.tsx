@@ -302,6 +302,7 @@ const AddNodeOnEdgeDrop = () => {
         snapToGrid
         snapGrid={[5, 5]}
         minZoom={0.1}
+        panActivationKeyCode={null}
       >
         <Controls />
         <Background />

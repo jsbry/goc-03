@@ -87,22 +87,28 @@ function Sidebar(props: { workspace: string }) {
       </ul>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
-        {notes.map((note, i) => (
-          <li key={i} className="nav-item">
-            <a
-              href="#"
-              className={`nav-link ${focusContent === note ? "active" : "link-dark"}`}
-              onClick={() => editFocusNote(note)}
-            >
-              {focusContent === note ? (
-                <PiBookOpenText className="me-2" />
-              ) : (
-                <PiBook className="me-2" />
-              )}
-              {note}
-            </a>
-          </li>
-        ))}
+        {notes.map((note, i) => {
+          const exists = nodes.some((node) => node.data.label === note);
+          if (exists) {
+            return null;
+          }
+          return (
+            <li key={i} className="nav-item">
+              <a
+                href="#"
+                className={`nav-link ${focusContent === note ? "active" : "link-dark"}`}
+                onClick={() => editFocusNote(note)}
+              >
+                {focusContent === note ? (
+                  <PiBookOpenText className="me-2" />
+                ) : (
+                  <PiBook className="me-2" />
+                )}
+                {note}
+              </a>
+            </li>
+          );
+        })}
       </ul>
       <div className="d-flex justify-content-between align-items-center p-2 mb-2 input-group">
         {focusNote === "" ? (

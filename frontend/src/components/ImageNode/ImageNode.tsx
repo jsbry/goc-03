@@ -4,6 +4,7 @@ import {
   Handle,
   Position,
 } from "@xyflow/react";
+import { PiBookOpenText } from "react-icons/pi";
 import { useDataContext, isURL } from "../../context";
 
 type ImageNodeData = {
@@ -20,11 +21,13 @@ export default function ImageNode({
   data: ImageNodeData;
   selected: boolean;
 }) {
-  const { baseURL } = useDataContext();
+  const { baseURL, notes } = useDataContext();
   const updateNodeInternals = useUpdateNodeInternals();
   const onLoad = () => {
     updateNodeInternals(id);
   };
+
+  const noteExists = notes.some((note) => note === data.label);
 
   let src = "";
   if (isURL(data.imageUrl)) {
@@ -90,7 +93,16 @@ export default function ImageNode({
         />
       </div>
 
-      <div style={{ textAlign: "center" }}>{data.label}</div>
+      <div style={{ textAlign: "center" }}>
+        {noteExists ? (
+          <span>
+            <PiBookOpenText className="me-1" />
+          </span>
+        ) : (
+          ""
+        )}
+        {data.label}
+      </div>
 
       <Handle
         type="source"
