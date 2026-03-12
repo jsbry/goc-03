@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import Editor, { OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
 
@@ -28,9 +29,26 @@ export default function MarkdownEditor() {
         editor.getAction("editor.action.formatDocument")?.run();
       },
     );
+
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyM, () => {});
+
+    // WIP
+    const dom = editor.getDomNode();
+    dom?.addEventListener("compositionstart", () => {
+      composingRef.current = true;
+    });
+    dom?.addEventListener("compositionend", () => {
+      composingRef.current = false;
+    });
   };
 
   const { content, setContent } = useDataContext();
+  const composingRef = useRef(false);
+
+  const onEditorChange = (value: string | undefined) => {
+    if (composingRef.current) return;
+    setContent(value || "");
+  };
 
   const options = {
     fontFamily: "'BIZ UDゴシック',Consolas, 'Courier New', monospace",
@@ -45,7 +63,7 @@ export default function MarkdownEditor() {
       language="markdown"
       value={content}
       theme="vs-dark"
-      onChange={(value) => setContent(value || "")}
+      onChange={onEditorChange}
       className="flex-fill"
       options={options}
       onMount={handleEditorDidMount}

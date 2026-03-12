@@ -1,6 +1,21 @@
+.no-select {
+    user-select: none;
+}
+
 .sidebar {
     width: 210px;
     height: 100vh;
+    position: relative;
+}
+
+.sidebar-resizer {
+    position:absolute;
+    right: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    cursor: ew-resize;
+    background: #ccc;
 }
 
 .main {

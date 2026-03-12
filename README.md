@@ -15,13 +15,14 @@
 - image copy and paste
 - node/comment id => uuid?
 - components resize
+    - wip: sidebar
 - monaco-editor localize
 - image remove
-- ultra wide mode space/tab key unable in markdown page
 - flow page : node pair md exists icon
     - wip
 - manual save mode
 - monaco-editor cursor confusion
+    - wip
 
 
 ## Inspiration
