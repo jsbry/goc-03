@@ -199,7 +199,8 @@ function EditNode(props: { isViewEditNode: boolean }) {
   const resize = (e: MouseEvent) => {
     if (!isResizing.current || !navRef.current) return;
 
-    let newWidth = window.innerWidth - e.clientX;
+    const rect = navRef.current.getBoundingClientRect();
+    let newWidth = rect.right - e.clientX;
     if (newWidth < editNodeSidebarWidth) {
       newWidth = editNodeSidebarWidth;
     }

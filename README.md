@@ -17,7 +17,6 @@
 - components resize
     - wip
     - todo: window size over
-    - todo: double right sidebar > edit node resizer
 - monaco-editor localize
 - image remove
 - flow page : node pair md exists icon
