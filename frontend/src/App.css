@@ -9,7 +9,7 @@
 }
 
 .sidebar-resizer {
-    position:absolute;
+    position: absolute;
     right: 0;
     top: 0;
     width: 2px;
@@ -19,7 +19,6 @@
 }
 
 .main {
-    /* width: calc(100% - 420px); */
     flex: 1;
     min-width: 0;
     height: 100vh;
@@ -34,12 +33,34 @@
 .comments-sidebar {
     width: 210px;
     height: 100vh;
+    position: relative;
+}
+
+.comments-sidebar-resizer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    cursor: ew-resize;
+    background: #ccc;
 }
 
 .edit-node-sidebar {
     width: 210px;
     height: 100vh;
     background-color:#f5f5f5 !important;
+    position: relative;
+}
+
+.edit-node-sidebar-resizer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    cursor: ew-resize;
+    background: #ccc;
 }
 
 .content-parent-markdown {

@@ -12,9 +12,14 @@ import {
   getCommentId,
 } from "../../context";
 
+const commentsSidebarWidth = 210;
+
 function CommentList(props: { isViewComment: boolean }) {
   const { isViewComment } = props;
   const [addComment, setAddComment] = useState("");
+  const [width, setWidth] = useState(commentsSidebarWidth);
+  const navRef = useRef<HTMLDivElement>(null);
+  const isResizing = useRef(false);
   const { t } = useTranslation();
   const {
     nodes,
@@ -88,10 +93,44 @@ function CommentList(props: { isViewComment: boolean }) {
     [setComments],
   );
 
+  const startResize = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    document.body.classList.add("no-select");
+    isResizing.current = true;
+  };
+
+  const stopResize = () => {
+    isResizing.current = false;
+    document.body.classList.remove("no-select");
+  };
+
+  const resize = (e: MouseEvent) => {
+    if (!isResizing.current || !navRef.current) return;
+
+    let newWidth = window.innerWidth - e.clientX;
+    if (newWidth < commentsSidebarWidth) {
+      newWidth = commentsSidebarWidth;
+    }
+    setWidth(newWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", resize);
+    window.addEventListener("mouseup", stopResize);
+
+    return () => {
+      window.removeEventListener("mousemove", resize);
+      window.removeEventListener("mouseup", stopResize);
+    };
+  }, []);
+
   return (
     <aside
       className={`comments-sidebar d-flex flex-column flex-shrink-0 bg-light overflow-auto ${isViewComment ? "" : "d-none"}`}
+      style={{ width: `${width}px` }}
+      ref={navRef}
     >
+      <div onMouseDown={startResize} className="comments-sidebar-resizer" />
       <div className="d-flex align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">{t("Comments")}</span>
       </div>

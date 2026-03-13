@@ -15,11 +15,14 @@
 - image copy and paste
 - node/comment id => uuid?
 - components resize
-    - wip: sidebar
+    - wip
+    - todo: window size over
+    - todo: double right sidebar > edit node resizer
 - monaco-editor localize
 - image remove
 - flow page : node pair md exists icon
     - wip
+    - todo: mouse over markdown preview
 - manual save mode
 - monaco-editor cursor confusion
     - wip

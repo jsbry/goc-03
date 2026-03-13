@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Edge } from "@xyflow/react";
 import { CiNoWaitingSign } from "react-icons/ci";
@@ -17,8 +17,13 @@ import {
   getNodeId,
 } from "../../context";
 
+const editNodeSidebarWidth = 210;
+
 function EditNode(props: { isViewEditNode: boolean }) {
   const { isViewEditNode } = props;
+  const [width, setWidth] = useState(editNodeSidebarWidth);
+  const navRef = useRef<HTMLDivElement>(null);
+  const isResizing = useRef(false);
   const { t } = useTranslation();
   const {
     baseURL,
@@ -180,10 +185,44 @@ function EditNode(props: { isViewEditNode: boolean }) {
     }
   };
 
+  const startResize = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    document.body.classList.add("no-select");
+    isResizing.current = true;
+  };
+
+  const stopResize = () => {
+    isResizing.current = false;
+    document.body.classList.remove("no-select");
+  };
+
+  const resize = (e: MouseEvent) => {
+    if (!isResizing.current || !navRef.current) return;
+
+    let newWidth = window.innerWidth - e.clientX;
+    if (newWidth < editNodeSidebarWidth) {
+      newWidth = editNodeSidebarWidth;
+    }
+    setWidth(newWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousemove", resize);
+    window.addEventListener("mouseup", stopResize);
+
+    return () => {
+      window.removeEventListener("mousemove", resize);
+      window.removeEventListener("mouseup", stopResize);
+    };
+  }, []);
+
   return (
     <aside
       className={`edit-node-sidebar d-flex flex-column flex-shrink-0 overflow-auto ${isViewEditNode ? "" : "d-none"}`}
+      style={{ width: `${width}px` }}
+      ref={navRef}
     >
+      <div onMouseDown={startResize} className="edit-node-sidebar-resizer" />
       <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">
           {isEmpty(focusNode) ? t("Add Node") : t("Edit Node")}
