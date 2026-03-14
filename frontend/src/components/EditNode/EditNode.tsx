@@ -2,11 +2,13 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Edge } from "@xyflow/react";
 import { CiNoWaitingSign } from "react-icons/ci";
+import { FaTrashCan } from "react-icons/fa6";
 import isEmpty from "lodash/isEmpty";
 import {
   OpenFileDialog,
   SaveToAssets,
   SaveToAssetsBase64,
+  RemoveAsset,
   RenameMarkdown,
 } from "../../../wailsjs/go/main/App";
 import {
@@ -141,6 +143,40 @@ function EditNode(props: { isViewEditNode: boolean }) {
         ),
       );
     });
+  };
+
+  const removeFile = async () => {
+    if (focusNode.data?.imageUrl) {
+      if (!isURL(focusNode.data.imageUrl)) {
+        if (!confirm(t("Delete Image?"))) {
+          return;
+        }
+        await RemoveAsset(focusNode.data.imageUrl);
+      }
+    }
+
+    editFocusNode((prev) => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        imageUrl: "",
+      },
+    }));
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === focusNode.id
+          ? {
+              ...n,
+              data: {
+                ...n.data,
+                imageUrl: "",
+              },
+              width: undefined,
+              height: undefined,
+            }
+          : n,
+      ),
+    );
   };
 
   const onPaste = async (e: React.ClipboardEvent<HTMLInputElement>) => {
@@ -306,12 +342,20 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 }}
               />
             </div>
-            <button
-              className="btn btn-sm btn-outline-secondary mt-2"
-              onClick={selectFile}
-            >
-              {t("Select Image")}
-            </button>
+            <div className="input-group">
+              <button
+                className="btn btn-sm btn-outline-secondary mt-2"
+                onClick={selectFile}
+              >
+                {t("Select Image")}
+              </button>
+              <button
+                className="btn btn-sm btn-outline-danger mt-2"
+                onClick={removeFile}
+              >
+                <FaTrashCan />
+              </button>
+            </div>
             <input
               id="pasteImageInput"
               type="text"

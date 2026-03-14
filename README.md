@@ -20,6 +20,7 @@
     - todo: divider component
 - monaco-editor localize
 - image remove
+    - wip
 - flow page : node pair md exists icon
     - wip
     - todo: mouse over markdown preview

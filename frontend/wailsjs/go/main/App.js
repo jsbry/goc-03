@@ -26,6 +26,10 @@ export function OpenWorkspace(arg1) {
   return window['go']['main']['App']['OpenWorkspace'](arg1);
 }
 
+export function RemoveAsset(arg1) {
+  return window['go']['main']['App']['RemoveAsset'](arg1);
+}
+
 export function RemoveMarkdown(arg1) {
   return window['go']['main']['App']['RemoveMarkdown'](arg1);
 }

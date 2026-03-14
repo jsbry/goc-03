@@ -165,3 +165,12 @@ func (a *App) SaveToAssetsBase64(label string, base64Data string) (string, error
 	uri := path.Join("assets", filename)
 	return uri, nil
 }
+
+func (a *App) RemoveAsset(filename string) {
+	if workspaceFullPath == "" {
+		return
+	}
+
+	dest := filepath.Join(workspaceFullPath, filename)
+	os.Remove(dest)
+}

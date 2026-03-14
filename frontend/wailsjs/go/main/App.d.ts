@@ -14,6 +14,8 @@ export function OpenMarkdown(arg1:string):Promise<void>;
 
 export function OpenWorkspace(arg1:string):Promise<void>;
 
+export function RemoveAsset(arg1:string):Promise<void>;
+
 export function RemoveMarkdown(arg1:string):Promise<void>;
 
 export function RenameMarkdown(arg1:string,arg2:string):Promise<void>;

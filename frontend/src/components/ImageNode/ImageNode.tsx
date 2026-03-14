@@ -96,7 +96,7 @@ export default function ImageNode({
       <div style={{ textAlign: "center" }}>
         {noteExists ? (
           <span>
-            <PiBookOpenText className="me-1" />
+            <PiBookOpenText className="me-1 mb-1" />
           </span>
         ) : (
           ""
