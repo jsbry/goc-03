@@ -13,6 +13,7 @@
     - wip
 - node type change
 - image copy and paste
+    - wip
 - node/comment id => uuid?
 - components resize
     - wip
