@@ -12,6 +12,7 @@
 - node resizer
     - wip
 - node type change
+    - wip
 - image copy and paste
     - wip
 - node/comment id => uuid?

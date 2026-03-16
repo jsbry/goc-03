@@ -171,6 +171,6 @@ func (a *App) RemoveAsset(filename string) {
 		return
 	}
 
-	dest := filepath.Join(workspaceFullPath, filename)
-	os.Remove(dest)
+	removeFilepath := filepath.Join(workspaceFullPath, filename)
+	os.Remove(removeFilepath)
 }

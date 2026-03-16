@@ -116,6 +116,24 @@ function EditNode(props: { isViewEditNode: boolean }) {
     );
   };
 
+  const onNodeTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newType = e.target.value;
+    editFocusNode((prev) => ({
+      ...prev,
+      type: newType,
+    }));
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === focusNode.id
+          ? {
+              ...n,
+              type: newType,
+            }
+          : n,
+      ),
+    );
+  };
+
   const selectFile = async () => {
     const path = await OpenFileDialog();
 
@@ -363,6 +381,23 @@ function EditNode(props: { isViewEditNode: boolean }) {
               onPaste={onPaste}
               placeholder={t("Paste Image")}
             />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="nodeType" className="form-label">
+              {t("Node Type")}
+            </label>
+            <select
+              className="form-select form-select-sm"
+              id="nodeType"
+              value={focusNode.type}
+              onChange={onNodeTypeChange}
+            >
+              <option value="default">{t("Default Node")}</option>
+              <option value="imageNode">{t("Image Node")}</option>
+              <option value="input">{t("Input Node")}</option>
+              <option value="output">{t("Output Node")}</option>
+              <option value="group">{t("Group Node")}</option>
+            </select>
           </div>
           <div className="mb-3">
             <label htmlFor="position" className="form-label">
