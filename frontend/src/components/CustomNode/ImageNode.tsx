@@ -7,7 +7,7 @@ import {
 import { PiBookOpenText } from "react-icons/pi";
 import { useDataContext, isURL } from "../../context";
 
-type ImageNodeData = {
+export type ImageNodeData = {
   label: string;
   imageUrl: string;
 };

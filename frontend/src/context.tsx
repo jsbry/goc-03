@@ -1,11 +1,9 @@
 import { createContext, useContext } from "react";
 import { Node, Edge } from "@xyflow/react";
+import { ImageNodeData } from "./components/CustomNode/ImageNode";
+import { GroupNodeData } from "./components/CustomNode/GroupNode";
 
-export type ImageNodeData = {
-  label: string;
-  imageUrl: string;
-};
-export type MyNode = Node<ImageNodeData>;
+export type MyNode = Node<ImageNodeData | GroupNodeData>;
 
 export type CommentData = {
   id: number;

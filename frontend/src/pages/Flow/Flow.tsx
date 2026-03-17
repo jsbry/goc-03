@@ -32,11 +32,13 @@ import {
   applyEdgeChanges,
   useKeyPress,
 } from "@xyflow/react";
-import ImageNode from "../../components/ImageNode/ImageNode";
+import ImageNode from "../../components/CustomNode/ImageNode";
+import GroupNode from "../../components/CustomNode/GroupNode";
 import "@xyflow/react/dist/style.css";
 
 const nodeTypes = {
   imageNode: ImageNode,
+  groupNode: GroupNode,
 };
 
 const nodeOrigin: [number, number] = [0.5, 0];

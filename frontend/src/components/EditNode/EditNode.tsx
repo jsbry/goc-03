@@ -64,6 +64,15 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setAddLabel("");
   }, [focusNode]);
 
+  const getImageUrl = () => {
+    if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
+      return isURL(focusNode.data.imageUrl)
+        ? focusNode.data.imageUrl
+        : baseURL + focusNode.data.imageUrl;
+    }
+    return "";
+  };
+
   const onNodeLabelChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newLabel = e.target.value;
     if (newLabel === "") {
@@ -164,7 +173,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
   };
 
   const removeFile = async () => {
-    if (focusNode.data?.imageUrl) {
+    if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
       if (!isURL(focusNode.data.imageUrl)) {
         if (!confirm(t("Delete Image?"))) {
           return;
@@ -343,16 +352,8 @@ function EditNode(props: { isViewEditNode: boolean }) {
             </label>
             <div className="node-image" style={{ height: "auto" }}>
               <img
-                key={
-                  isURL(focusNode.data?.imageUrl || "")
-                    ? focusNode.data?.imageUrl
-                    : baseURL + focusNode.data?.imageUrl
-                }
-                src={
-                  isURL(focusNode.data?.imageUrl || "")
-                    ? focusNode.data?.imageUrl
-                    : baseURL + focusNode.data?.imageUrl
-                }
+                key={getImageUrl()}
+                src={getImageUrl()}
                 alt={focusNode.data?.label || "Node Image"}
                 style={{ width: "100%" }}
                 onError={(e) => {
@@ -396,8 +397,34 @@ function EditNode(props: { isViewEditNode: boolean }) {
               <option value="imageNode">{t("Image Node")}</option>
               <option value="input">{t("Input Node")}</option>
               <option value="output">{t("Output Node")}</option>
-              <option value="group">{t("Group Node")}</option>
+              <option value="group">{t("Group")}</option>
+              <option value="groupNode">{t("Group Node")}</option>
             </select>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="position" className="form-label">
+              {t("Node Size")}
+            </label>
+            <div className="input-group input-group-sm">
+              <span className="input-group-text">width</span>
+              <input
+                type="text"
+                className="form-control"
+                value={
+                  ("width" in focusNode.data && focusNode.data?.width) || 0
+                }
+                disabled
+              />
+              <span className="input-group-text">height</span>
+              <input
+                type="text"
+                className="form-control"
+                value={
+                  ("height" in focusNode.data && focusNode.data?.height) || 0
+                }
+                disabled
+              />
+            </div>
           </div>
           <div className="mb-3">
             <label htmlFor="position" className="form-label">
