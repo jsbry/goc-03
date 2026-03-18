@@ -13,6 +13,7 @@
     - wip
 - node type change
     - wip
+    - todo: image/video url input
 - image copy and paste
     - wip
 - node/comment id => uuid?

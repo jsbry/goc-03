@@ -395,6 +395,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
             >
               <option value="default">{t("Default Node")}</option>
               <option value="imageNode">{t("Image Node")}</option>
+              <option value="videoNode">{t("Video Node")}</option>
               <option value="input">{t("Input Node")}</option>
               <option value="output">{t("Output Node")}</option>
               <option value="group">{t("Group")}</option>

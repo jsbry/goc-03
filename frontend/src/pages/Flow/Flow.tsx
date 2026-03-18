@@ -33,11 +33,13 @@ import {
   useKeyPress,
 } from "@xyflow/react";
 import ImageNode from "../../components/CustomNode/ImageNode";
+import VideoNode from "../../components/CustomNode/VideoNode";
 import GroupNode from "../../components/CustomNode/GroupNode";
 import "@xyflow/react/dist/style.css";
 
 const nodeTypes = {
   imageNode: ImageNode,
+  videoNode: VideoNode,
   groupNode: GroupNode,
 };
 
