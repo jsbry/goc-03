@@ -64,11 +64,16 @@ function EditNode(props: { isViewEditNode: boolean }) {
     setAddLabel("");
   }, [focusNode]);
 
-  const getImageUrl = () => {
+  const getUrl = () => {
     if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
       return isURL(focusNode.data.imageUrl)
         ? focusNode.data.imageUrl
         : baseURL + focusNode.data.imageUrl;
+    }
+    if ("videoUrl" in focusNode.data && focusNode.data.videoUrl) {
+      return isURL(focusNode.data.videoUrl)
+        ? focusNode.data.videoUrl
+        : baseURL + focusNode.data.videoUrl;
     }
     return "";
   };
@@ -203,28 +208,51 @@ function EditNode(props: { isViewEditNode: boolean }) {
   };
 
   const onPaste = async (e: React.ClipboardEvent<HTMLInputElement>) => {
-    const imageUrl = e.clipboardData.getData("text");
-    if (isURL(imageUrl)) {
-      editFocusNode((prev) => ({
-        ...prev,
-        data: {
-          ...prev.data,
-          imageUrl,
-        },
-      }));
-      setNodes((nds) =>
-        nds.map((n) =>
-          n.id === focusNode.id
-            ? {
-                ...n,
-                data: {
-                  ...n.data,
-                  imageUrl,
-                },
-              }
-            : n,
-        ),
-      );
+    const pasteData = e.clipboardData.getData("text");
+    if (isURL(pasteData)) {
+      if (focusNode.type === "imageNode") {
+        editFocusNode((prev) => ({
+          ...prev,
+          data: {
+            ...prev.data,
+            imageUrl: pasteData,
+          },
+        }));
+        setNodes((nds) =>
+          nds.map((n) =>
+            n.id === focusNode.id
+              ? {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    imageUrl: pasteData,
+                  },
+                }
+              : n,
+          ),
+        );
+      } else if (focusNode.type === "videoNode") {
+        editFocusNode((prev) => ({
+          ...prev,
+          data: {
+            ...prev.data,
+            videoUrl: pasteData,
+          },
+        }));
+        setNodes((nds) =>
+          nds.map((n) =>
+            n.id === focusNode.id
+              ? {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    videoUrl: pasteData,
+                  },
+                }
+              : n,
+          ),
+        );
+      }
       return;
     }
     const items = e.clipboardData.items;
@@ -368,17 +396,36 @@ function EditNode(props: { isViewEditNode: boolean }) {
             <label htmlFor="nodeLabelInput" className="form-label">
               {t("Node Image")}
             </label>
-            <div className="node-image" style={{ height: "auto" }}>
-              <img
-                key={getImageUrl()}
-                src={getImageUrl()}
-                alt={focusNode.data?.label || "Node Image"}
-                style={{ width: "100%" }}
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              />
-            </div>
+            {focusNode.type === "imageNode" && (
+              <div className="node-image" style={{ height: "auto" }}>
+                <img
+                  key={getUrl()}
+                  src={getUrl()}
+                  alt={focusNode.data?.label || "Node Image"}
+                  style={{ width: "100%" }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              </div>
+            )}
+            {focusNode.type === "videoNode" && (
+              <div>
+                <video
+                  controls
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                >
+                  <source key={getUrl()} src={getUrl()} type="video/mp4" />
+                </video>
+              </div>
+            )}
             <div className="input-group">
               <button
                 className="btn btn-sm btn-outline-secondary mt-2"
