@@ -163,8 +163,6 @@ function EditNode(props: { isViewEditNode: boolean }) {
                   ...n.data,
                   imageUrl,
                 },
-                width: undefined,
-                height: undefined,
               }
             : n,
         ),
@@ -198,8 +196,6 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 ...n.data,
                 imageUrl: "",
               },
-              width: undefined,
-              height: undefined,
             }
           : n,
       ),
@@ -207,6 +203,30 @@ function EditNode(props: { isViewEditNode: boolean }) {
   };
 
   const onPaste = async (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const imageUrl = e.clipboardData.getData("text");
+    if (isURL(imageUrl)) {
+      editFocusNode((prev) => ({
+        ...prev,
+        data: {
+          ...prev.data,
+          imageUrl,
+        },
+      }));
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === focusNode.id
+            ? {
+                ...n,
+                data: {
+                  ...n.data,
+                  imageUrl,
+                },
+              }
+            : n,
+        ),
+      );
+      return;
+    }
     const items = e.clipboardData.items;
     for (let item of items) {
       if (item.type.startsWith("image/")) {
@@ -233,8 +253,6 @@ function EditNode(props: { isViewEditNode: boolean }) {
                         ...n.data,
                         imageUrl,
                       },
-                      width: undefined,
-                      height: undefined,
                     }
                   : n,
               ),
@@ -380,7 +398,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
               type="text"
               className="form-control form-control-sm mt-2"
               onPaste={onPaste}
-              placeholder={t("Paste Image")}
+              placeholder={t("Paste Image or URL")}
             />
           </div>
           <div className="mb-3">
@@ -412,7 +430,10 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 type="text"
                 className="form-control"
                 value={
-                  ("width" in focusNode.data && focusNode.data?.width) || 0
+                  (focusNode.measured &&
+                    "width" in focusNode.measured &&
+                    focusNode.measured.width) ||
+                  0
                 }
                 disabled
               />
@@ -421,7 +442,10 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 type="text"
                 className="form-control"
                 value={
-                  ("height" in focusNode.data && focusNode.data?.height) || 0
+                  (focusNode.measured &&
+                    "height" in focusNode.measured &&
+                    focusNode.measured.height) ||
+                  0
                 }
                 disabled
               />
