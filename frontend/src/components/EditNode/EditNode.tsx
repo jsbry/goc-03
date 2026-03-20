@@ -392,11 +392,11 @@ function EditNode(props: { isViewEditNode: boolean }) {
               autoComplete="off"
             />
           </div>
-          <div className="mb-3">
-            <label htmlFor="nodeLabelInput" className="form-label">
-              {t("Node Image")}
-            </label>
-            {focusNode.type === "imageNode" && (
+          {focusNode.type === "imageNode" && (
+            <div className="mb-3">
+              <label htmlFor="nodeLabelInput" className="form-label">
+                {t("Node Image")}
+              </label>
               <div className="node-image" style={{ height: "auto" }}>
                 <img
                   key={getUrl()}
@@ -408,46 +408,54 @@ function EditNode(props: { isViewEditNode: boolean }) {
                   }}
                 />
               </div>
-            )}
-            {focusNode.type === "videoNode" && (
-              <div>
-                <video
-                  controls
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                >
-                  <source key={getUrl()} src={getUrl()} type="video/mp4" />
-                </video>
-              </div>
-            )}
-            <div className="input-group">
-              <button
-                className="btn btn-sm btn-outline-secondary mt-2"
-                onClick={selectFile}
-              >
-                {t("Select Image")}
-              </button>
-              <button
-                className="btn btn-sm btn-outline-danger mt-2"
-                onClick={removeFile}
-              >
-                <FaTrashCan />
-              </button>
             </div>
-            <input
-              id="pasteImageInput"
-              type="text"
-              className="form-control form-control-sm mt-2"
-              onPaste={onPaste}
-              placeholder={t("Paste Image or URL")}
-            />
-          </div>
+          )}
+          {focusNode.type === "videoNode" && (
+            <div className="mb-3">
+              <label htmlFor="nodeLabelInput" className="form-label">
+                {t("Node Video")}
+              </label>
+              <video
+                controls
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                }}
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              >
+                <source key={getUrl()} src={getUrl()} type="video/mp4" />
+              </video>
+            </div>
+          )}
+          {(focusNode.type === "imageNode" ||
+            focusNode.type === "videoNode") && (
+            <div className="mb-3">
+              <div className="input-group">
+                <button
+                  className="btn btn-sm btn-outline-secondary mt-2"
+                  onClick={selectFile}
+                >
+                  {t("Select Image")}
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-danger mt-2"
+                  onClick={removeFile}
+                >
+                  <FaTrashCan />
+                </button>
+              </div>
+              <input
+                id="pasteInput"
+                type="text"
+                className="form-control form-control-sm mt-2"
+                onPaste={onPaste}
+                placeholder={t("Paste Image or URL")}
+              />
+            </div>
+          )}
           <div className="mb-3">
             <label htmlFor="nodeType" className="form-label">
               {t("Node Type")}
