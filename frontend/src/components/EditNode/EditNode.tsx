@@ -149,29 +149,52 @@ function EditNode(props: { isViewEditNode: boolean }) {
   };
 
   const selectFile = async () => {
-    const path = await OpenFileDialog();
+    const path = await OpenFileDialog(focusNode.type || "");
 
     await SaveToAssets(path).then((imageUrl) => {
-      editFocusNode((prev) => ({
-        ...prev,
-        data: {
-          ...prev.data,
-          imageUrl,
-        },
-      }));
-      setNodes((nds) =>
-        nds.map((n) =>
-          n.id === focusNode.id
-            ? {
-                ...n,
-                data: {
-                  ...n.data,
-                  imageUrl,
-                },
-              }
-            : n,
-        ),
-      );
+      if (focusNode.type === "imageNode") {
+        editFocusNode((prev) => ({
+          ...prev,
+          data: {
+            ...prev.data,
+            imageUrl,
+          },
+        }));
+        setNodes((nds) =>
+          nds.map((n) =>
+            n.id === focusNode.id
+              ? {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    imageUrl,
+                  },
+                }
+              : n,
+          ),
+        );
+      } else if (focusNode.type === "videoNode") {
+        editFocusNode((prev) => ({
+          ...prev,
+          data: {
+            ...prev.data,
+            videoUrl: imageUrl,
+          },
+        }));
+        setNodes((nds) =>
+          nds.map((n) =>
+            n.id === focusNode.id
+              ? {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    videoUrl: imageUrl,
+                  },
+                }
+              : n,
+          ),
+        );
+      }
     });
   };
 
@@ -247,6 +270,27 @@ function EditNode(props: { isViewEditNode: boolean }) {
                   data: {
                     ...n.data,
                     videoUrl: pasteData,
+                  },
+                }
+              : n,
+          ),
+        );
+      } else if (focusNode.type === "youtubeNode") {
+        editFocusNode((prev) => ({
+          ...prev,
+          data: {
+            ...prev.data,
+            youtubeUrl: pasteData,
+          },
+        }));
+        setNodes((nds) =>
+          nds.map((n) =>
+            n.id === focusNode.id
+              ? {
+                  ...n,
+                  data: {
+                    ...n.data,
+                    youtubeUrl: pasteData,
                   },
                 }
               : n,
@@ -415,19 +459,21 @@ function EditNode(props: { isViewEditNode: boolean }) {
               <label htmlFor="nodeLabelInput" className="form-label">
                 {t("Node Video")}
               </label>
-              <video
-                controls
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                }}
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-              >
-                <source key={getUrl()} src={getUrl()} type="video/mp4" />
-              </video>
+              <div className="node-video" style={{ height: "auto" }}>
+                <video
+                  controls
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                >
+                  <source key={getUrl()} src={getUrl()} type="video/mp4" />
+                </video>
+              </div>
             </div>
           )}
           {(focusNode.type === "imageNode" ||
@@ -438,7 +484,9 @@ function EditNode(props: { isViewEditNode: boolean }) {
                   className="btn btn-sm btn-outline-secondary mt-2"
                   onClick={selectFile}
                 >
-                  {t("Select Image")}
+                  {focusNode.type === "imageNode"
+                    ? t("Select Image")
+                    : t("Select Video")}
                 </button>
                 <button
                   className="btn btn-sm btn-outline-danger mt-2"
@@ -452,7 +500,25 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 type="text"
                 className="form-control form-control-sm mt-2"
                 onPaste={onPaste}
-                placeholder={t("Paste Image or URL")}
+                placeholder={
+                  focusNode.type === "imageNode"
+                    ? t("Paste Image or URL")
+                    : t("Paste Video URL")
+                }
+              />
+            </div>
+          )}
+          {focusNode.type === "youtubeNode" && (
+            <div className="mb-3">
+              <label htmlFor="nodeLabelInput" className="form-label">
+                {t("Node Youtube URL")}
+              </label>
+              <input
+                id="pasteInput"
+                type="text"
+                className="form-control form-control-sm"
+                onPaste={onPaste}
+                placeholder={t("Paste YouTube URL")}
               />
             </div>
           )}
@@ -469,6 +535,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
               <option value="default">{t("Default Node")}</option>
               <option value="imageNode">{t("Image Node")}</option>
               <option value="videoNode">{t("Video Node")}</option>
+              <option value="youtubeNode">{t("YouTube Node")}</option>
               <option value="input">{t("Input Node")}</option>
               <option value="output">{t("Output Node")}</option>
               <option value="group">{t("Group")}</option>

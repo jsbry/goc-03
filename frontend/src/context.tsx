@@ -2,9 +2,12 @@ import { createContext, useContext } from "react";
 import { Node, Edge } from "@xyflow/react";
 import { ImageNodeData } from "./components/CustomNode/ImageNode";
 import { VideoNodeData } from "./components/CustomNode/VideoNode";
+import { YoutubeNodeData } from "./components/CustomNode/YoutubeNode";
 import { GroupNodeData } from "./components/CustomNode/GroupNode";
 
-export type MyNode = Node<ImageNodeData | VideoNodeData | GroupNodeData>;
+export type MyNode = Node<
+  ImageNodeData | VideoNodeData | YoutubeNodeData | GroupNodeData
+>;
 
 export type CommentData = {
   id: number;

@@ -47,11 +47,21 @@ func (a *App) SaveEdges(jsonData string) {
 	runtime.EventsEmit(a.ctx, "edges", jsonData)
 }
 
-func (a *App) OpenFileDialog() string {
+func (a *App) OpenFileDialog(nodeType string) string {
+	title := "Select a image"
+	displayName := "Images"
+	pattern := "*.png;*.jpg;*.jpeg"
+
+	if nodeType == "videoNode" {
+		title = "Select a video"
+		displayName = "Videos"
+		pattern = "*.mp4;*.avi;*.mov"
+	}
+
 	path, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
-		Title: "Select an image",
+		Title: title,
 		Filters: []runtime.FileFilter{
-			{DisplayName: "Images", Pattern: "*.png;*.jpg;*.jpeg"},
+			{DisplayName: displayName, Pattern: pattern},
 		},
 	})
 	if err != nil {

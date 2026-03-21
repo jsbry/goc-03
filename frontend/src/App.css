@@ -108,6 +108,17 @@
     flex-direction: column;
 }
 
+.node-youtube {
+    padding: 0.5rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: 100%;
+    width: 100%; 
+    display: flex;
+    flex-direction: column;
+}
+
 .comments-sidebar .card .card-body {
     padding: 0.5rem;
 }

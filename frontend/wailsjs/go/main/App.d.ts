@@ -8,7 +8,7 @@ export function GetWalkDir():Promise<string>;
 
 export function Greet(arg1:string):Promise<string>;
 
-export function OpenFileDialog():Promise<string>;
+export function OpenFileDialog(arg1:string):Promise<string>;
 
 export function OpenMarkdown(arg1:string):Promise<void>;
 
