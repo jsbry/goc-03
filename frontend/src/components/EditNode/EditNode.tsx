@@ -1,7 +1,5 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Edge } from "@xyflow/react";
-import { CiNoWaitingSign } from "react-icons/ci";
 import { FaTrashCan } from "react-icons/fa6";
 import isEmpty from "lodash/isEmpty";
 import {
@@ -11,13 +9,8 @@ import {
   RemoveAsset,
   RenameMarkdown,
 } from "../../../wailsjs/go/main/App";
-import {
-  MyNode,
-  useDataContext,
-  isURL,
-  isDuplicateName,
-  getNodeId,
-} from "../../context";
+import { MyNode, useDataContext, isURL, isDuplicateName } from "../../context";
+import { AddNode } from "./AddNode";
 import { EditEdge } from "./EditEdge";
 
 const editNodeSidebarWidth = 210;
@@ -43,31 +36,6 @@ function EditNode(props: { isViewEditNode: boolean }) {
     focusEdge,
     notes,
   } = useDataContext();
-
-  const [addLabel, setAddLabel] = useState("");
-
-  const addNewNode = useCallback(() => {
-    const newNode: MyNode = {
-      id: getNodeId(),
-      type: "imageNode",
-      position: {
-        x: 0,
-        y: 0,
-      },
-      data: {
-        label: addLabel,
-        imageUrl: "",
-      },
-      origin: [0.5, 0.0],
-    };
-
-    setNodes((nds) => [...nds, newNode]);
-    setAddLabel("");
-  }, [addLabel, setAddLabel, setNodes]);
-
-  useEffect(() => {
-    setAddLabel("");
-  }, [focusNode]);
 
   const getUrl = () => {
     if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
@@ -310,36 +278,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
         )}
       </div>
       {isEmpty(focusNode) ? (
-        <>
-          <div className="mb-3">
-            <label htmlFor="nodeLabelInput" className="form-label">
-              {t("Node Label")}
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="nodeLabelInput"
-              placeholder={t("Enter node label")}
-              value={addLabel}
-              onChange={(e) => setAddLabel(e.target.value)}
-              autoComplete="off"
-            />
-          </div>
-          <div className="mb-3">
-            <button
-              className="btn btn-sm btn-outline-primary"
-              onClick={addNewNode}
-              disabled={
-                addLabel === "" || isDuplicateName(nodes, notes, addLabel)
-              }
-            >
-              {t("Add Node")}
-              {isDuplicateName(nodes, notes, addLabel) && (
-                <CiNoWaitingSign className="ms-1" />
-              )}
-            </button>
-          </div>
-        </>
+        <AddNode />
       ) : (
         <>
           <div className="mb-3">
