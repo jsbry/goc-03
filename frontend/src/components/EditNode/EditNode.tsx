@@ -18,8 +18,15 @@ import {
   isDuplicateName,
   getNodeId,
 } from "../../context";
+import { EditEdge } from "./EditEdge";
 
 const editNodeSidebarWidth = 210;
+
+const keyMap: Record<string, string> = {
+  imageNode: "imageUrl",
+  videoNode: "videoUrl",
+  youtubeNode: "youtubeUrl",
+};
 
 function EditNode(props: { isViewEditNode: boolean }) {
   const { isViewEditNode } = props;
@@ -31,11 +38,9 @@ function EditNode(props: { isViewEditNode: boolean }) {
     baseURL,
     nodes,
     setNodes,
-    setEdges,
     focusNode,
     editFocusNode,
     focusEdge,
-    setFocusEdge,
     notes,
   } = useDataContext();
 
@@ -110,26 +115,6 @@ function EditNode(props: { isViewEditNode: boolean }) {
     );
   };
 
-  const onEdgeLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newLabel = e.target.value;
-    const newFocusEdge = {
-      ...focusEdge,
-      label: newLabel,
-    };
-
-    setFocusEdge(newFocusEdge);
-    setEdges((eds) =>
-      eds.map((ed: Edge) =>
-        ed.id === focusEdge.id
-          ? {
-              ...ed,
-              label: newLabel,
-            }
-          : ed,
-      ),
-    );
-  };
-
   const onNodeTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newType = e.target.value;
     editFocusNode((prev) => ({
@@ -149,52 +134,30 @@ function EditNode(props: { isViewEditNode: boolean }) {
   };
 
   const selectFile = async () => {
+    const key = keyMap[focusNode.type || ""];
     const path = await OpenFileDialog(focusNode.type || "");
 
     await SaveToAssets(path).then((imageUrl) => {
-      if (focusNode.type === "imageNode") {
-        editFocusNode((prev) => ({
-          ...prev,
-          data: {
-            ...prev.data,
-            imageUrl,
-          },
-        }));
-        setNodes((nds) =>
-          nds.map((n) =>
-            n.id === focusNode.id
-              ? {
-                  ...n,
-                  data: {
-                    ...n.data,
-                    imageUrl,
-                  },
-                }
-              : n,
-          ),
-        );
-      } else if (focusNode.type === "videoNode") {
-        editFocusNode((prev) => ({
-          ...prev,
-          data: {
-            ...prev.data,
-            videoUrl: imageUrl,
-          },
-        }));
-        setNodes((nds) =>
-          nds.map((n) =>
-            n.id === focusNode.id
-              ? {
-                  ...n,
-                  data: {
-                    ...n.data,
-                    videoUrl: imageUrl,
-                  },
-                }
-              : n,
-          ),
-        );
-      }
+      editFocusNode((prev) => ({
+        ...prev,
+        data: {
+          ...prev.data,
+          [key]: imageUrl,
+        },
+      }));
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === focusNode.id
+            ? {
+                ...n,
+                data: {
+                  ...n.data,
+                  [key]: imageUrl,
+                },
+              }
+            : n,
+        ),
+      );
     });
   };
 
@@ -231,72 +194,29 @@ function EditNode(props: { isViewEditNode: boolean }) {
   };
 
   const onPaste = async (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const key = keyMap[focusNode.type || ""];
     const pasteData = e.clipboardData.getData("text");
     if (isURL(pasteData)) {
-      if (focusNode.type === "imageNode") {
-        editFocusNode((prev) => ({
-          ...prev,
-          data: {
-            ...prev.data,
-            imageUrl: pasteData,
-          },
-        }));
-        setNodes((nds) =>
-          nds.map((n) =>
-            n.id === focusNode.id
-              ? {
-                  ...n,
-                  data: {
-                    ...n.data,
-                    imageUrl: pasteData,
-                  },
-                }
-              : n,
-          ),
-        );
-      } else if (focusNode.type === "videoNode") {
-        editFocusNode((prev) => ({
-          ...prev,
-          data: {
-            ...prev.data,
-            videoUrl: pasteData,
-          },
-        }));
-        setNodes((nds) =>
-          nds.map((n) =>
-            n.id === focusNode.id
-              ? {
-                  ...n,
-                  data: {
-                    ...n.data,
-                    videoUrl: pasteData,
-                  },
-                }
-              : n,
-          ),
-        );
-      } else if (focusNode.type === "youtubeNode") {
-        editFocusNode((prev) => ({
-          ...prev,
-          data: {
-            ...prev.data,
-            youtubeUrl: pasteData,
-          },
-        }));
-        setNodes((nds) =>
-          nds.map((n) =>
-            n.id === focusNode.id
-              ? {
-                  ...n,
-                  data: {
-                    ...n.data,
-                    youtubeUrl: pasteData,
-                  },
-                }
-              : n,
-          ),
-        );
-      }
+      editFocusNode((prev) => ({
+        ...prev,
+        data: {
+          ...prev.data,
+          [key]: pasteData,
+        },
+      }));
+      setNodes((nds) =>
+        nds.map((n) =>
+          n.id === focusNode.id
+            ? {
+                ...n,
+                data: {
+                  ...n.data,
+                  [key]: pasteData,
+                },
+              }
+            : n,
+        ),
+      );
       return;
     }
     const items = e.clipboardData.items;
@@ -597,32 +517,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
         </>
       )}
 
-      {!isEmpty(focusEdge) && (
-        <>
-          <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
-            <span className="fw-semibold">{t("Edit Edge")}</span>
-            <button
-              type="button"
-              className="btn-close"
-              onClick={() => setFocusEdge({} as Edge)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="nodeLabelInput" className="form-label">
-              {t("Edge Label")}
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="edgeLabelInput"
-              placeholder={t("Enter edge label")}
-              value={focusEdge.label?.toString()}
-              onChange={onEdgeLabelChange}
-              autoComplete="off"
-            />
-          </div>
-        </>
-      )}
+      {!isEmpty(focusEdge) && <EditEdge />}
     </aside>
   );
 }
