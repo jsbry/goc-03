@@ -11,6 +11,7 @@ import {
 } from "../../../wailsjs/go/main/App";
 import { MyNode, useDataContext, isURL, isDuplicateName } from "../../context";
 import { AddNode } from "./AddNode";
+import { EditImage } from "./EditImage";
 import { EditEdge } from "./EditEdge";
 
 const editNodeSidebarWidth = 210;
@@ -296,22 +297,12 @@ function EditNode(props: { isViewEditNode: boolean }) {
             />
           </div>
           {focusNode.type === "imageNode" && (
-            <div className="mb-3">
-              <label htmlFor="nodeLabelInput" className="form-label">
-                {t("Node Image")}
-              </label>
-              <div className="node-image" style={{ height: "auto" }}>
-                <img
-                  key={getUrl()}
-                  src={getUrl()}
-                  alt={focusNode.data?.label || "Node Image"}
-                  style={{ width: "100%" }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              </div>
-            </div>
+            <EditImage
+              getUrl={getUrl}
+              selectFile={selectFile}
+              removeFile={removeFile}
+              onPaste={onPaste}
+            />
           )}
           {focusNode.type === "videoNode" && (
             <div className="mb-3">
@@ -335,17 +326,14 @@ function EditNode(props: { isViewEditNode: boolean }) {
               </div>
             </div>
           )}
-          {(focusNode.type === "imageNode" ||
-            focusNode.type === "videoNode") && (
+          {focusNode.type === "videoNode" && (
             <div className="mb-3">
               <div className="input-group">
                 <button
                   className="btn btn-sm btn-outline-secondary mt-2"
                   onClick={selectFile}
                 >
-                  {focusNode.type === "imageNode"
-                    ? t("Select Image")
-                    : t("Select Video")}
+                  {t("Select Video")}
                 </button>
                 <button
                   className="btn btn-sm btn-outline-danger mt-2"
@@ -359,11 +347,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
                 type="text"
                 className="form-control form-control-sm mt-2"
                 onPaste={onPaste}
-                placeholder={
-                  focusNode.type === "imageNode"
-                    ? t("Paste Image or URL")
-                    : t("Paste Video URL")
-                }
+                placeholder={t("Paste Video URL")}
               />
             </div>
           )}
