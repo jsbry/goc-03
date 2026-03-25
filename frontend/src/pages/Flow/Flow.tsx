@@ -212,7 +212,7 @@ const AddNodeOnEdgeDrop = () => {
           }),
           data: {
             label: `Node ${id}`,
-            imageUrl: "https://picsum.photos/200/300",
+            imageUrl: "",
           },
           origin: [0.5, 0.0],
         };

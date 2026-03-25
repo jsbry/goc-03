@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { FaTrashCan } from "react-icons/fa6";
 import isEmpty from "lodash/isEmpty";
 import {
   OpenFileDialog,
@@ -12,6 +11,7 @@ import {
 import { MyNode, useDataContext, isURL, isDuplicateName } from "../../context";
 import { AddNode } from "./AddNode";
 import { EditImage } from "./EditImage";
+import { EditVideo } from "./EditVideo";
 import { EditEdge } from "./EditEdge";
 
 const editNodeSidebarWidth = 210;
@@ -131,20 +131,31 @@ function EditNode(props: { isViewEditNode: boolean }) {
   };
 
   const removeFile = async () => {
-    if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
-      if (!isURL(focusNode.data.imageUrl)) {
-        if (!confirm(t("Delete Image?"))) {
-          return;
+    const key = keyMap[focusNode.type || ""];
+    if (key === "imageUrl") {
+      if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
+        if (!isURL(focusNode.data.imageUrl)) {
+          if (!confirm(t("Delete Image?"))) {
+            return;
+          }
+          await RemoveAsset(focusNode.data.imageUrl);
         }
-        await RemoveAsset(focusNode.data.imageUrl);
+      }
+    } else if (key === "videoUrl") {
+      if ("videoUrl" in focusNode.data && focusNode.data.videoUrl) {
+        if (!isURL(focusNode.data.videoUrl)) {
+          if (!confirm(t("Delete Video?"))) {
+            return;
+          }
+          await RemoveAsset(focusNode.data.videoUrl);
+        }
       }
     }
-
     editFocusNode((prev) => ({
       ...prev,
       data: {
         ...prev.data,
-        imageUrl: "",
+        [key]: "",
       },
     }));
     setNodes((nds) =>
@@ -154,7 +165,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
               ...n,
               data: {
                 ...n.data,
-                imageUrl: "",
+                [key]: "",
               },
             }
           : n,
@@ -305,51 +316,12 @@ function EditNode(props: { isViewEditNode: boolean }) {
             />
           )}
           {focusNode.type === "videoNode" && (
-            <div className="mb-3">
-              <label htmlFor="nodeLabelInput" className="form-label">
-                {t("Node Video")}
-              </label>
-              <div className="node-video" style={{ height: "auto" }}>
-                <video
-                  controls
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                >
-                  <source key={getUrl()} src={getUrl()} type="video/mp4" />
-                </video>
-              </div>
-            </div>
-          )}
-          {focusNode.type === "videoNode" && (
-            <div className="mb-3">
-              <div className="input-group">
-                <button
-                  className="btn btn-sm btn-outline-secondary mt-2"
-                  onClick={selectFile}
-                >
-                  {t("Select Video")}
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-danger mt-2"
-                  onClick={removeFile}
-                >
-                  <FaTrashCan />
-                </button>
-              </div>
-              <input
-                id="pasteInput"
-                type="text"
-                className="form-control form-control-sm mt-2"
-                onPaste={onPaste}
-                placeholder={t("Paste Video URL")}
-              />
-            </div>
+            <EditVideo
+              getUrl={getUrl}
+              selectFile={selectFile}
+              removeFile={removeFile}
+              onPaste={onPaste}
+            />
           )}
           {focusNode.type === "youtubeNode" && (
             <div className="mb-3">
