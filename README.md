@@ -18,6 +18,7 @@
 - image copy and paste
     - wip
 - node/comment id => uuid?
+    - num node counter
 - components resize
     - wip
     - todo: window size over

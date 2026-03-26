@@ -12,6 +12,7 @@ import { MyNode, useDataContext, isURL, isDuplicateName } from "../../context";
 import { AddNode } from "./AddNode";
 import { EditImage } from "./EditImage";
 import { EditVideo } from "./EditVideo";
+import { EditYoutube } from "./EditYoutube";
 import { EditEdge } from "./EditEdge";
 
 const editNodeSidebarWidth = 210;
@@ -39,7 +40,11 @@ function EditNode(props: { isViewEditNode: boolean }) {
   } = useDataContext();
 
   const getUrl = () => {
-    if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
+    if (
+      focusNode.type === "imageNode" &&
+      "imageUrl" in focusNode.data &&
+      focusNode.data.imageUrl
+    ) {
       return isURL(focusNode.data.imageUrl)
         ? focusNode.data.imageUrl
         : baseURL + focusNode.data.imageUrl;
@@ -132,25 +137,22 @@ function EditNode(props: { isViewEditNode: boolean }) {
 
   const removeFile = async () => {
     const key = keyMap[focusNode.type || ""];
-    if (key === "imageUrl") {
-      if ("imageUrl" in focusNode.data && focusNode.data.imageUrl) {
-        if (!isURL(focusNode.data.imageUrl)) {
-          if (!confirm(t("Delete Image?"))) {
-            return;
-          }
-          await RemoveAsset(focusNode.data.imageUrl);
-        }
-      }
-    } else if (key === "videoUrl") {
-      if ("videoUrl" in focusNode.data && focusNode.data.videoUrl) {
-        if (!isURL(focusNode.data.videoUrl)) {
-          if (!confirm(t("Delete Video?"))) {
-            return;
-          }
-          await RemoveAsset(focusNode.data.videoUrl);
-        }
-      }
+
+    let urlToDelete = null;
+    if (key === "imageUrl" && "imageUrl" in focusNode.data) {
+      urlToDelete = focusNode.data.imageUrl;
+    } else if (key === "videoUrl" && "videoUrl" in focusNode.data) {
+      urlToDelete = focusNode.data.videoUrl;
     }
+
+    if (urlToDelete && !isURL(urlToDelete)) {
+      const itemType = key === "imageUrl" ? "Image" : "Video";
+      if (!confirm(t(`Delete ${itemType}?`))) {
+        return;
+      }
+      await RemoveAsset(urlToDelete);
+    }
+
     editFocusNode((prev) => ({
       ...prev,
       data: {
@@ -324,18 +326,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
             />
           )}
           {focusNode.type === "youtubeNode" && (
-            <div className="mb-3">
-              <label htmlFor="nodeLabelInput" className="form-label">
-                {t("Node Youtube URL")}
-              </label>
-              <input
-                id="pasteInput"
-                type="text"
-                className="form-control form-control-sm"
-                onPaste={onPaste}
-                placeholder={t("Paste YouTube URL")}
-              />
-            </div>
+            <EditYoutube removeFile={removeFile} onPaste={onPaste} />
           )}
           <div className="mb-3">
             <label htmlFor="nodeType" className="form-label">
