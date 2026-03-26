@@ -32,6 +32,7 @@
 - manual save mode
 - monaco-editor cursor confusion
     - wip
+- monaco-editor ime position confusion
 
 
 ## Inspiration
