@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { v7 as uuidv7 } from "uuid";
 import { Node, Edge } from "@xyflow/react";
 import { ImageNodeData } from "./components/CustomNode/ImageNode";
 import { VideoNodeData } from "./components/CustomNode/VideoNode";
@@ -89,19 +90,8 @@ export function isDuplicateName(
   return false;
 }
 
-let nodeId: number = 1;
-
 export function getNodeId(): string {
-  return `${nodeId++}`;
-}
-
-export function setNodeId(nodes: MyNode[]) {
-  if (nodes.length > 0) {
-    const maxId = Math.max(...nodes.map((n) => parseInt(n.id)));
-    nodeId = maxId + 1;
-  } else {
-    nodeId = 1;
-  }
+  return uuidv7();
 }
 
 let commentId: number = 1;

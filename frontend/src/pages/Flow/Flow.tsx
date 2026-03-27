@@ -8,7 +8,6 @@ import {
   MyNode,
   useDataContext,
   getPairHandle,
-  setNodeId,
   getNodeId,
 } from "../../context";
 import isEqual from "lodash/isEqual";
@@ -128,10 +127,6 @@ const AddNodeOnEdgeDrop = () => {
   }, [redoPressed]);
 
   useEffect(() => {
-    setNodeId(nodes);
-  }, [nodes]);
-
-  useEffect(() => {
     const intervalId = setInterval(() => {
       if (
         !isEqual(prevNodesRef.current, nodes) ||
@@ -211,7 +206,7 @@ const AddNodeOnEdgeDrop = () => {
             y: clientY,
           }),
           data: {
-            label: `Node ${id}`,
+            label: `Node ${nodes.length + 1}`,
             imageUrl: "",
           },
           origin: [0.5, 0.0],

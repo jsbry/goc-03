@@ -19,6 +19,7 @@
     - wip
 - node/comment id => uuid?
     - num node counter
+    - wip: nod
 - components resize
     - wip
     - todo: window size over

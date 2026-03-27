@@ -26,5 +26,6 @@
 - `frontend> npm install @types/lodash`
 - `frontend> npm install i18next`
 - `frontend> npm install react-i18next`
+- `frontend> npm install uuid`
     - about_Execution_Policies
     - `frontend> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
