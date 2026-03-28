@@ -11,7 +11,7 @@ export type MyNode = Node<
 >;
 
 export type CommentData = {
-  id: number;
+  id: string;
   filename: string;
   start: number;
   end: number;
@@ -94,17 +94,6 @@ export function getNodeId(): string {
   return uuidv7();
 }
 
-let commentId: number = 1;
-
-export function getCommentId(): number {
-  return commentId++;
-}
-
-export function setCommentId(comments: CommentData[]) {
-  if (comments.length > 0) {
-    const maxId = Math.max(...comments.map((c) => c.id));
-    commentId = maxId + 1;
-  } else {
-    commentId = 1;
-  }
+export function getCommentId(): string {
+  return uuidv7();
 }

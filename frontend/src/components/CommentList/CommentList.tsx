@@ -5,12 +5,7 @@ import isEqual from "lodash/isEqual";
 import { FaRegEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
 import { SaveComments } from "../../../wailsjs/go/main/App";
-import {
-  useDataContext,
-  CommentData,
-  setCommentId,
-  getCommentId,
-} from "../../context";
+import { useDataContext, CommentData, getCommentId } from "../../context";
 
 const commentsSidebarWidth = 210;
 
@@ -31,10 +26,6 @@ function CommentList(props: { isViewComment: boolean }) {
   } = useDataContext();
 
   const prevCommentsRef = useRef(comments);
-
-  useEffect(() => {
-    setCommentId(comments);
-  }, [nodes]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -134,7 +125,7 @@ function CommentList(props: { isViewComment: boolean }) {
       <div className="d-flex align-items-center p-2 mb-2 border-bottom">
         <span className="fw-semibold">{t("Comments")}</span>
       </div>
-      {!isEmpty(focusComment) && focusComment.id === 0 ? (
+      {!isEmpty(focusComment) && focusComment.id === "" ? (
         <>
           <div className="card">
             <div className="card-body">

@@ -2,13 +2,9 @@
 
 | Name         | Type   |
 | :----------- | :----- |
-| id           | number |
+| id           | string |
 | filename     | string |
 | start        | number |
 | end          | number |
 | selectedText | string |
 | content      | string |
-
-- TODO
-    - id
-        - nubmer => string (uuid?)

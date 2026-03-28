@@ -24,7 +24,7 @@ function Markdown(props: { markdownView: string }) {
     const lineRange = getSelectionLineRange(selection);
 
     setFocusComment({
-      id: 0,
+      id: "",
       filename: focusContent,
       start: lineRange ? lineRange.startLine : 0,
       end: lineRange ? lineRange.endLine : 0,
