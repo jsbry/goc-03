@@ -119,6 +119,10 @@
     flex-direction: column;
 }
 
+.node-group {
+    text-align: left;
+}
+
 .comments-sidebar .card .card-body {
     padding: 0.5rem;
 }
