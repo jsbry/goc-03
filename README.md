@@ -15,15 +15,18 @@
     - wip
     - todo: image/video url input
         - wip
+- edge type change
 - image copy and paste
     - wip
 - components resize
     - wip
+    - todo: both mode
     - todo: window size over
     - todo: divider component
 - monaco-editor localize
 - image remove
     - wip
+    - todo: unused assets
 - flow page : node pair md exists icon
     - wip
     - todo: mouse over markdown preview
