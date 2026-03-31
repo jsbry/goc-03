@@ -26,6 +26,26 @@ export const EditEdge = () => {
     );
   };
 
+  const onEdgeTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newType = e.target.value;
+    const newFocusEdge = {
+      ...focusEdge,
+      type: newType,
+    };
+
+    setFocusEdge(newFocusEdge);
+    setEdges((eds) =>
+      eds.map((ed: Edge) =>
+        ed.id === focusEdge.id
+          ? {
+              ...ed,
+              type: newType,
+            }
+          : ed,
+      ),
+    );
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center p-2 mb-2 border-bottom">
@@ -37,7 +57,7 @@ export const EditEdge = () => {
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="nodeLabelInput" className="form-label">
+        <label htmlFor="edgeLabelInput" className="form-label">
           {t("Edge Label")}
         </label>
         <input
@@ -49,6 +69,23 @@ export const EditEdge = () => {
           onChange={onEdgeLabelChange}
           autoComplete="off"
         />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="edgeTypeInput" className="form-label">
+          {t("Edge Type")}
+        </label>
+        <select
+          className="form-select form-select-sm"
+          id="edgeTypeInput"
+          value={focusEdge.type}
+          onChange={onEdgeTypeChange}
+        >
+          <option value="default">{t("default")}</option>
+          <option value="straight">{t("straight")}</option>
+          <option value="step">{t("step")}</option>
+          <option value="smoothstep">{t("smoothstep")}</option>
+          <option value="simplebezier">{t("simplebezier")}</option>
+        </select>
       </div>
     </>
   );

@@ -15,7 +15,6 @@
     - wip
     - todo: image/video url input
         - wip
-- edge type change
 - image copy and paste
     - wip
 - components resize
