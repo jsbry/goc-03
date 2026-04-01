@@ -33,6 +33,7 @@
 - monaco-editor cursor confusion
     - wip
 - monaco-editor ime position confusion
+- input type=text ime confusion
 
 
 ## Inspiration
