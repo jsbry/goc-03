@@ -6,6 +6,17 @@
     width: 210px;
     height: 100vh;
     position: relative;
+    overflow-x: hidden !important;
+}
+
+.nav-item {
+    width: 100%;
+}
+
+.nav-link-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sidebar-resizer {

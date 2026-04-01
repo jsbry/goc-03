@@ -114,7 +114,7 @@ function Sidebar(props: { workspace: string }) {
           <li key={node.id} className="nav-item">
             <a
               href="#"
-              className={`nav-link ${focusContent === node.data.label ? "active" : "link-dark"}`}
+              className={`nav-link nav-link-text ${focusContent === node.data.label ? "active" : "link-dark"}`}
               onClick={() => editFocusNode(node)}
             >
               {focusContent === node.data.label ? (
@@ -138,7 +138,7 @@ function Sidebar(props: { workspace: string }) {
             <li key={i} className="nav-item">
               <a
                 href="#"
-                className={`nav-link ${focusContent === note ? "active" : "link-dark"}`}
+                className={`nav-link nav-link-text ${focusContent === note ? "active" : "link-dark"}`}
                 onClick={() => editFocusNote(note)}
               >
                 {focusContent === note ? (
