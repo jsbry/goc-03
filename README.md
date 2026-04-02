@@ -34,6 +34,11 @@
     - wip
 - monaco-editor ime position confusion
 - input type=text ime confusion
+    - draft: editing input => check icon button?
+        - focus trash
+        - editing check
+             - check button click
+        - focus trash
 
 
 ## Inspiration
