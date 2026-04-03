@@ -16,14 +16,8 @@ function CommentList(props: { isViewComment: boolean }) {
   const navRef = useRef<HTMLDivElement>(null);
   const isResizing = useRef(false);
   const { t } = useTranslation();
-  const {
-    nodes,
-    focusContent,
-    comments,
-    setComments,
-    focusComment,
-    setFocusComment,
-  } = useDataContext();
+  const { focusContent, comments, setComments, focusComment, setFocusComment } =
+    useDataContext();
 
   const prevCommentsRef = useRef(comments);
 

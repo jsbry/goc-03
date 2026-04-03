@@ -25,6 +25,7 @@ const keyMap: Record<string, string> = {
 
 function EditNode(props: { isViewEditNode: boolean }) {
   const { isViewEditNode } = props;
+  const [editLabel, setEditLabel] = useState("");
   const [width, setWidth] = useState(editNodeSidebarWidth);
   const navRef = useRef<HTMLDivElement>(null);
   const isResizing = useRef(false);
@@ -38,6 +39,14 @@ function EditNode(props: { isViewEditNode: boolean }) {
     focusEdge,
     notes,
   } = useDataContext();
+
+  useEffect(() => {
+    setEditLabel(focusNode.data?.label || "");
+  }, [focusNode]);
+
+  useEffect(() => {
+    changeLabel(editLabel);
+  }, [editLabel]);
 
   const getUrl = () => {
     if (
@@ -57,7 +66,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
     return "";
   };
 
-  const onNodeLabelChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onNodeLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newLabel = e.target.value;
     if (newLabel === "") {
       return;
@@ -65,6 +74,11 @@ function EditNode(props: { isViewEditNode: boolean }) {
     if (isDuplicateName(nodes, notes, newLabel)) {
       return;
     }
+    setEditLabel(e.target.value);
+  };
+
+  const changeLabel = async (value: string) => {
+    const newLabel = value;
     await RenameMarkdown(focusNode.data.label, newLabel);
 
     editFocusNode((prev) => ({
@@ -304,7 +318,7 @@ function EditNode(props: { isViewEditNode: boolean }) {
               className="form-control"
               id="nodeLabelInput"
               placeholder={t("Enter node label")}
-              value={focusNode.data?.label || ""}
+              value={editLabel}
               onChange={onNodeLabelChange}
               autoComplete="off"
             />

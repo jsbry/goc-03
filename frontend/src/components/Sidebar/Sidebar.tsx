@@ -27,12 +27,32 @@ function Sidebar(props: { workspace: string }) {
   } = useDataContext();
 
   const [addNote, setAddNote] = useState("");
+  const [editNote, setEditNote] = useState("");
   const [width, setWidth] = useState(sidebarWidth);
   const navRef = useRef<HTMLDivElement>(null);
   const isResizing = useRef(false);
 
+  useEffect(() => {
+    setEditNote(focusNote);
+  }, [focusNote]);
+
+  useEffect(() => {
+    changeNote(editNote);
+  }, [editNote]);
+
   const onNoteChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNote = e.target.value;
+    if (newNote === "") {
+      return;
+    }
+    if (isDuplicateName(nodes, notes, newNote)) {
+      return;
+    }
+    setEditNote(newNote);
+  };
+
+  const changeNote = async (value: string) => {
+    const newNote = value;
     if (newNote === "") {
       return;
     }
@@ -186,7 +206,7 @@ function Sidebar(props: { workspace: string }) {
               type="text"
               className="form-control"
               placeholder={t("Enter note")}
-              value={focusNote}
+              value={editNote}
               onChange={onNoteChange}
               autoComplete="off"
             />

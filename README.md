@@ -33,7 +33,11 @@
 - monaco-editor cursor confusion
     - wip
 - monaco-editor ime position confusion
-- input type=text ime confusion
+
+
+## Draft
+
+- input type=text ime
     - draft: editing input => check icon button?
         - focus trash
         - editing check
