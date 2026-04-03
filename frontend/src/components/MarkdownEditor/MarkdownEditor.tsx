@@ -10,7 +10,7 @@ export default function MarkdownEditor() {
     monacoInstance.languages.registerDocumentFormattingEditProvider(
       "markdown",
       {
-        provideDocumentFormattingEdits(model) {
+        provideDocumentFormattingEdits(model: monaco.editor.ITextModel): monaco.languages.TextEdit[] {
           const text = model.getValue();
           const formatted = formatMarkdownTable(text);
           return [

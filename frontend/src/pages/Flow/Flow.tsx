@@ -8,9 +8,9 @@ import {
   MyNode,
   useDataContext,
   getPairHandle,
+  isEqual,
   getNodeId,
 } from "../../context";
-import isEqual from "lodash/isEqual";
 
 import {
   ReactFlow,

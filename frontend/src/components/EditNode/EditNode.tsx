@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import isEmpty from "lodash/isEmpty";
 import {
   OpenFileDialog,
   SaveToAssets,
@@ -8,7 +7,13 @@ import {
   RemoveAsset,
   RenameMarkdown,
 } from "../../../wailsjs/go/main/App";
-import { MyNode, useDataContext, isURL, isDuplicateName } from "../../context";
+import {
+  MyNode,
+  useDataContext,
+  isURL,
+  isDuplicateName,
+  isEmpty,
+} from "../../context";
 import { AddNode } from "./AddNode";
 import { EditImage } from "./EditImage";
 import { EditVideo } from "./EditVideo";

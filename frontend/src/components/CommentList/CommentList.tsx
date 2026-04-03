@@ -1,11 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
 import { FaRegEdit } from "react-icons/fa";
 import { FaTrashCan } from "react-icons/fa6";
 import { SaveComments } from "../../../wailsjs/go/main/App";
-import { useDataContext, CommentData, getCommentId } from "../../context";
+import {
+  useDataContext,
+  CommentData,
+  isEmpty,
+  isEqual,
+  getCommentId,
+} from "../../context";
 
 const commentsSidebarWidth = 210;
 
