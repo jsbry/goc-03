@@ -15,6 +15,7 @@
     - wip
     - todo: image/video url input
         - wip
+- node delete confirm
 - components resize
     - wip
     - todo: both mode
