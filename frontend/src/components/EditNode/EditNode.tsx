@@ -84,6 +84,9 @@ function EditNode(props: { isViewEditNode: boolean }) {
 
   const changeLabel = async (value: string) => {
     const newLabel = value;
+    if (!focusNode.data) {
+      return;
+    }
     await RenameMarkdown(focusNode.data.label, newLabel);
 
     editFocusNode((prev) => ({
