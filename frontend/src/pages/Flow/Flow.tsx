@@ -56,7 +56,6 @@ const AddNodeOnEdgeDrop = () => {
   const reactFlowWrapper = useRef(null);
 
   const {
-    pageName,
     nodes,
     setNodes,
     edges,
@@ -280,10 +279,7 @@ const AddNodeOnEdgeDrop = () => {
   );
 
   return (
-    <div
-      className={`h-100 ${pageName === "flow-markdown" ? " w-50" : ""}`}
-      ref={reactFlowWrapper}
-    >
+    <div className={`h-100`} ref={reactFlowWrapper}>
       <ReactFlow
         nodes={nodes}
         edges={edges}

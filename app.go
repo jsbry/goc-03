@@ -21,6 +21,7 @@ type AppConstants struct {
 	MarkdownView   string
 	IsViewComment  bool
 	IsViewEditNode bool
+	FmWidth        int
 	Workspace      string
 	Nodes          string
 	Edges          string
@@ -66,6 +67,7 @@ func (a *App) GetConstants() AppConstants {
 		MarkdownView:   markdownView,
 		IsViewComment:  isViewComment,
 		IsViewEditNode: isViewEditNode,
+		FmWidth:        fmWidth,
 		Workspace:      workspace,
 		Nodes:          nodes,
 		Edges:          edges,

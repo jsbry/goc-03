@@ -29,6 +29,12 @@ const (
 	pageMarkdown     = "markdown"
 	pageFlowMarkdown = "flow-markdown"
 
+	fmWidth3 = 3
+	fmWidth4 = 4
+	fmWidth5 = 5
+	fmWidth6 = 6
+	fmWidth7 = 7
+
 	markdownViewOnlyPreview = "preview"
 	markdownViewOnlyEditor  = "editor"
 	markdownViewBoth        = "both"
@@ -42,6 +48,7 @@ var (
 	isViewEditNode    = true
 	workspace         = "./workspace"
 	workspaceFullPath = ""
+	fmWidth           = 5
 )
 
 func main() {
@@ -122,6 +129,27 @@ func (a *App) makeMenu() *menu.Menu {
 	ViewMenu.AddRadio(T("Flow/Markdown", nil), pageName == pageFlowMarkdown, keys.CmdOrCtrl("b"), func(_ *menu.CallbackData) {
 		pageName = pageFlowMarkdown
 		rt.EventsEmit(a.ctx, "pageName", pageFlowMarkdown)
+	})
+	FmWidthMenu := ViewMenu.AddSubmenu(T("F/M: width ratio", nil))
+	FmWidthMenu.AddRadio(T("3:7", nil), fmWidth == fmWidth3, nil, func(_ *menu.CallbackData) {
+		fmWidth = fmWidth3
+		rt.EventsEmit(a.ctx, "fmWidth", fmWidth3)
+	})
+	FmWidthMenu.AddRadio(T("4:6", nil), fmWidth == fmWidth4, nil, func(_ *menu.CallbackData) {
+		fmWidth = fmWidth4
+		rt.EventsEmit(a.ctx, "fmWidth", fmWidth4)
+	})
+	FmWidthMenu.AddRadio(T("5:5", nil), fmWidth == fmWidth5, nil, func(_ *menu.CallbackData) {
+		fmWidth = fmWidth5
+		rt.EventsEmit(a.ctx, "fmWidth", fmWidth5)
+	})
+	FmWidthMenu.AddRadio(T("6:4", nil), fmWidth == fmWidth6, nil, func(_ *menu.CallbackData) {
+		fmWidth = fmWidth6
+		rt.EventsEmit(a.ctx, "fmWidth", fmWidth6)
+	})
+	FmWidthMenu.AddRadio(T("7:3", nil), fmWidth == fmWidth7, nil, func(_ *menu.CallbackData) {
+		fmWidth = fmWidth7
+		rt.EventsEmit(a.ctx, "fmWidth", fmWidth7)
 	})
 	ViewMenu.AddSeparator()
 	ViewMenu.AddRadio(T("md - Preview", nil), markdownView == markdownViewOnlyPreview, keys.CmdOrCtrl("1"), func(_ *menu.CallbackData) {

@@ -19,6 +19,7 @@ import "./App.css";
 function App() {
   const [isViewComment, setIsViewComment] = useState<boolean>(true);
   const [isViewEditNode, setIsViewEditNode] = useState<boolean>(true);
+  const [fmWidth, setFmWidth] = useState<number>(5);
   const [lng, setLng] = useState<string>("en");
   const [pageName, setPageName] = useState<string>("markdown");
   const [markdownView, setMarkdownView] = useState<string>("both");
@@ -47,6 +48,7 @@ function App() {
       setMarkdownView(constants.MarkdownView);
       setIsViewComment(constants.IsViewComment);
       setIsViewEditNode(constants.IsViewEditNode);
+      setFmWidth(constants.FmWidth);
       setWorkspace(constants.Workspace);
       setNodes(JSON.parse(constants.Nodes));
       setEdges(JSON.parse(constants.Edges));
@@ -62,6 +64,9 @@ function App() {
     });
     EventsOn("isViewEditNode", (b: boolean) => {
       setIsViewEditNode(b);
+    });
+    EventsOn("fmWidth", (w: number) => {
+      setFmWidth(w);
     });
     EventsOn("lng", (lng: string) => {
       setLng(lng);
@@ -102,6 +107,7 @@ function App() {
     return () => {
       EventsOff("isViewComment");
       EventsOff("isViewEditNode");
+      EventsOff("fmWidth");
       EventsOff("lng");
       EventsOff("pageName");
       EventsOff("markdownView");
@@ -225,7 +231,11 @@ function App() {
         <div className="container-fluid h-100">
           <div className="row h-100">
             <Sidebar workspace={workspace}></Sidebar>
-            <Content pageName={pageName} markdownView={markdownView}></Content>
+            <Content
+              pageName={pageName}
+              markdownView={markdownView}
+              fmWidth={fmWidth}
+            ></Content>
             <EditNode isViewEditNode={isViewEditNode}></EditNode>
             <CommentList isViewComment={isViewComment}></CommentList>
           </div>

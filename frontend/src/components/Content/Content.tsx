@@ -5,8 +5,12 @@ import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import Markdown from "../../pages/Markdown/Markdown";
 import Flow from "../../pages/Flow/Flow";
 
-function Content(props: { pageName: string; markdownView: string }) {
-  const { pageName, markdownView } = props;
+function Content(props: {
+  pageName: string;
+  markdownView: string;
+  fmWidth: number;
+}) {
+  const { pageName, markdownView, fmWidth } = props;
   const [helpShow, setHelpShow] = useState<boolean>(false);
   const { t } = useTranslation();
 
@@ -31,10 +35,37 @@ function Content(props: { pageName: string; markdownView: string }) {
       case "markdown":
         return <Markdown markdownView={markdownView}></Markdown>;
       case "flow-markdown":
+        let flowWidth = "50%";
+        let markdownWidth = "50%";
+        switch (fmWidth) {
+          case 3:
+            flowWidth = "30%";
+            markdownWidth = "70%";
+          case 4:
+            flowWidth = "40%";
+            markdownWidth = "60%";
+            break;
+          case 5:
+            flowWidth = "50%";
+            markdownWidth = "50%";
+            break;
+          case 6:
+            flowWidth = "60%";
+            markdownWidth = "40%";
+            break;
+          case 7:
+            flowWidth = "70%";
+            markdownWidth = "30%";
+            break;
+        }
         return (
           <>
-            <Flow></Flow>
-            <Markdown markdownView={markdownView}></Markdown>
+            <div style={{ width: flowWidth }}>
+              <Flow></Flow>
+            </div>
+            <div style={{ width: markdownWidth }}>
+              <Markdown markdownView={markdownView}></Markdown>
+            </div>
           </>
         );
       default:

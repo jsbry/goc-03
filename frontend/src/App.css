@@ -23,10 +23,14 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 2px;
+    width: 1px;
     height: 100%;
     cursor: ew-resize;
     background: #ccc;
+}
+
+.sidebar-resizer:hover {
+    width: 2px;
 }
 
 .main {
@@ -51,10 +55,14 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 2px;
+    width: 1px;
     height: 100%;
     cursor: ew-resize;
     background: #ccc;
+}
+
+.comments-sidebar-resizer:hover {
+    width: 2px;
 }
 
 .edit-node-sidebar {
@@ -68,10 +76,14 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 2px;
+    width: 1px;
     height: 100%;
     cursor: ew-resize;
     background: #ccc;
+}
+
+.edit-node-sidebar-resizer:hover {
+    width: 2px;
 }
 
 .content-parent-markdown {

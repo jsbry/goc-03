@@ -18,7 +18,6 @@
 - node delete confirm
 - components resize
     - wip
-    - todo: both mode
     - todo: window size over
     - todo: divider component
 - monaco-editor localize

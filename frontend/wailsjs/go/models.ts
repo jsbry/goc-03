@@ -6,6 +6,7 @@ export namespace main {
 	    MarkdownView: string;
 	    IsViewComment: boolean;
 	    IsViewEditNode: boolean;
+	    FmWidth: number;
 	    Workspace: string;
 	    Nodes: string;
 	    Edges: string;
@@ -23,6 +24,7 @@ export namespace main {
 	        this.MarkdownView = source["MarkdownView"];
 	        this.IsViewComment = source["IsViewComment"];
 	        this.IsViewEditNode = source["IsViewEditNode"];
+	        this.FmWidth = source["FmWidth"];
 	        this.Workspace = source["Workspace"];
 	        this.Nodes = source["Nodes"];
 	        this.Edges = source["Edges"];
