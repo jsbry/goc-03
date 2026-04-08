@@ -13,8 +13,7 @@
     - wip
 - node type change
     - wip
-    - todo: image/video url input
-        - wip
+    - default 4 way
 - node delete confirm
 - components resize
     - wip
