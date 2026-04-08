@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortune-sheet/react": "^1.0.4",
     "@monaco-editor/react": "^4.7.0",
     "@types/wcwidth": "^1.0.2",
     "@xyflow/react": "^12.10.0",

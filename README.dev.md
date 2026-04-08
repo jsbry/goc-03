@@ -27,5 +27,6 @@
 - `frontend> npm install i18next`
 - `frontend> npm install react-i18next`
 - `frontend> npm install uuid`
+- `frontend> npm install @fortune-sheet/react`
     - about_Execution_Policies
     - `frontend> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`

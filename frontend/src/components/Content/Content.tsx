@@ -4,6 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import Markdown from "../../pages/Markdown/Markdown";
 import Flow from "../../pages/Flow/Flow";
+import Spreadsheet from "../../pages/Spreadsheet/Spreadsheet";
 
 function Content(props: {
   pageName: string;
@@ -68,6 +69,8 @@ function Content(props: {
             </div>
           </>
         );
+      case "spreadsheet":
+        return <Spreadsheet></Spreadsheet>;
       default:
         return <Markdown markdownView={markdownView}></Markdown>;
     }

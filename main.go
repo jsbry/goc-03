@@ -28,6 +28,7 @@ const (
 	pageFlow         = "flow"
 	pageMarkdown     = "markdown"
 	pageFlowMarkdown = "flow-markdown"
+	pageSpreadsheet  = "spreadsheet"
 
 	fmWidth3 = 3
 	fmWidth4 = 4
@@ -150,6 +151,10 @@ func (a *App) makeMenu() *menu.Menu {
 	FmWidthMenu.AddRadio(T("7:3", nil), fmWidth == fmWidth7, nil, func(_ *menu.CallbackData) {
 		fmWidth = fmWidth7
 		rt.EventsEmit(a.ctx, "fmWidth", fmWidth7)
+	})
+	ViewMenu.AddRadio(T("Spreadsheet", nil), pageName == pageSpreadsheet, keys.CmdOrCtrl("l"), func(_ *menu.CallbackData) {
+		pageName = pageSpreadsheet
+		rt.EventsEmit(a.ctx, "pageName", pageSpreadsheet)
 	})
 	ViewMenu.AddSeparator()
 	ViewMenu.AddRadio(T("md - Preview", nil), markdownView == markdownViewOnlyPreview, keys.CmdOrCtrl("1"), func(_ *menu.CallbackData) {
