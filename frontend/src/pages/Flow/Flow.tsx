@@ -10,6 +10,7 @@ import {
   getPairHandle,
   isEqual,
   getNodeId,
+  isDuplicateName,
 } from "../../context";
 
 import {
@@ -31,6 +32,7 @@ import {
   applyEdgeChanges,
   useKeyPress,
 } from "@xyflow/react";
+import DefaultNode from "../../components/CustomNode/DefaultNode";
 import ImageNode from "../../components/CustomNode/ImageNode";
 import VideoNode from "../../components/CustomNode/VideoNode";
 import YoutubeNode from "../../components/CustomNode/YoutubeNode";
@@ -38,6 +40,7 @@ import GroupNode from "../../components/CustomNode/GroupNode";
 import "@xyflow/react/dist/style.css";
 
 const nodeTypes = {
+  defaultNode: DefaultNode,
   imageNode: ImageNode,
   videoNode: VideoNode,
   youtubeNode: YoutubeNode,
@@ -52,6 +55,18 @@ type FlowSnapshot = {
 };
 const historyMax = 100;
 
+function generateUniqueLabel(
+  nodes: MyNode[],
+  notes: string[],
+  no: number,
+): string {
+  const label = `Node ${no}`;
+  if (!isDuplicateName(nodes, notes, label)) {
+    return label;
+  }
+  return generateUniqueLabel(nodes, notes, no + 1);
+}
+
 const AddNodeOnEdgeDrop = () => {
   const reactFlowWrapper = useRef(null);
 
@@ -63,6 +78,7 @@ const AddNodeOnEdgeDrop = () => {
     focusNode,
     editFocusNode,
     setFocusEdge,
+    notes,
   } = useDataContext();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);
@@ -195,17 +211,18 @@ const AddNodeOnEdgeDrop = () => {
     (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState) => {
       if (!connectionState.isValid) {
         const id = getNodeId();
+        const label = generateUniqueLabel(nodes, notes, nodes.length + 1);
         const { clientX, clientY } =
           "changedTouches" in event ? event.changedTouches[0] : event;
         const newNode: MyNode = {
           id,
-          type: "imageNode",
+          type: connectionState.fromNode?.type || "defaultNode",
           position: screenToFlowPosition({
             x: clientX,
             y: clientY,
           }),
           data: {
-            label: `Node ${nodes.length + 1}`,
+            label: label,
             imageUrl: "",
           },
           origin: [0.5, 0.0],
@@ -224,7 +241,7 @@ const AddNodeOnEdgeDrop = () => {
         setEdges((eds) => eds.concat(newEdge));
       }
     },
-    [screenToFlowPosition],
+    [screenToFlowPosition, nodes, notes],
   );
 
   const onNodeDrag = useCallback(

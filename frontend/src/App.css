@@ -109,28 +109,9 @@
     padding-right: 0rem;
 }
 
-.node-image {
-    padding: 0.5rem;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    height: 100%;
-    width: 100%; 
-    display: flex;
-    flex-direction: column;
-}
-
-.node-video {
-    padding: 0.5rem;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    height: 100%;
-    width: 100%; 
-    display: flex;
-    flex-direction: column;
-}
-
+.node-default,
+.node-image,
+.node-video,
 .node-youtube {
     padding: 0.5rem;
     background: #fff;
@@ -140,6 +121,7 @@
     width: 100%; 
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .node-group {

@@ -1,13 +1,18 @@
 import { createContext, useContext } from "react";
 import { v7 as uuidv7 } from "uuid";
 import { Node, Edge } from "@xyflow/react";
+import { DefaultNodeData } from "./components/CustomNode/DefaultNode";
 import { ImageNodeData } from "./components/CustomNode/ImageNode";
 import { VideoNodeData } from "./components/CustomNode/VideoNode";
 import { YoutubeNodeData } from "./components/CustomNode/YoutubeNode";
 import { GroupNodeData } from "./components/CustomNode/GroupNode";
 
 export type MyNode = Node<
-  ImageNodeData | VideoNodeData | YoutubeNodeData | GroupNodeData
+  | DefaultNodeData
+  | ImageNodeData
+  | VideoNodeData
+  | YoutubeNodeData
+  | GroupNodeData
 >;
 
 export type CommentData = {

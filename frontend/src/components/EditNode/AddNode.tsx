@@ -17,7 +17,7 @@ export const AddNode = () => {
   const addNewNode = useCallback(() => {
     const newNode: MyNode = {
       id: getNodeId(),
-      type: "imageNode",
+      type: "defaultNode",
       position: {
         x: 0,
         y: 0,
