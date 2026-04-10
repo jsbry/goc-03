@@ -13,7 +13,6 @@
     - wip
 - node type change
     - wip
-    - default 4 way
 - node delete confirm
 - components resize
     - wip
