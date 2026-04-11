@@ -46,30 +46,10 @@ export default function VideoNode({
         minHeight={50}
       />
 
-      <Handle
-        type="target"
-        position={Position.Top}
-        id="tt"
-        // style={{ left: "35%", background: "red" }}
-      />
-      <Handle
-        type="target"
-        position={Position.Left}
-        id="tl"
-        // style={{ top: "35%", background: "red" }}
-      />
-      <Handle
-        type="target"
-        position={Position.Right}
-        id="tr"
-        // style={{ top: "35%", background: "red" }}
-      />
-      <Handle
-        type="target"
-        position={Position.Bottom}
-        id="tb"
-        // style={{ left: "35%", background: "red" }}
-      />
+      <Handle type="target" position={Position.Top} id="tt" />
+      <Handle type="target" position={Position.Left} id="tl" />
+      <Handle type="target" position={Position.Right} id="tr" />
+      <Handle type="target" position={Position.Bottom} id="tb" />
 
       <div
         style={{
@@ -104,30 +84,10 @@ export default function VideoNode({
         {data.label}
       </div>
 
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="sb"
-        // style={{ right: "35%", background: "blue" }}
-      />
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="sr"
-        // style={{ bottom: "35%", background: "blue" }}
-      />
-      <Handle
-        type="source"
-        position={Position.Top}
-        id="st"
-        // style={{ right: "35%", background: "blue" }}
-      />
-      <Handle
-        type="source"
-        position={Position.Left}
-        id="sl"
-        // style={{ bottom: "35%", background: "blue" }}
-      />
+      <Handle type="source" position={Position.Bottom} id="sb" />
+      <Handle type="source" position={Position.Right} id="sr" />
+      <Handle type="source" position={Position.Top} id="st" />
+      <Handle type="source" position={Position.Left} id="sl" />
     </div>
   );
 }
