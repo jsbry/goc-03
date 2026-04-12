@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import {
   SaveNodes,
   SaveEdges,
@@ -80,6 +81,7 @@ const AddNodeOnEdgeDrop = () => {
     setFocusEdge,
     notes,
   } = useDataContext();
+  const { t } = useTranslation();
   const prevNodesRef = useRef(nodes);
   const prevEdgesRef = useRef(edges);
   const { screenToFlowPosition } = useReactFlow();
@@ -256,6 +258,16 @@ const AddNodeOnEdgeDrop = () => {
     [focusNode],
   );
 
+  const onBeforeDelete = useCallback(
+    async (params: { nodes: MyNode[]; edges: Edge[] }) => {
+      if (!confirm(t("Delete Element?"))) {
+        return false;
+      }
+      return true;
+    },
+    [t],
+  );
+
   const onNodesDelete = useCallback(
     async (deleted: MyNode[]) => {
       let remainingNodes = [...nodes];
@@ -305,6 +317,7 @@ const AddNodeOnEdgeDrop = () => {
         onPaneClick={onPaneClick}
         onNodesChange={onNodesChange}
         onNodesDelete={onNodesDelete}
+        onBeforeDelete={onBeforeDelete}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onConnectEnd={onConnectEnd}

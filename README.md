@@ -13,7 +13,6 @@
     - wip
 - node type change
     - wip
-- node delete confirm
 - components resize
     - wip
     - todo: window size over

@@ -138,7 +138,7 @@ function App() {
   const editFocusNode = useCallback(
     (value: MyNode | ((prev: MyNode) => MyNode)) => {
       if (content !== "" && focusContent === "") {
-        if (!confirm(i18n.t("Content will be lost. Continue?"))) {
+        if (!confirm(t("Content will be lost. Continue?"))) {
           return;
         }
       }
@@ -158,13 +158,13 @@ function App() {
         return next;
       });
     },
-    [i18n, focusContent, content],
+    [t, focusContent, content],
   );
 
   const editFocusNote = useCallback(
     (value: string) => {
       if (content !== "" && focusContent === "") {
-        if (!confirm(i18n.t("Content will be lost. Continue?"))) {
+        if (!confirm(t("Content will be lost. Continue?"))) {
           return false;
         }
       }
@@ -181,7 +181,7 @@ function App() {
       }
       return true;
     },
-    [i18n, focusNote, focusContent, content],
+    [t, focusNote, focusContent, content],
   );
 
   const value = useMemo(
