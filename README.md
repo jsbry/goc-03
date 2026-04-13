@@ -11,8 +11,7 @@
     - wip
 - node resizer
     - wip
-- node type change
-    - wip
+- node zindex
 - components resize
     - wip
     - todo: window size over
