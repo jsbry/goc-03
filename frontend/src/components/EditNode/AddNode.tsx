@@ -24,8 +24,8 @@ export const AddNode = () => {
       },
       data: {
         label: addLabel,
-        imageUrl: "",
       },
+      style: { zIndex: 0 },
       origin: [0.5, 0.0],
     };
 

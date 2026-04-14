@@ -262,6 +262,36 @@ function EditNode(props: { isViewEditNode: boolean }) {
     }
   };
 
+  const onZIndexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newZIndex = parseInt(e.target.value, 10);
+    if (isNaN(newZIndex)) {
+      return;
+    }
+    if (newZIndex > 999) {
+      newZIndex = 999;
+    }
+    editFocusNode((prev) => ({
+      ...prev,
+      style: {
+        ...prev.style,
+        zIndex: newZIndex,
+      },
+    }));
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === focusNode.id
+          ? {
+              ...n,
+              style: {
+                ...n.style,
+                zIndex: newZIndex,
+              },
+            }
+          : n,
+      ),
+    );
+  };
+
   const startResize = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     document.body.classList.add("no-select");
@@ -368,7 +398,20 @@ function EditNode(props: { isViewEditNode: boolean }) {
             </select>
           </div>
           <div className="mb-3">
-            <label htmlFor="position" className="form-label">
+            <label htmlFor="zindex" className="form-label">
+              {t("Node Z-Index")}
+            </label>
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              id="zindex"
+              value={focusNode.style?.zIndex || 0}
+              onChange={onZIndexChange}
+              max={999}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="size" className="form-label">
               {t("Node Size")}
             </label>
             <div className="input-group input-group-sm">

@@ -225,8 +225,8 @@ const AddNodeOnEdgeDrop = () => {
           }),
           data: {
             label: label,
-            imageUrl: "",
           },
+          style: { zIndex: 0 },
           origin: [0.5, 0.0],
         };
         setNodes((nds) => nds.concat(newNode));
