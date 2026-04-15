@@ -13,7 +13,6 @@
     - wip
     - todo: window size over
     - todo: divider component
-- monaco-editor localize
 - image remove
     - wip
     - todo: unused assets
@@ -21,9 +20,11 @@
     - wip
     - todo: mouse over markdown preview
 - manual save mode
-- monaco-editor cursor confusion
-    - wip
-- monaco-editor ime position confusion
+- monaco-editor 
+    - localize
+    - cursor confusion
+        - wip
+    - ime position confusion
 
 
 ## Draft
