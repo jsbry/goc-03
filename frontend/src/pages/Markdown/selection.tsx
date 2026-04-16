@@ -6,6 +6,7 @@
  * Licensed under the MIT License.
  */
 import { Components } from "react-markdown";
+import { useDataContext, isRelativePath } from "../../context";
 
 export const componentsWithLinePosition: Components = {
   code: ({ node, className, children, ...props }: any) => (
@@ -135,6 +136,20 @@ export const componentsWithLinePosition: Components = {
       {children}
     </th>
   ),
+  img: ({ node, className, children, ...props }: any) => {
+    const { baseURL } = useDataContext();
+    if (props.src && isRelativePath(props.src)) {
+      props.src = baseURL + "/" + props.src;
+    }
+
+    return (
+      <img
+        className={className}
+        data-line-start={node?.position?.start?.line}
+        {...props}
+      />
+    );
+  },
 };
 
 export function getSelectionLineRange(

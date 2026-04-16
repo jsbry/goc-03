@@ -174,6 +174,7 @@ func (a *App) makeMenu() *menu.Menu {
 		rt.EventsEmit(a.ctx, "isViewEditNode", isViewEditNode)
 	})
 
+	// Help
 	HelpMenu := AppMenu.AddSubmenu(T("Help", nil))
 	HelpMenu.AddText(T("Help", nil), keys.Key("f1"), func(d *menu.CallbackData) {
 		rt.EventsEmit(a.ctx, "help", true)

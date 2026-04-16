@@ -80,6 +80,13 @@ export function isURL(str: string): boolean {
   }
 }
 
+export function isRelativePath(src: string): boolean {
+  const trimmed = src.trim();
+  if (trimmed === "") return false;
+
+  return !/^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|\/\/|\/|[A-Za-z]:[\\/])/.test(trimmed);
+}
+
 export function isDuplicateName(
   nodes: MyNode[],
   notes: string[],
