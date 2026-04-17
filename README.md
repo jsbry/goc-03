@@ -16,6 +16,10 @@
 - image remove
     - wip
     - todo: unused assets
+        - wip
+            1. confirm
+            2. check: node/md
+            3. unused assets delete
 - flow page : node pair md exists icon
     - wip
     - todo: mouse over markdown preview

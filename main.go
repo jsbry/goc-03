@@ -174,6 +174,11 @@ func (a *App) makeMenu() *menu.Menu {
 		rt.EventsEmit(a.ctx, "isViewEditNode", isViewEditNode)
 	})
 
+	// Run
+	RunMenu := AppMenu.AddSubmenu(T("Run", nil))
+	RunMenu.AddText(T("Delete Unused Assets", nil), nil, func(_ *menu.CallbackData) {
+	})
+
 	// Help
 	HelpMenu := AppMenu.AddSubmenu(T("Help", nil))
 	HelpMenu.AddText(T("Help", nil), keys.Key("f1"), func(d *menu.CallbackData) {
