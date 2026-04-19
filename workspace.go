@@ -174,3 +174,7 @@ func (a *App) RemoveAsset(filename string) {
 	removeFilepath := filepath.Join(workspaceFullPath, filename)
 	os.Remove(removeFilepath)
 }
+
+func (a *App) RemoveUnusedAsset() {
+
+}
