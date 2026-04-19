@@ -34,8 +34,8 @@ export function RemoveMarkdown(arg1) {
   return window['go']['main']['App']['RemoveMarkdown'](arg1);
 }
 
-export function RemoveUnusedAsset() {
-  return window['go']['main']['App']['RemoveUnusedAsset']();
+export function RemoveUnusedAssets() {
+  return window['go']['main']['App']['RemoveUnusedAssets']();
 }
 
 export function RenameMarkdown(arg1, arg2) {

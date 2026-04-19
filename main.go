@@ -177,6 +177,7 @@ func (a *App) makeMenu() *menu.Menu {
 	// Run
 	RunMenu := AppMenu.AddSubmenu(T("Run", nil))
 	RunMenu.AddText(T("Delete Unused Assets", nil), nil, func(_ *menu.CallbackData) {
+		rt.EventsEmit(a.ctx, "deleteUnusedAssets", true)
 	})
 
 	// Help

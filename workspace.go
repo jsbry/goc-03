@@ -175,6 +175,20 @@ func (a *App) RemoveAsset(filename string) {
 	os.Remove(removeFilepath)
 }
 
-func (a *App) RemoveUnusedAsset() {
+func (a *App) RemoveUnusedAssets() {
+	// assetsDir := filepath.Join(workspaceFullPath, "assets")
+	// assetFiles, err := os.ReadDir(assetsDir)
+	// if err != nil {
+	// 	return
+	// }
+
+	// usedAssets := make(map[string]bool)
+	// for _, node := range a.nodes {
+	// 	if node.Data.ImageURL != "" {
+	// 		usedAssets[node.Data.ImageURL] = true
+	// 	}
+	// }
+
+	// fmt.Printf("Used assets: %#v\n", usedAssets)
 
 }
