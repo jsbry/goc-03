@@ -14,6 +14,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -176,19 +177,79 @@ func (a *App) RemoveAsset(filename string) {
 }
 
 func (a *App) RemoveUnusedAssets() {
-	// assetsDir := filepath.Join(workspaceFullPath, "assets")
-	// assetFiles, err := os.ReadDir(assetsDir)
-	// if err != nil {
-	// 	return
-	// }
+	assetsDir := filepath.Join(workspaceFullPath, "assets")
+	assetFiles, err := os.ReadDir(assetsDir)
+	if err != nil {
+		return
+	}
 
-	// usedAssets := make(map[string]bool)
-	// for _, node := range a.nodes {
-	// 	if node.Data.ImageURL != "" {
-	// 		usedAssets[node.Data.ImageURL] = true
-	// 	}
-	// }
+	usedAssets := make(map[string]bool)
+	for _, node := range a.nodes {
+		switch node.Type {
+		case "imageNode":
+			if strings.HasPrefix(node.Data.ImageURL, "assets/") {
+				usedAssets[node.Data.ImageURL] = true
+			}
+		case "videoNode":
+			if strings.HasPrefix(node.Data.VideoURL, "assets/") {
+				usedAssets[node.Data.VideoURL] = true
+			}
+		}
+	}
 
-	// fmt.Printf("Used assets: %#v\n", usedAssets)
+	for _, note := range a.notes {
+		noteByte, err := os.ReadFile(filepath.Join(workspaceFullPath, fmt.Sprintf("%s.md", note)))
+		if err != nil {
+			continue
+		}
+		mdAssetsList := extractAssetsFromMarkdown(string(noteByte))
+		for _, asset := range mdAssetsList {
+			usedAssets[asset] = true
+		}
+	}
 
+	for _, asset := range assetFiles {
+		if asset.IsDir() {
+			continue
+		}
+		assetPath := path.Join("assets", asset.Name())
+		if !usedAssets[assetPath] {
+			removeFilepath := filepath.Join(workspaceFullPath, assetPath)
+			os.Remove(removeFilepath)
+		}
+	}
+}
+
+var (
+	markdownImageRegex = regexp.MustCompile(`!\[[^\]]*\]\(\s*([^)\s]+)`)
+	htmlImageRegex     = regexp.MustCompile(`<img[^>]+src=["']([^"']+)["']`)
+)
+
+func extractAssetsFromMarkdown(content string) []string {
+	seen := make(map[string]struct{})
+
+	add := func(raw string) {
+		if raw == "" {
+			return
+		}
+
+		if i := strings.Index(raw, "assets/"); i >= 0 {
+			raw = raw[i:]
+			seen[raw] = struct{}{}
+		}
+	}
+
+	for _, match := range markdownImageRegex.FindAllStringSubmatch(content, -1) {
+		add(match[1])
+	}
+	for _, match := range htmlImageRegex.FindAllStringSubmatch(content, -1) {
+		add(match[1])
+	}
+
+	result := make([]string, 0, len(seen))
+	for asset := range seen {
+		result = append(result, asset)
+	}
+
+	return result
 }

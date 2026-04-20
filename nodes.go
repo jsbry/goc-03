@@ -7,14 +7,14 @@ import (
 )
 
 type Node struct {
-	ID       string        `json:"id"`
-	Type     string        `json:"type,omitempty"`
-	Position Position      `json:"position"`
-	Data     ImageNodeData `json:"data"`
-	Width    float64       `json:"width,omitempty"`
-	Height   float64       `json:"height,omitempty"`
-	Selected bool          `json:"selected,omitempty"`
-	Dragging bool          `json:"dragging,omitempty"`
+	ID       string   `json:"id"`
+	Type     string   `json:"type,omitempty"`
+	Position Position `json:"position"`
+	Data     NodeData `json:"data"`
+	Width    float64  `json:"width,omitempty"`
+	Height   float64  `json:"height,omitempty"`
+	Selected bool     `json:"selected,omitempty"`
+	Dragging bool     `json:"dragging,omitempty"`
 }
 
 type Position struct {
@@ -22,9 +22,11 @@ type Position struct {
 	Y float64 `json:"y"`
 }
 
-type ImageNodeData struct {
-	Label    string `json:"label"`
-	ImageURL string `json:"imageUrl"`
+type NodeData struct {
+	Label      string `json:"label"`
+	ImageURL   string `json:"imageUrl"`
+	VideoURL   string `json:"videoUrl"`
+	YoutubeUrl string `json:"youtubeUrl"`
 }
 
 func (a *App) SaveNodes(jsonData string) {

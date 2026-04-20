@@ -37,7 +37,6 @@ function App() {
   const [focusComment, setFocusComment] = useState<CommentData>(
     {} as CommentData,
   );
-  const [deleteUnusedAssets, setDeleteUnusedAssets] = useState<boolean>(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -104,9 +103,6 @@ function App() {
       const comments: CommentData[] = JSON.parse(jsonData);
       setComments(comments);
     });
-    EventsOn("deleteUnusedAssets", (deleteAssets: boolean) => {
-      setDeleteUnusedAssets(deleteAssets);
-    });
 
     return () => {
       EventsOff("isViewComment");
@@ -122,7 +118,6 @@ function App() {
       EventsOff("content");
       EventsOff("notes");
       EventsOff("comments");
-      EventsOff("deleteUnusedAssets");
     };
   });
 

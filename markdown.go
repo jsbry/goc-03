@@ -159,6 +159,8 @@ func (a *App) GetWalkDir() (string, error) {
 		return "[]", err
 	}
 	// fmt.Printf("GetWalkDir JSON: %s\n", string(jsonBytes))
+
+	a.notes = files
 	return string(jsonBytes), nil
 }
 

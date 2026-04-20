@@ -13,6 +13,7 @@ type App struct {
 	ctx    context.Context
 	server *http.Server
 	nodes  []Node
+	notes  []string
 }
 
 type AppConstants struct {
