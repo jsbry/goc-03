@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
 import Markdown from "../../pages/Markdown/Markdown";
 import Flow from "../../pages/Flow/Flow";
 import HelpModal from "./HelpModal";
+import NotificationToast from "./NotificationToast";
 import { RemoveUnusedAssets } from "../../../wailsjs/go/main/App";
 
 function Content(props: {
@@ -12,6 +14,9 @@ function Content(props: {
 }) {
   const { pageName, markdownView, fmWidth } = props;
   const [helpShow, setHelpShow] = useState<boolean>(false);
+  const [toastShow, setToastShow] = useState<boolean>(false);
+  const [assetsRemoved, setAssetsRemoved] = useState<number>(0);
+  const { t } = useTranslation();
 
   const handleHelpClose = () => {
     setHelpShow(false);
@@ -26,10 +31,15 @@ function Content(props: {
         RemoveUnusedAssets();
       }
     });
+    EventsOn("assetsRemoved", (v: number) => {
+      setToastShow(true);
+      setAssetsRemoved(v);
+    });
 
     return () => {
       EventsOff("help");
       EventsOff("deleteUnusedAssets");
+      EventsOff("assetsRemoved");
     };
   });
 
@@ -87,6 +97,12 @@ function Content(props: {
       {renderPage(pageName)}
 
       <HelpModal helpShow={helpShow} handleHelpClose={handleHelpClose} />
+      <NotificationToast
+        toastShow={toastShow}
+        handleToastClose={() => setToastShow(false)}
+        title={t("Notification")}
+        body={t("Removed {{count}} unused assets.", { count: assetsRemoved })}
+      />
     </main>
   );
 }

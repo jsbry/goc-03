@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	rt "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (a *App) SaveComments(jsonData string) {
@@ -13,5 +13,5 @@ func (a *App) SaveComments(jsonData string) {
 		fmt.Println("Error saving comments:", err)
 		return
 	}
-	runtime.EventsEmit(a.ctx, "comments", jsonData)
+	rt.EventsEmit(a.ctx, "comments", jsonData)
 }

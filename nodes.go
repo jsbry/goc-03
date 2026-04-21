@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	rt "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Node struct {
@@ -36,7 +36,7 @@ func (a *App) SaveNodes(jsonData string) {
 		fmt.Println("Error saving nodes:", err)
 		return
 	}
-	runtime.EventsEmit(a.ctx, "nodes", jsonData)
+	rt.EventsEmit(a.ctx, "nodes", jsonData)
 }
 
 func (a *App) SaveEdges(jsonData string) {
@@ -46,7 +46,7 @@ func (a *App) SaveEdges(jsonData string) {
 		fmt.Println("Error saving edges:", err)
 		return
 	}
-	runtime.EventsEmit(a.ctx, "edges", jsonData)
+	rt.EventsEmit(a.ctx, "edges", jsonData)
 }
 
 func (a *App) OpenFileDialog(nodeType string) string {
@@ -60,9 +60,9 @@ func (a *App) OpenFileDialog(nodeType string) string {
 		pattern = "*.mp4;*.avi;*.mov"
 	}
 
-	path, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+	path, err := rt.OpenFileDialog(a.ctx, rt.OpenDialogOptions{
 		Title: title,
-		Filters: []runtime.FileFilter{
+		Filters: []rt.FileFilter{
 			{DisplayName: displayName, Pattern: pattern},
 		},
 	})

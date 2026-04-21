@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	rt "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -52,7 +52,7 @@ func (a *App) GetConstants() AppConstants {
 		fmt.Println("Error setting up public assets:", err)
 		workspace = ""
 		workspaceFullPath = ""
-		runtime.EventsEmit(a.ctx, "workspace", workspace)
+		rt.EventsEmit(a.ctx, "workspace", workspace)
 		a.updateMenu()
 	}
 

@@ -17,14 +17,14 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	rt "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (a *App) OpenWorkspace(absPath string) {
 	dir := filepath.Base(absPath)
 	workspace = dir
 	workspaceFullPath = absPath
-	runtime.EventsEmit(a.ctx, "workspace", workspace)
+	rt.EventsEmit(a.ctx, "workspace", workspace)
 
 	err := a.publicAssets()
 	if err != nil {
@@ -32,16 +32,16 @@ func (a *App) OpenWorkspace(absPath string) {
 	}
 
 	nodes := a.getJsonFileContent(nodesFile)
-	runtime.EventsEmit(a.ctx, "nodes", nodes)
+	rt.EventsEmit(a.ctx, "nodes", nodes)
 
 	edges := a.getJsonFileContent(edgesFile)
-	runtime.EventsEmit(a.ctx, "edges", edges)
+	rt.EventsEmit(a.ctx, "edges", edges)
 
 	comments := a.getJsonFileContent(commentsFile)
-	runtime.EventsEmit(a.ctx, "comments", comments)
+	rt.EventsEmit(a.ctx, "comments", comments)
 
 	notes, _ := a.GetWalkDir()
-	runtime.EventsEmit(a.ctx, "notes", notes)
+	rt.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) publicAssets() error {
@@ -86,7 +86,7 @@ func (a *App) publicAssets() error {
 	if err != nil {
 		return err
 	}
-	runtime.EventsEmit(a.ctx, "baseURL", fmt.Sprintf("http://%s/", listener.Addr().String()))
+	rt.EventsEmit(a.ctx, "baseURL", fmt.Sprintf("http://%s/", listener.Addr().String()))
 
 	a.server = &http.Server{
 		Handler: mux,
@@ -208,6 +208,7 @@ func (a *App) RemoveUnusedAssets() {
 		}
 	}
 
+	assetsRemoved := 0
 	for _, asset := range assetFiles {
 		if asset.IsDir() {
 			continue
@@ -216,8 +217,11 @@ func (a *App) RemoveUnusedAssets() {
 		if !usedAssets[assetPath] {
 			removeFilepath := filepath.Join(workspaceFullPath, assetPath)
 			os.Remove(removeFilepath)
+			assetsRemoved++
 		}
 	}
+
+	rt.EventsEmit(a.ctx, "assetsRemoved", assetsRemoved)
 }
 
 var (

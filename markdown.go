@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
+	rt "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 const mdTemplate = "# %s\n"
@@ -60,7 +60,7 @@ func (a *App) OpenMarkdown(nodeName string) {
 		}
 		content = builder.String()
 	}
-	runtime.EventsEmit(a.ctx, "content", content)
+	rt.EventsEmit(a.ctx, "content", content)
 }
 
 func (a *App) RenameMarkdown(oldLabel string, newLabel string) {
@@ -79,7 +79,7 @@ func (a *App) RenameMarkdown(oldLabel string, newLabel string) {
 	fmt.Printf("Renamed file from %s to %s\n", old, new)
 
 	notes, _ := a.GetWalkDir()
-	runtime.EventsEmit(a.ctx, "notes", notes)
+	rt.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) RemoveMarkdown(label string) {
@@ -97,7 +97,7 @@ func (a *App) RemoveMarkdown(label string) {
 	fmt.Printf("Removed file %s\n", filepath)
 
 	notes, _ := a.GetWalkDir()
-	runtime.EventsEmit(a.ctx, "notes", notes)
+	rt.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) SaveMarkdown(nodeName string, content string) {
@@ -118,7 +118,7 @@ func (a *App) SaveMarkdown(nodeName string, content string) {
 	fmt.Printf("Saved file %s\n", filepath)
 
 	notes, _ := a.GetWalkDir()
-	runtime.EventsEmit(a.ctx, "notes", notes)
+	rt.EventsEmit(a.ctx, "notes", notes)
 }
 
 func (a *App) GetWalkDir() (string, error) {
