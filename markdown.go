@@ -27,11 +27,11 @@ func (a *App) OpenMarkdown(nodeName string) {
 		if errors.Is(err, os.ErrExist) {
 			file, err = os.OpenFile(filepath, os.O_RDONLY|os.O_APPEND, 0666)
 			if err != nil {
-				panic(err)
+				fmt.Println("Error opening Markdown file:", err)
 			}
 			isNewFile = false
 		} else {
-			panic(err)
+			fmt.Println("Error creating Markdown file:", err)
 		}
 	}
 	defer file.Close()
@@ -41,7 +41,7 @@ func (a *App) OpenMarkdown(nodeName string) {
 		content = fmt.Sprintf(mdTemplate, nodeName)
 		_, err := file.WriteString(content)
 		if err != nil {
-			panic(err)
+			fmt.Println("Error writing to Markdown file:", err)
 		}
 	} else {
 		var builder strings.Builder
@@ -55,7 +55,8 @@ func (a *App) OpenMarkdown(nodeName string) {
 				break
 			}
 			if err != nil {
-				panic(err)
+				fmt.Println("Error reading Markdown file:", err)
+				break
 			}
 		}
 		content = builder.String()
@@ -139,7 +140,6 @@ func (a *App) GetWalkDir() (string, error) {
 		}
 		if !info.IsDir() && strings.HasSuffix(info.Name(), ".md") && !expectedFiles[strings.TrimSuffix(info.Name(), ".md")] {
 			files = append(files, withoutExt(info.Name()))
-
 		}
 		return nil
 	})
