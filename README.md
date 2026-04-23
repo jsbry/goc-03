@@ -11,12 +11,12 @@
     - wip
 - components resize
     - wip
-    - todo: window size over
+        - todo: window size over
     - todo: divider component
+        - workaround: rate width
 - flow page : node pair md exists icon
     - wip
     - todo: mouse over markdown preview
-- manual save mode
 - monaco-editor 
     - localize
     - cursor confusion
@@ -32,7 +32,10 @@
         - editing check
              - check button click
         - focus trash
-
+- manual save mode
+    - menu > manual save
+    - local storage
+    - ctrl + s
 
 ## Inspiration
 
