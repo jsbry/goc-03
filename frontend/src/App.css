@@ -30,7 +30,8 @@
 }
 
 .sidebar-resizer:hover {
-  width: 2px;
+  width: 3px;
+  background: #9eeaf9;
 }
 
 .main {
@@ -62,7 +63,8 @@
 }
 
 .comments-sidebar-resizer:hover {
-  width: 2px;
+  width: 3px;
+  background: #9eeaf9;
 }
 
 .edit-node-sidebar {
@@ -83,7 +85,8 @@
 }
 
 .edit-node-sidebar-resizer:hover {
-  width: 2px;
+  width: 3px;
+  background: #9eeaf9;
 }
 
 .content-parent-markdown {
