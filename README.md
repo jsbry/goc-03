@@ -22,6 +22,9 @@
     - cursor confusion
         - wip
     - ime position confusion
+    - key input
+        - maybe: value rerender
+        - todo: value state, save value 
 
 
 ## Draft
