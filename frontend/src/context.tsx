@@ -37,6 +37,8 @@ export type DataContextType = {
   setFocusEdge: React.Dispatch<React.SetStateAction<Edge>>;
   content: string;
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  editorContent: string;
+  setEditorContent: React.Dispatch<React.SetStateAction<string>>;
   focusContent: string;
   setFocusContent: React.Dispatch<React.SetStateAction<string>>;
   notes: string[];

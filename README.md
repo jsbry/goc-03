@@ -25,6 +25,7 @@
     - key input
         - maybe: value rerender
         - todo: value state, save value 
+        - wip
 
 
 ## Draft

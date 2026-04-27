@@ -14,7 +14,7 @@ import { componentsWithLinePosition, getSelectionLineRange } from "./selection";
 
 function Markdown(props: { markdownView: string }) {
   const { markdownView } = props;
-  const { content, focusContent, setFocusComment } = useDataContext();
+  const { editorContent, focusContent, setFocusComment } = useDataContext();
 
   const handleMouseUp = () => {
     const selection = window.getSelection();
@@ -55,7 +55,7 @@ function Markdown(props: { markdownView: string }) {
           rehypePlugins={[rehypeRaw, rehypeHighlight]}
           components={componentsWithLinePosition}
         >
-          {content}
+          {editorContent}
         </ReactMarkdown>
       </div>
       <div

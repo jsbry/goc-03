@@ -6,6 +6,9 @@ import { useDataContext } from "../../context";
 import { formatMarkdownTable } from "./format";
 
 export default function MarkdownEditor() {
+  const { content, setEditorContent } = useDataContext();
+  const composingRef = useRef(false);
+
   const handleEditorDidMount: OnMount = (editor, monacoInstance) => {
     monacoInstance.languages.registerDocumentFormattingEditProvider(
       "markdown",
@@ -44,12 +47,9 @@ export default function MarkdownEditor() {
     });
   };
 
-  const { content, setContent } = useDataContext();
-  const composingRef = useRef(false);
-
   const onEditorChange = (value: string | undefined) => {
     if (composingRef.current) return;
-    setContent(value || "");
+    setEditorContent(value || "");
   };
 
   const options = {

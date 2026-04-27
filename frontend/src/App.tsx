@@ -30,6 +30,7 @@ function App() {
   const [focusNode, setFocusNode] = useState<MyNode>({} as MyNode);
   const [focusEdge, setFocusEdge] = useState<Edge>({} as Edge);
   const [content, setContent] = useState<string>("");
+  const [editorContent, setEditorContent] = useState<string>("");
   const [focusContent, setFocusContent] = useState<string>("");
   const [notes, setNotes] = useState<string[]>([]);
   const [focusNote, setFocusNote] = useState<string>("");
@@ -128,12 +129,12 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (focusContent !== "") {
-        SaveMarkdown(focusContent, content);
+        SaveMarkdown(focusContent, editorContent);
       }
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [focusContent, content]);
+  }, [focusContent, editorContent]);
 
   const editFocusNode = useCallback(
     (value: MyNode | ((prev: MyNode) => MyNode)) => {
@@ -198,6 +199,8 @@ function App() {
       setFocusEdge,
       content,
       setContent,
+      editorContent,
+      setEditorContent,
       focusContent,
       setFocusContent,
       notes,
@@ -217,6 +220,7 @@ function App() {
       focusNode,
       focusEdge,
       content,
+      editorContent,
       focusContent,
       notes,
       focusNote,
