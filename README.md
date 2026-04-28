@@ -26,6 +26,7 @@
         - maybe: value rerender
         - todo: value state, save value 
         - wip
+- Reveal in file explorer
 
 
 ## Draft
