@@ -95,6 +95,7 @@ function App() {
     });
     EventsOn("content", (content: string) => {
       setContent(content);
+      setEditorContent(content);
     });
     EventsOn("notes", (jsonData: string) => {
       const notes: string[] = JSON.parse(jsonData);
