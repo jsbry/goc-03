@@ -138,6 +138,9 @@ func (a *App) GetWalkDir() (string, error) {
 		if err != nil {
 			return err
 		}
+		if info.IsDir() && path != workspaceFullPath {
+			return filepath.SkipDir
+		}
 		if !info.IsDir() && strings.HasSuffix(info.Name(), ".md") && !expectedFiles[strings.TrimSuffix(info.Name(), ".md")] {
 			files = append(files, withoutExt(info.Name()))
 		}
