@@ -154,6 +154,7 @@ function App() {
         } else {
           setFocusNote("");
           setContent("");
+          setEditorContent("");
           setFocusContent("");
           setFocusComment({} as CommentData);
         }
@@ -178,6 +179,7 @@ function App() {
       } else {
         setFocusNote("");
         setContent("");
+        setEditorContent("");
         setFocusContent("");
         setFocusComment({} as CommentData);
       }
