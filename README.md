@@ -19,13 +19,6 @@
     - todo: mouse over markdown preview
 - monaco-editor 
     - localize
-    - cursor confusion
-        - wip
-    - ime position confusion
-    - key input
-        - maybe: value rerender
-        - todo: value state, save value 
-        - wip
 
 
 ## Draft
