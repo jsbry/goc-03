@@ -19,6 +19,7 @@
     - todo: mouse over markdown preview
 - monaco-editor 
     - localize
+    - occasionally out of sync(preview)
 
 
 ## Draft
