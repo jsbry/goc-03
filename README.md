@@ -20,6 +20,7 @@
 - monaco-editor 
     - localize
     - occasionally out of sync(preview)
+- contents search
 
 
 ## Draft
